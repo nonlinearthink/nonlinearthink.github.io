@@ -1,0 +1,325 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>深入浅出 Git | nonlinearthink's blog</title><meta name="keywords" content="Git,Head First"><meta name="author" content="Jaycee Chow"><meta name="copyright" content="Jaycee Chow"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="2002年前，Linux 社区一直急缺一个好用的版本控制系统，那个时候开源的版本控制系统都很垃圾，Linux社区 虽然是开源的忠实拥护者，但是在日益庞大的代码面前，Linus 还是屈服了。 BitMover公司 承诺免费为 Linux社区 提供自家的商用版本控制软件 BitKeeper。 但是林子大了，就是容易出事。Linux社区 有人做了破解版的 BitKeeper，放到网上传播，最终BitMo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入浅出 Git">
+<meta property="og:url" content="https://nonlinearthink.github.io/2020/06/26/git-dissecting/index.html">
+<meta property="og:site_name" content="nonlinearthink&#39;s blog">
+<meta property="og:description" content="2002年前，Linux 社区一直急缺一个好用的版本控制系统，那个时候开源的版本控制系统都很垃圾，Linux社区 虽然是开源的忠实拥护者，但是在日益庞大的代码面前，Linus 还是屈服了。 BitMover公司 承诺免费为 Linux社区 提供自家的商用版本控制软件 BitKeeper。 但是林子大了，就是容易出事。Linux社区 有人做了破解版的 BitKeeper，放到网上传播，最终BitMo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200626132946307.png">
+<meta property="article:published_time" content="2020-06-26T05:19:33.000Z">
+<meta property="article:modified_time" content="2020-10-17T05:49:54.083Z">
+<meta property="article:author" content="Jaycee Chow">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="Head First">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200626132946307.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://nonlinearthink.github.io/2020/06/26/git-dissecting/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-10-17 13:49:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://img-blog.csdnimg.cn/20200903101052796.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于博主</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img-blog.csdnimg.cn/20200626132946307.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">nonlinearthink's blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于博主</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">深入浅出 Git</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-06-26T05:19:33.000Z" title="发表于 2020-06-26 13:19:33">2020-06-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-10-17T05:49:54.083Z" title="更新于 2020-10-17 13:49:54">2020-10-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Git-%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">Git 使用手册</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>2002年前，Linux 社区一直急缺一个好用的版本控制系统，那个时候开源的版本控制系统都很垃圾，<code>Linux社区</code> 虽然是开源的忠实拥护者，但是在日益庞大的代码面前，Linus 还是屈服了。</p>
+<p><code>BitMover公司</code> 承诺免费为 <code>Linux社区</code> 提供自家的商用版本控制软件 <code>BitKeeper</code>。</p>
+<p>但是林子大了，就是容易出事。<code>Linux社区</code> 有人做了破解版的 <code>BitKeeper</code>，放到网上传播，最终<code>BitMover公司</code> 和 <code>Linux社区</code> 翻脸了。</p>
+<p>Linus 被迫无奈，决定开发一款自己的开源版本控制软件，<code>Git</code> 诞生了，传闻第一版的代码只花了两个星期。</p>
+<p><strong>本文可能不适合那些想要快速了解 <code>Git</code> 的人。我的目的是将一些理论的知识结合实践，能从一个比较深的角度来写写 <code>Git</code>。</strong></p>
+<h2 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h2><h3 id="集中式的版本控制系统"><a href="#集中式的版本控制系统" class="headerlink" title="集中式的版本控制系统"></a>集中式的版本控制系统</h3><p>说到分布式版本控制系统，就必须要说一下传统的集中式版本控制是怎么做的。</p>
+<p>在集中式的版本控制系统中，代码被保存在一个服务器中，客户端通过远程连接服务器来更改代码。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200626015503420.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="集中式版本控制系统"></p>
+<p>这导致了一旦服务器崩溃，整个项目都面临丢失的风险。</p>
+<h3 id="分布式的版本管理系统"><a href="#分布式的版本管理系统" class="headerlink" title="分布式的版本管理系统"></a>分布式的版本管理系统</h3><p>类似 Git 的分布式版本控制的做法稍有不同，客户端每次都要拷贝一遍服务器的代码，然后在本地修改后提交到服务器。</p>
+<p>这样，就算服务器的代码丢了，客户端这边有很多备份，就没有关系。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200626015510103.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="分布式版本控制系统"></p>
+<hr>
+<h2 id="远程仓库实战"><a href="#远程仓库实战" class="headerlink" title="远程仓库实战"></a>远程仓库实战</h2><p>前面提到了分布式的概念，远程仓库正是这种模式的核心。</p>
+<p>远程仓库就是上面提到的服务器，而我们本地则是客户端。</p>
+<h3 id="克隆远程仓库到本地"><a href="#克隆远程仓库到本地" class="headerlink" title="克隆远程仓库到本地"></a>克隆远程仓库到本地</h3><p>获得一个 Git 仓库的其中一个办法，就是克隆别人的仓库。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/lifeInZUCC/ZUCC-intersection</span><br></pre></td></tr></table></figure>
+<p>这会在当前目录创建一个名叫 <code>ZUCC-intersection</code> 的文件，然后从后面的链接位置把整个仓库克隆下来，这就是我们所说的分布式的概念。</p>
+<p>一般情况下，Github 不太容易出现数据丢失，所以我一般还习惯另外一个操作:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/lifeInZUCC/ZUCC-intersection --depth=1</span><br></pre></td></tr></table></figure>
+<p><code>--depth=1</code> 代表只克隆最近的一个记录，可以节省很多存储空间和克隆时间，特别对于迭代周期比较长和比较大的项目来说。</p>
+<h3 id="把本地创建的仓库关联到远程"><a href="#把本地创建的仓库关联到远程" class="headerlink" title="把本地创建的仓库关联到远程"></a>把本地创建的仓库关联到远程</h3><p>先要在本地创建一个 Git 的项目，在当前目录下，使用命令:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+<p>会创建一个 <code>.git</code> 的文件夹，现在，这个目录就被转换成了 Git 项目。</p>
+<p>接着，现在要把这个仓库发布到远程服务器上，则需要关联代码仓库的地址。</p>
+<p>例如，要发布到 <code>Github</code> 上，可以这样做:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:nonlinearthink/demo</span><br></pre></td></tr></table></figure>
+<p>这句话的意思是设置了一个默认的远程仓库，名叫 <code>origin</code>，仓库的位置是 <code>github.com/nonlinearthink/demo</code>。</p>
+<h3 id="发布到远程仓库"><a href="#发布到远程仓库" class="headerlink" title="发布到远程仓库"></a>发布到远程仓库</h3><p>关联结束之后，你就需要发布了。</p>
+<p>可以通过使用 <code>git push</code> 命令实现。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+<p>这代表把当前分支发布到 origin 远程仓库的 master 分支上。</p>
+<h3 id="同步远程仓库"><a href="#同步远程仓库" class="headerlink" title="同步远程仓库"></a>同步远程仓库</h3><p>在多人合作的场景下，如果别人改了远程仓库，我们就需要把别人的更改的内容同步到本地。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch</span><br></pre></td></tr></table></figure>
+<p><code>fetch</code> 只检查远程仓库和本地仓库的内容，但不更新。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br></pre></td></tr></table></figure>
+<p><code>pull</code> 会直接更新。</p>
+<hr>
+<h2 id="文件管理系统"><a href="#文件管理系统" class="headerlink" title="文件管理系统"></a>文件管理系统</h2><h3 id="时刻监察文件状态"><a href="#时刻监察文件状态" class="headerlink" title="时刻监察文件状态"></a>时刻监察文件状态</h3><blockquote>
+<p>你不可能修改了文件或目录之后，Git 对此却一无所知。</p>
+</blockquote>
+<p>Git 使用 <code>SHA-1</code> 算法计算数据的校验和。通过对比校验和，来判断文件是否改变了。</p>
+<p>每过一段时间都要计算一次。所以，如果文件在传输时变得不完整，或者磁盘损坏导致文件数据缺失，Git 都能立即察觉。</p>
+<h3 id="不保存差异，保存整个文件"><a href="#不保存差异，保存整个文件" class="headerlink" title="不保存差异，保存整个文件"></a>不保存差异，保存整个文件</h3><p>这是一个比较有争议的点，很多人觉得这会增大 Git 的体积。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200626015516715.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="保存差异"></p>
+<p>在传统的模式中，每一个文件都维护来一个链表，每次文件更新之后，才会创建一个新的链表项，只保留差异的部分。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200626015523401.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="保存整个文件"></p>
+<p>Git 使用的是上图的这种模式，每当文件更新的时候就记录一次快照，如果没有更新，会保存一个快照的指针，指向上一个文件快照。</p>
+<p>虚线代表了一个指针，而不是实体。</p>
+<h3 id="文件的三状态模型"><a href="#文件的三状态模型" class="headerlink" title="文件的三状态模型"></a>文件的三状态模型</h3><p>Git 的文件有三种状态，<code>commited</code>、<code>staged</code>、<code>modified</code>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200626015708840.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="Git文件的三种状态"></p>
+<p>为什么要设计三种状态？</p>
+<ol>
+<li>当处于<code>modified</code>状态的时候，代表文件被修改，但是还没暂存记录，这个时候你可以随意更改文件。</li>
+<li>当你工作了一半，为了防止数据丢失，可以把<code>modified</code>状态的文件暂时存储一下，也就是转到了<code>staged</code>状态。如果你反悔了，只要取消暂存，原来的文件又回来了。</li>
+<li>当一部分工作做完之后，你觉得可以提交到代码仓库里去了，那就把<code>staged</code>状态的文件转到<code>commited</code>状态，代表了正式提交到代码仓库中。</li>
+</ol>
+<div class="note info modern"><p>上面说了，Git 是分布式的，所以第三步只是在本地的代码仓库提交了代码，你还得把本地的代码提交到服务器。</p>
+<p>很多大公司有自己的 Git 服务器，更多的个人开发者则喜欢使用类似于 <code>Github</code>、<code>Gitlab</code>、<code>Gitee</code>、<code>Coding</code> 等等的网站来做服务器。</p>
+<p>目前 <code>Github</code> 是全球最大的代码托管平台，目前由微软资助。</p>
+</div>
+
+<h3 id="commit的五对象模型"><a href="#commit的五对象模型" class="headerlink" title="commit的五对象模型"></a>commit的五对象模型</h3><p>Git 仓库中一次 commit(提交) 被分为 5 个对象，可分为 3 类:</p>
+<ul>
+<li>3 个 blob 对象 (<strong>代表类上面说的3种文件</strong>)</li>
+<li>1 个 tree 对象</li>
+<li>1 个 commit 对象</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20200626024539534.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="五对象模型"></p>
+<p>commit之间又是一种链式的关系:</p>
+<p><img src="https://img-blog.csdnimg.cn/20200626025151835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="commit之间的链式关系"></p>
+<hr>
+<h2 id="文件状态转换实战"><a href="#文件状态转换实战" class="headerlink" title="文件状态转换实战"></a>文件状态转换实战</h2><h3 id="暂存文件"><a href="#暂存文件" class="headerlink" title="暂存文件"></a>暂存文件</h3><p>使用<code>git add</code>命令可以把文件加入 Git 的追踪系统，也就是变成<code>staged</code>状态。</p>
+<p>当我们修改了这个文件之后，它就变成<code>modified</code>状态。</p>
+<p>需要再次使用<code>git add</code>命令，文件才会再次变成<code>staged</code>状态。</p>
+<p>Git 的文件通配符就是 shell 的通配符，对 shell 脚本熟悉的话就懂了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add *</span><br></pre></td></tr></table></figure>
+<p>这条命令会把文件夹下所有文件都加入 Git 的追踪。</p>
+<p>有一个例外就是，编写<code>.gitignore</code>，可以忽略一些文件，永远不会被 Git 追踪，可以自己去查怎么编写。</p>
+<p>值得一提的是，这种情况下使用<code>git add *</code>会出现警告，我一般推荐使用<code>git add -A</code>，都是添加全部文件，但是它会先检查<code>.gitignore</code>里的内容。</p>
+<h3 id="提交代码"><a href="#提交代码" class="headerlink" title="提交代码"></a>提交代码</h3><p><code>git commit</code> 命令会把<code>staged</code>状态的文件转为<code>commited</code>状态。也就是提交到当前的分支中去。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;update xxx&quot;</span><br></pre></td></tr></table></figure>
+<p><code>-m</code> 参数后加一个字符串，可以为提交代码做一些说明。</p>
+<hr>
+<h2 id="基于分支的开发模型"><a href="#基于分支的开发模型" class="headerlink" title="基于分支的开发模型"></a>基于分支的开发模型</h2><h3 id="分支的概念"><a href="#分支的概念" class="headerlink" title="分支的概念"></a>分支的概念</h3><p>分支是平行宇宙。</p>
+<p>当他们在一个节点分离之后，就有了自己的发展方向。</p>
+<p>其中，有一个 <code>HEAD</code> 指针，是你当前所在的分支，你可以通过改变这一个指针来切换分支。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200626025524951.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="Git 分支"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200626031356746.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="Git一般开发流程"></p>
+<p>这是一个标准的开发模型，我们不去阐述这么复杂的模型，这里仅仅讨论单分支模型和双分支模型。</p>
+<p>看了这张图，你应该知道，所谓的版本管理，就是分支的管理。</p>
+<h3 id="单分支模型"><a href="#单分支模型" class="headerlink" title="单分支模型"></a>单分支模型</h3><p>就是从头到尾都是一个 master 分支。这个没什么好说的。</p>
+<h3 id="双分支模型"><a href="#双分支模型" class="headerlink" title="双分支模型"></a>双分支模型</h3><p>或者也可以叫 master/develop 开发模型。</p>
+<p>稳定版的代码发布在 master 分支，而一些新功能和特性。还在开发当中，就放到 develop 分支。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200626031730201.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="双分支模型"></p>
+<h3 id="冲突"><a href="#冲突" class="headerlink" title="冲突"></a>冲突</h3><p>一个复杂的 Git 系统中，分支众多，当我们合并分支的时候，很容易遇到冲突。</p>
+<p>这个时候就需要手动解决一下冲突，然后再合并。这需要你查看报错的地方，然后去找出来并修改。</p>
+<hr>
+<h2 id="分支管理实战"><a href="#分支管理实战" class="headerlink" title="分支管理实战"></a>分支管理实战</h2><h3 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch develop</span><br></pre></td></tr></table></figure>
+<p>这个命令会创建一个名叫 <code>develop</code> 的分支。</p>
+<h3 id="切换分支"><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout develop</span><br></pre></td></tr></table></figure>
+<p>这个命令会切换分支到 develop 分支，前提是你之前已经创建过了。</p>
+<p>这个命令的本质其实就是移动了 <code>HEAD</code> 指针。</p>
+<p>默认状态下，使用的是 master 分支。</p>
+<h3 id="创建并切换"><a href="#创建并切换" class="headerlink" title="创建并切换"></a>创建并切换</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -b develop</span><br></pre></td></tr></table></figure>
+<p>结合了上面两个步骤。</p>
+<h3 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h3><p>我们先切换回 master 分支。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br></pre></td></tr></table></figure>
+<p>现在把 develop 分支合并到 master 分支。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge develop</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Jaycee Chow</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://nonlinearthink.github.io/2020/06/26/git-dissecting/">https://nonlinearthink.github.io/2020/06/26/git-dissecting/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://nonlinearthink.github.io" target="_blank">nonlinearthink's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Git/">Git</a><a class="post-meta__tags" href="/tags/Head-First/">Head First</a></div><div class="post_share"><div class="social-share" data-image="https://img-blog.csdnimg.cn/20200626132946307.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img-blog.csdnimg.cn/20200903101052701.png" target="_blank"><img class="post-qr-code-img" src="https://img-blog.csdnimg.cn/20200903101052701.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://img-blog.csdnimg.cn/20200903101051871.png" target="_blank"><img class="post-qr-code-img" src="https://img-blog.csdnimg.cn/20200903101051871.png" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/06/27/jdbc-summary/"><img class="prev-cover" src="https://img-blog.csdnimg.cn/20200627201524610.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">彻底理解 JDBC</div></div></a></div><div class="next-post pull-right"><a href="/2020/06/24/build-chrome-extension-vuecli4/"><img class="next-cover" src="https://img-blog.csdnimg.cn/20200624164218710.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">使用 Vue-CLI 4 开发 Chrome扩展</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://img-blog.csdnimg.cn/20200903101052796.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Jaycee Chow</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/nonlinearthink"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/nonlinearthink" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:2832203391@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">分布式版本控制系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8F%E7%9A%84%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">集中式的版本控制系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%9A%84%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.2.</span> <span class="toc-text">分布式的版本管理系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%AE%9E%E6%88%98"><span class="toc-number">2.</span> <span class="toc-text">远程仓库实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="toc-number">2.1.</span> <span class="toc-text">克隆远程仓库到本地</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E6%9C%AC%E5%9C%B0%E5%88%9B%E5%BB%BA%E7%9A%84%E4%BB%93%E5%BA%93%E5%85%B3%E8%81%94%E5%88%B0%E8%BF%9C%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">把本地创建的仓库关联到远程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E5%B8%83%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">2.3.</span> <span class="toc-text">发布到远程仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">2.4.</span> <span class="toc-text">同步远程仓库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">文件管理系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E5%88%BB%E7%9B%91%E5%AF%9F%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="toc-number">3.1.</span> <span class="toc-text">时刻监察文件状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E4%BF%9D%E5%AD%98%E5%B7%AE%E5%BC%82%EF%BC%8C%E4%BF%9D%E5%AD%98%E6%95%B4%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="toc-number">3.2.</span> <span class="toc-text">不保存差异，保存整个文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%89%E7%8A%B6%E6%80%81%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.3.</span> <span class="toc-text">文件的三状态模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#commit%E7%9A%84%E4%BA%94%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.4.</span> <span class="toc-text">commit的五对象模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%AE%9E%E6%88%98"><span class="toc-number">4.</span> <span class="toc-text">文件状态转换实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9A%82%E5%AD%98%E6%96%87%E4%BB%B6"><span class="toc-number">4.1.</span> <span class="toc-text">暂存文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81"><span class="toc-number">4.2.</span> <span class="toc-text">提交代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E5%88%86%E6%94%AF%E7%9A%84%E5%BC%80%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-number">5.</span> <span class="toc-text">基于分支的开发模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">5.1.</span> <span class="toc-text">分支的概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E5%88%86%E6%94%AF%E6%A8%A1%E5%9E%8B"><span class="toc-number">5.2.</span> <span class="toc-text">单分支模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%88%86%E6%94%AF%E6%A8%A1%E5%9E%8B"><span class="toc-number">5.3.</span> <span class="toc-text">双分支模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%B2%E7%AA%81"><span class="toc-number">5.4.</span> <span class="toc-text">冲突</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98"><span class="toc-number">6.</span> <span class="toc-text">分支管理实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%88%86%E6%94%AF"><span class="toc-number">6.1.</span> <span class="toc-text">创建分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E5%88%86%E6%94%AF"><span class="toc-number">6.2.</span> <span class="toc-text">切换分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B9%B6%E5%88%87%E6%8D%A2"><span class="toc-number">6.3.</span> <span class="toc-text">创建并切换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E5%88%86%E6%94%AF"><span class="toc-number">6.4.</span> <span class="toc-text">合并分支</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/01/22/hello-world/" title="Hello World"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2021/01/22/hello-world/" title="Hello World">Hello World</a><time datetime="2021-01-22T04:10:17.091Z" title="发表于 2021-01-22 12:10:17">2021-01-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/22/aliyun-ddns-python/" title="Python实现阿里云DDNS动态域名解析"><img src="https://img-blog.csdnimg.cn/2020102313510094.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python实现阿里云DDNS动态域名解析"/></a><div class="content"><a class="title" href="/2020/10/22/aliyun-ddns-python/" title="Python实现阿里云DDNS动态域名解析">Python实现阿里云DDNS动态域名解析</a><time datetime="2020-10-22T15:29:05.000Z" title="发表于 2020-10-22 23:29:05">2020-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/17/git-multi-platform/" title="Git 多平台认证"><img src="https://img-blog.csdnimg.cn/20201017135344686.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git 多平台认证"/></a><div class="content"><a class="title" href="/2020/10/17/git-multi-platform/" title="Git 多平台认证">Git 多平台认证</a><time datetime="2020-10-17T04:43:01.000Z" title="发表于 2020-10-17 12:43:01">2020-10-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/11/cordova-cross-platform-packaging/" title="使用 Cordova 跨平台打包 Vue"><img src="https://img-blog.csdnimg.cn/20201012012311662.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用 Cordova 跨平台打包 Vue"/></a><div class="content"><a class="title" href="/2020/10/11/cordova-cross-platform-packaging/" title="使用 Cordova 跨平台打包 Vue">使用 Cordova 跨平台打包 Vue</a><time datetime="2020-10-11T04:57:48.000Z" title="发表于 2020-10-11 12:57:48">2020-10-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/09/java-hanlp-quickstart/" title="在 Maven 项目中使用 HanLP"><img src="https://img-blog.csdnimg.cn/20201010003555623.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="在 Maven 项目中使用 HanLP"/></a><div class="content"><a class="title" href="/2020/10/09/java-hanlp-quickstart/" title="在 Maven 项目中使用 HanLP">在 Maven 项目中使用 HanLP</a><time datetime="2020-10-09T15:40:08.000Z" title="发表于 2020-10-09 23:40:08">2020-10-09</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jaycee Chow</div><div class="footer_custom_text">Power by Hexo | Theme Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk({
+      clientID: '654af703ab6f907212af',
+      clientSecret: 'fd331eab22fb25edb096b1bc12b61162ad44882d',
+      repo: 'nonlinearthink.github.io',
+      owner: 'nonlinearthink',
+      admin: ['nonlinearthink'],
+      id: '4cf66fd618cff8422e422146f8708278',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    })
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
