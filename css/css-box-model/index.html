@@ -1,0 +1,370 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CSS盒模型详解 | nonlinearthink's blog</title><meta name="keywords" content="CSS,box-sizing,margin,padding,box model,border"><meta name="author" content="Jaycee Chow"><meta name="copyright" content="Jaycee Chow"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="这篇博客是实验性的，我尝试了使用 iframe 来内嵌网页帮助我讲解。这样我在写 CSS 的博客的时候就能有更多的交互性，中途的确遇到了很多的问题，我稍后写一篇博客谈一些注意点。 盒模型(box model)了解盒模型的概念CSS 的盒模型并不是什么很难理解的东西，你只需要记住它由四部分构成：content(内容)、padding(内边距)、border(边框)、margin(外边距)。 举一个例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS盒模型详解">
+<meta property="og:url" content="https://nonlinearthink.github.io/css/css-box-model/index.html">
+<meta property="og:site_name" content="nonlinearthink&#39;s blog">
+<meta property="og:description" content="这篇博客是实验性的，我尝试了使用 iframe 来内嵌网页帮助我讲解。这样我在写 CSS 的博客的时候就能有更多的交互性，中途的确遇到了很多的问题，我稍后写一篇博客谈一些注意点。 盒模型(box model)了解盒模型的概念CSS 的盒模型并不是什么很难理解的东西，你只需要记住它由四部分构成：content(内容)、padding(内边距)、border(边框)、margin(外边距)。 举一个例">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200630153529688.png">
+<meta property="article:published_time" content="2020-07-08T08:21:21.000Z">
+<meta property="article:modified_time" content="2021-03-11T01:01:08.465Z">
+<meta property="article:author" content="Jaycee Chow">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="box-sizing">
+<meta property="article:tag" content="margin">
+<meta property="article:tag" content="padding">
+<meta property="article:tag" content="box model">
+<meta property="article:tag" content="border">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200630153529688.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://nonlinearthink.github.io/css/css-box-model/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-11 09:01:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://img-blog.csdnimg.cn/20200903101052796.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于博主</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img-blog.csdnimg.cn/20200630153529688.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">nonlinearthink's blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于博主</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">CSS盒模型详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-07-08T08:21:21.000Z" title="发表于 2020-07-08 16:21:21">2020-07-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-03-11T01:01:08.465Z" title="更新于 2021-03-11 09:01:08">2021-03-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CSS-%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">CSS 技术杂谈</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>这篇博客是实验性的，我尝试了使用 iframe 来内嵌网页帮助我讲解。这样我在写 CSS 的博客的时候就能有更多的交互性，中途的确遇到了很多的问题，我稍后写一篇博客谈一些注意点。</p>
+<h2 id="盒模型-box-model"><a href="#盒模型-box-model" class="headerlink" title="盒模型(box model)"></a>盒模型(box model)</h2><h3 id="了解盒模型的概念"><a href="#了解盒模型的概念" class="headerlink" title="了解盒模型的概念"></a>了解盒模型的概念</h3><p>CSS 的盒模型并不是什么很难理解的东西，你只需要记住它由四部分构成：<code>content(内容)</code>、<code>padding(内边距)</code>、<code>border(边框)</code>、<code>margin(外边距)</code>。</p>
+<p>举一个例子来说明:</p>
+<div class="tabs" id="code1"><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#code1-1">index.html</button></li><li class="tab"><button type="button" data-href="#code1-2">style.css</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="code1-1"><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="code1-2"><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50vw</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50vh</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">25vh</span> auto;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">2em</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid black;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+
+<img src="https://img-blog.csdnimg.cn/20200708182403460.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" height="60%" width="60%">
+
+<p>从图中<strong>左下角有一副盒模型的解刨图</strong>，从图中我们可以看到：</p>
+<ul>
+<li><p>content 的大小是 $400\times250$</p>
+<p>这和 <code>width: 50vw;</code> 和 <code>height: 50vh;</code> 有关，400px 和 250px 是两者的计算值。</p>
+</li>
+<li><p>四边的 padding 大小都是 32px</p>
+<p><code>padding: 2em;</code>，在<a href="https://nonlinearthink.github.io/2020/07/01/css-unit-calculate/">CSS: 单位计算与响应式布局</a>中我提过，浏览器默认的字号是 16px，所以 2em 的计算值是 32px。</p>
+</li>
+<li><p>有 1px 的 border</p>
+<p><code>border: 1px solid black;</code>，分别代表边框的粗细、类型、颜色。</p>
+</li>
+<li><p>margin 的上下大小是 125px；左右大小是 151.5px。</p>
+<p><code>margin: 25vh auto;</code>，代表左右的 margin 的值是 25vh(计算值为 151.5px)，上下的 margin 值均分，也就是垂直方向会变成居中。</p>
+<blockquote>
+<p>这是一种常见的让元素居中的写法，但是只能让一个方向居中，你无法写两个 auto。</p>
+</blockquote>
+</li>
+</ul>
+<p>对照我们的 css 代码，你就能理解 <strong>盒模型</strong> 的概念了。</p>
+<h3 id="盒模型时钟"><a href="#盒模型时钟" class="headerlink" title="盒模型时钟"></a>盒模型时钟</h3><h4 id="简写属性"><a href="#简写属性" class="headerlink" title="简写属性"></a>简写属性</h4><p>padding、border、margin 这三个其实是<strong>简写属性</strong>，所谓的简写属性，是指在一个属性中有超过两个的值。例如，padding 和 margin 的 具体属性:</p>
+<p>|padding|margin|<br>|-|-|-|<br>|padding-top|margin-top|<br>|padding-right|margin-right|<br>|padding-bottom|margin-bottom|<br>|padding-left|margin-left|</p>
+<h4 id="时钟顺序"><a href="#时钟顺序" class="headerlink" title="时钟顺序"></a>时钟顺序</h4><p>盒模型的属性值，只要涉及到方向，全都是<strong>顺时钟顺序</strong>，上、右、下、左。</p>
+<p>但是你肯定看到过定义 padding 和 margin 的值不是4个，而是2个，或者1个，甚至3个。</p>
+<p>这怎么回事呢？</p>
+<h4 id="对称原则"><a href="#对称原则" class="headerlink" title="对称原则"></a>对称原则</h4><p>以 margin 为例。</p>
+<ul>
+<li><p>一个值: <code>margin: 1em;</code></p>
+<p>这种情况下，代表上、右、下、左四个方向的值全都相同。</p>
+</li>
+<li><p>两个值: <code>margin: 1em .8em;</code></p>
+<p>这种情况下，只定义了两个方向，根据时钟顺序，分别是 上方 和 右方。<br>接下来介绍的<strong>对称原则</strong>是指，假如 下方 和 左方 的值没有定义，则使用对称的 上方 和 右方 的值。</p>
+</li>
+<li><p>三个值: <code>margin: 1em .8em 2em;</code></p>
+<p>这种情况下，根据时钟顺序，定义了三个值，分别是 上方、右方、下方。<br>根据<strong>对称原则</strong>，没有定义的 左方 使用对称方(右方) 的值。</p>
+</li>
+</ul>
+<blockquote>
+<p>只要记住了 <strong>时钟顺序</strong> 和 <strong>对称原则</strong>，你就基本上掌握了 盒模型。</p>
+</blockquote>
+<h2 id="边框-border"><a href="#边框-border" class="headerlink" title="边框(border)"></a>边框(border)</h2><p>border 也是一个简写属性:</p>
+<table>
+<thead>
+<tr>
+<th>border</th>
+<th>可取值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>border-width</td>
+<td>所有长度单位 | thin | medium | thick</td>
+</tr>
+<tr>
+<td>border-style</td>
+<td>none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset</td>
+</tr>
+<tr>
+<td>border-color</td>
+<td>所有颜色的表示方式</td>
+</tr>
+</tbody></table>
+<h3 id="border-的一些实例"><a href="#border-的一些实例" class="headerlink" title="border 的一些实例"></a>border 的一些实例</h3><div>
+    <p><strong>border: 0.2em dotted black;</strong></p>
+    <div style="border: 0.2em dotted black; height: 10em; width: 30%; margin: 1em;"></div>
+    <p><strong>border: 0.2em dashed red;</strong></p>
+    <div style="border: 0.2em dashed red; height: 10em; width: 30%; margin: 1em;"></div>
+    <p><strong>border: 0.5em solid black;</strong></p>
+    <div style="border: 0.5em solid black; height: 10em; width: 30%; margin: 1em;"></div>
+    <p><strong>border: 0.5em double black;</strong></p>
+    <div style="border: 0.5em double black; height: 10em; width: 30%; margin: 1em;"></div>
+</div>
+
+
+<h2 id="外边距-margin"><a href="#外边距-margin" class="headerlink" title="外边距(margin)"></a>外边距(margin)</h2><h3 id="负外边距"><a href="#负外边距" class="headerlink" title="负外边距"></a>负外边距</h3><p>利用负外边距，可以使元素重叠，例如，我们下面举的这个例子:</p>
+<div class="tabs" id="code3"><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#code3-1">index.html</button></li><li class="tab"><button type="button" data-href="#code3-2">script.js</button></li><li class="tab"><button type="button" data-href="#code3-3">style.css</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="code3-1"><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  &lt;script</span><br><span class="line">    src=&quot;https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js&quot;&gt;<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;script.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="code3-2"><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">&quot;.container .card&quot;</span>).each(<span class="function"><span class="keyword">function</span> (<span class="params">index, elem</span>) </span>&#123;</span><br><span class="line">    $(<span class="built_in">this</span>).mouseenter(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      $(<span class="built_in">this</span>).addClass(<span class="string">&quot;card-active&quot;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    $(<span class="built_in">this</span>).mouseleave(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      $(<span class="built_in">this</span>).removeClass(<span class="string">&quot;card-active&quot;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="code3-3"><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span>&#123;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">5rem</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">10rem</span>;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">1rem</span> -<span class="number">0.5rem</span>;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">1</span>;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">border-radius</span>: .<span class="number">5em</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span><span class="selector-pseudo">:nth-child(1)</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#eee</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span><span class="selector-pseudo">:nth-child(2)</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span><span class="selector-pseudo">:nth-child(3)</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#ccc</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card-active</span> &#123;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">4</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">1.4em</span> -.<span class="number">7em</span> <span class="number">#888</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+
+<p>把鼠标放到三张卡片上面，卡片就会浮动起来，可以看到原来被其他两张卡片挡住的部分。</p>
+<p>证明了负外边距具有让元素重叠的功能。</p>
+<p><code>margin: 1rem -0.5rem;</code>，注意看这句 CSS 代码，你可以尝试删除它，你会发现重叠现象会消失。</p>
+<iframe src="/assets/css-box-model/example4.html" height="300px" width="100%" scrolling="auto" frameborder="0" style="box-shadow: 0px 0px 20px -10px #888;">
+</iframe>
+
+<h3 id="折叠"><a href="#折叠" class="headerlink" title="折叠"></a>折叠</h3><p>外边距有一个比较迷惑的特性，当外边距是重叠的。</p>
+<p>我们把这种现象叫做 <code>折叠</code>。</p>
+<h4 id="两个外边距折叠"><a href="#两个外边距折叠" class="headerlink" title="两个外边距折叠"></a>两个外边距折叠</h4><p>比如，现在有两个元素都有外边距，并且两者靠在一起，那么两者之间的外边距并不是像 padding 那样简单相加，而是挑其中大的那个作为两者的外边距。</p>
+<h4 id="多个外边距折叠"><a href="#多个外边距折叠" class="headerlink" title="多个外边距折叠"></a>多个外边距折叠</h4><p>真正的灾难是多个外边距重叠</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>messgae<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">        wait for you!!!</span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这个代码中，h1、div、p，三个元素的外边距都重叠了。</p>
+<blockquote>
+<p>我觉得大家平时在写 Markdown 的时候应该也注意到了，标题的周围无论怎么样，都会有一个很大的空隙，就是因为标题的 margin 比任何元素都大，多个 margin 折叠的时候，只留下标题的 margin，所以标题的 margin 是固定的。</p>
+</blockquote>
+<h2 id="盒模型-box-sizing"><a href="#盒模型-box-sizing" class="headerlink" title="盒模型 box-sizing"></a>盒模型 box-sizing</h2><h3 id="box-sizing属性"><a href="#box-sizing属性" class="headerlink" title="box-sizing属性"></a>box-sizing属性</h3><p>默认情况下，box-sizing 的值是 <code>content-box</code>，意味着 <code>hight</code> 和 <code>width</code> 两个值作用的对象是 content。</p>
+<p>在某些情况下，这会给我们布局带来一些麻烦，因为如果存在 padding、border、margin，那么我们的布局可能会被打乱。</p>
+<p>举个例子，现在我们要在为了在同一行放两个元素 <code>main</code> 和 <code>aside</code>，我们设置 main 的宽度为 70%，aside 的宽度为 30%。</p>
+<div class="tabs" id="code2"><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#code2-1">index.html</button></li><li class="tab"><button type="button" data-href="#code2-2">style.css</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="code2-1"><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">main</span> <span class="attr">class</span>=<span class="string">&quot;main&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span>&gt;</span>nonlinearthink<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>性别: 男<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>擅长的编程语言: Python、Javascript<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">aside</span> <span class="attr">class</span>=<span class="string">&quot;aside&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;button&quot;</span>&gt;</span>follow me on github<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="code2-2"><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">main</span>,</span><br><span class="line"><span class="selector-tag">aside</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: .<span class="number">5em</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0.8em</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.main</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">70%</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aside</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">30%</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.button</span> &#123;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+
+<iframe src="/assets/css-box-model/example1.html" height="300px" width="100%" scrolling="auto" frameborder="0" style="box-shadow: 0px 0px 20px -10px #888;">
+</iframe>
+
+<blockquote>
+<p><strong>为什么 main 和 aside 不在同一行?</strong><br>我们之前说到 box-sizing 的默认值是 content-box。也就是说 width 的百分比约束仅仅只针对盒模型中的 content 部分，但我们这里设置了 padding 和 border，所以元素的实际长度和 width 不符。</p>
+</blockquote>
+<p>为了解决这个问题，我们稍微改一下 <code>style.css</code>，把 box-sizing 的值修改为 border-box，这样就把 padding、border 也放入了 width 的宽度约束中:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">main</span>,</span><br><span class="line"><span class="selector-tag">aside</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: .<span class="number">5em</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0.8em</span>;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<iframe src="/assets/css-box-model/example2.html" height="300px" width="100%" scrolling="auto" frameborder="0" style="box-shadow: 0px 0px 20px -10px #888;">
+</iframe>
+
+<h3 id="全局-border-box"><a href="#全局-border-box" class="headerlink" title="全局 border-box"></a>全局 border-box</h3><p>为了让我们的代码更加健壮，我们想要把网页中所有的元素的 box-sizing 都设置成 border-box。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> &#123;</span><br><span class="line">    <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">*,</span><br><span class="line"><span class="selector-pseudo">::before</span>,</span><br><span class="line"><span class="selector-pseudo">::after</span> &#123;</span><br><span class="line">    <span class="attribute">box-sizing</span>: inherit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="扩展话题-间隔的计算技巧"><a href="#扩展话题-间隔的计算技巧" class="headerlink" title="扩展话题: 间隔的计算技巧"></a>扩展话题: 间隔的计算技巧</h2><h3 id="添加间隔"><a href="#添加间隔" class="headerlink" title="添加间隔"></a>添加间隔</h3><p>现在我们想要给这个盒模型的 main 和 aside 两者之间添加一个 0.5em 的间隔。</p>
+<p>我们可以尝试使用 calc() 计算，现在的 style.css :</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> &#123;</span><br><span class="line">    <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">    <span class="attribute">--spacing</span>: .<span class="number">5em</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">*,</span><br><span class="line"><span class="selector-pseudo">::before</span>,</span><br><span class="line"><span class="selector-pseudo">::after</span> &#123;</span><br><span class="line">    <span class="attribute">box-sizing</span>: inherit;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">main</span>,</span><br><span class="line"><span class="selector-tag">aside</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: .<span class="number">5em</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0.8em</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.main</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">70%</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aside</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="built_in">calc</span>(<span class="number">30%</span> - var(--spacing));</span><br><span class="line">  <span class="attribute">margin-left</span>: <span class="built_in">var</span>(--spacing);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.button</span> &#123;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里用到了我在<a href="https://nonlinearthink.github.io/2020/07/01/css-unit-calculate/">CSS: 单位计算与响应式布局</a>中提到过的CSS3新特性–自定义变量。</p>
+<p>间隔的原理很简单，就是在原来 30% 的 width 基础上减去 0.5em，同时为 aside 添加 0.5em 的左外边距。</p>
+<blockquote>
+<p>很多 CSS 新手总是没有意识去精确计算 CSS 的布局，而是使用 <code>魔术数值</code>，比如上题中，也可以这么做，把 width 设置成 29%，margin-left 设置成 0.5em。</p>
+<p>这的确在一些情况下是可取的，但是 29% 是不稳定的值，会随着屏幕的调整而变化，假如屏幕窄到一定程度，就会出现布局混乱的情况，这个 29% 就叫 <code>魔术数值</code> ，意思是它总是变化的，不满足响应式布局的要求。</p>
+<p>我们必须做到一丝不苟地去精确计算 CSS 布局。</p>
+</blockquote>
+<iframe src="/assets/css-box-model/example3.html" height="300px" width="100%" scrolling="auto" frameborder="0" style="box-shadow: 0px 0px 20px -10px #888;">
+</iframe>
+
+<h3 id="猫头鹰选择器"><a href="#猫头鹰选择器" class="headerlink" title="猫头鹰选择器"></a>猫头鹰选择器</h3><p>上面的方法对于有些情况可能不是很适合。</p>
+<p>现在，我们想要仅在元素的中间添加间隙，而不在最前面和最后面添加间隙。这可以怎么做呢？</p>
+<p>一种很老套的方法就是使用 <code>:not(:first-child)</code> 和 <code>:not(:last-child)</code> 去除两边的样式。</p>
+<p>有一种非常巧妙的方法，叫做猫头鹰选择器。因 <code>* + *</code> 长得很像猫头鹰而得名。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* + * &#123;</span><br><span class="line">    <span class="attribute">margin-left</span>: .<span class="number">5em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在此之前我们先来回顾一下<strong>兄弟选择器</strong>。</p>
+<blockquote>
+<p><code>+</code> 是当元素拥有这个兄弟元素的时候触发的选择器。</p>
+</blockquote>
+<p><code>* + *</code> 的意思是，当两个元素是兄弟元素的关系的时候，在后面的那个元素上添加新的 CSS 规则。</p>
+<p>例如，我们接下来的例子会用到的猫头鹰选择器的变种，<code>.card + .card</code>。</p>
+<div class="tabs" id="code2"><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#code2-1">index.html</button></li><li class="tab"><button type="button" data-href="#code2-2">style.css</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="code2-1"><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;example5.css&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="code2-2"><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">5rem</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">10rem</span>;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">0.5em</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">1em</span> -.<span class="number">5em</span> <span class="number">#888</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> + <span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="attribute">margin-left</span>: <span class="number">1.5em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+
+<iframe src="/assets/css-box-model/example5.html" height="300px" width="100%" scrolling="auto" frameborder="0" style="box-shadow: 0px 0px 20px -10px #888;">
+</iframe>
+
+<p>可以很明显看到，只有中间产生来间隙，两边没有。</p>
+<style>
+.page {
+  box-shadow: 0px 0px 20px -10px #888;
+  margin: 1em;
+}
+</style></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Jaycee Chow</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://nonlinearthink.github.io/css/css-box-model/">https://nonlinearthink.github.io/css/css-box-model/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://nonlinearthink.github.io" target="_blank">nonlinearthink's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CSS/">CSS</a><a class="post-meta__tags" href="/tags/box-sizing/">box-sizing</a><a class="post-meta__tags" href="/tags/margin/">margin</a><a class="post-meta__tags" href="/tags/padding/">padding</a><a class="post-meta__tags" href="/tags/box-model/">box model</a><a class="post-meta__tags" href="/tags/border/">border</a></div><div class="post_share"><div class="social-share" data-image="https://img-blog.csdnimg.cn/20200630153529688.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img-blog.csdnimg.cn/20200903101052701.png" target="_blank"><img class="post-qr-code-img" src="https://img-blog.csdnimg.cn/20200903101052701.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://img-blog.csdnimg.cn/20200903101051871.png" target="_blank"><img class="post-qr-code-img" src="https://img-blog.csdnimg.cn/20200903101051871.png" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/hexo/hexo-iframe/"><img class="prev-cover" src="https://img-blog.csdnimg.cn/20200903100614330.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Hexo内嵌网页踩坑记录</div></div></a></div><div class="next-post pull-right"><a href="/hexo/hexo-gitalk/"><img class="next-cover" src="https://img-blog.csdnimg.cn/20200903100614330.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hexo评论系统配置: Gitalk</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/css/css-box-shadow/" title="CSS阴影: 偏移、模糊半径、扩散半径"><img class="cover" src="https://img-blog.csdnimg.cn/20200630153529688.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-06-30</div><div class="title">CSS阴影: 偏移、模糊半径、扩散半径</div></div></a></div><div><a href="/css/css-unit-calculate/" title="CSS: 单位计算与响应式布局"><img class="cover" src="https://img-blog.csdnimg.cn/20200630153529688.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-01</div><div class="title">CSS: 单位计算与响应式布局</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://img-blog.csdnimg.cn/20200903101052796.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Jaycee Chow</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/nonlinearthink"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/nonlinearthink" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:2832203391@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%92%E6%A8%A1%E5%9E%8B-box-model"><span class="toc-number">1.</span> <span class="toc-text">盒模型(box model)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3%E7%9B%92%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">了解盒模型的概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%92%E6%A8%A1%E5%9E%8B%E6%97%B6%E9%92%9F"><span class="toc-number">1.2.</span> <span class="toc-text">盒模型时钟</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E5%86%99%E5%B1%9E%E6%80%A7"><span class="toc-number">1.2.1.</span> <span class="toc-text">简写属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%B6%E9%92%9F%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">时钟顺序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E7%A7%B0%E5%8E%9F%E5%88%99"><span class="toc-number">1.2.3.</span> <span class="toc-text">对称原则</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%B9%E6%A1%86-border"><span class="toc-number">2.</span> <span class="toc-text">边框(border)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#border-%E7%9A%84%E4%B8%80%E4%BA%9B%E5%AE%9E%E4%BE%8B"><span class="toc-number">2.1.</span> <span class="toc-text">border 的一些实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%96%E8%BE%B9%E8%B7%9D-margin"><span class="toc-number">3.</span> <span class="toc-text">外边距(margin)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%9F%E5%A4%96%E8%BE%B9%E8%B7%9D"><span class="toc-number">3.1.</span> <span class="toc-text">负外边距</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%8F%A0"><span class="toc-number">3.2.</span> <span class="toc-text">折叠</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E5%A4%96%E8%BE%B9%E8%B7%9D%E6%8A%98%E5%8F%A0"><span class="toc-number">3.2.1.</span> <span class="toc-text">两个外边距折叠</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E5%A4%96%E8%BE%B9%E8%B7%9D%E6%8A%98%E5%8F%A0"><span class="toc-number">3.2.2.</span> <span class="toc-text">多个外边距折叠</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%92%E6%A8%A1%E5%9E%8B-box-sizing"><span class="toc-number">4.</span> <span class="toc-text">盒模型 box-sizing</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#box-sizing%E5%B1%9E%E6%80%A7"><span class="toc-number">4.1.</span> <span class="toc-text">box-sizing属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80-border-box"><span class="toc-number">4.2.</span> <span class="toc-text">全局 border-box</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E8%AF%9D%E9%A2%98-%E9%97%B4%E9%9A%94%E7%9A%84%E8%AE%A1%E7%AE%97%E6%8A%80%E5%B7%A7"><span class="toc-number">5.</span> <span class="toc-text">扩展话题: 间隔的计算技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E9%97%B4%E9%9A%94"><span class="toc-number">5.1.</span> <span class="toc-text">添加间隔</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8C%AB%E5%A4%B4%E9%B9%B0%E9%80%89%E6%8B%A9%E5%99%A8"><span class="toc-number">5.2.</span> <span class="toc-text">猫头鹰选择器</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/react/deal-with-default-props-in-react-typescript/" title="处理 React/Typescript 中的 Default Props"><img src="https://img-blog.csdnimg.cn/20210311084557803.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理 React/Typescript 中的 Default Props"/></a><div class="content"><a class="title" href="/react/deal-with-default-props-in-react-typescript/" title="处理 React/Typescript 中的 Default Props">处理 React/Typescript 中的 Default Props</a><time datetime="2021-03-10T16:12:00.000Z" title="发表于 2021-03-11 00:12:00">2021-03-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/react-native/react-native-ios-build-error/" title="React Native iOS 编译错误"><img src="https://img-blog.csdnimg.cn/20210311084557803.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="React Native iOS 编译错误"/></a><div class="content"><a class="title" href="/react-native/react-native-ios-build-error/" title="React Native iOS 编译错误">React Native iOS 编译错误</a><time datetime="2021-03-10T15:44:54.000Z" title="发表于 2021-03-10 23:44:54">2021-03-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/react-native/why-you-need-stylesheet-rather-than-inline-style/" title="为什么你需要 StyleSheet 而不是 Inline Style"><img src="https://img-blog.csdnimg.cn/20210311084557803.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="为什么你需要 StyleSheet 而不是 Inline Style"/></a><div class="content"><a class="title" href="/react-native/why-you-need-stylesheet-rather-than-inline-style/" title="为什么你需要 StyleSheet 而不是 Inline Style">为什么你需要 StyleSheet 而不是 Inline Style</a><time datetime="2021-01-13T04:45:21.000Z" title="发表于 2021-01-13 12:45:21">2021-01-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/python/aliyun-ddns-python/" title="Python实现阿里云DDNS动态域名解析"><img src="https://img-blog.csdnimg.cn/2020102313510094.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python实现阿里云DDNS动态域名解析"/></a><div class="content"><a class="title" href="/python/aliyun-ddns-python/" title="Python实现阿里云DDNS动态域名解析">Python实现阿里云DDNS动态域名解析</a><time datetime="2020-10-22T15:29:05.000Z" title="发表于 2020-10-22 23:29:05">2020-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/git/git-multi-platform/" title="Git 多平台认证"><img src="https://img-blog.csdnimg.cn/20201017135344686.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git 多平台认证"/></a><div class="content"><a class="title" href="/git/git-multi-platform/" title="Git 多平台认证">Git 多平台认证</a><time datetime="2020-10-17T04:43:01.000Z" title="发表于 2020-10-17 12:43:01">2020-10-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jaycee Chow</div><div class="footer_custom_text">Power by Hexo | Theme Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk({
+      clientID: '654af703ab6f907212af',
+      clientSecret: 'fd331eab22fb25edb096b1bc12b61162ad44882d',
+      repo: 'nonlinearthink.github.io',
+      owner: 'nonlinearthink',
+      admin: ['nonlinearthink'],
+      id: '79ce1a060ad9a0ed586631331fc476dd',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    })
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VSCode Python 运行环境配置 | nonlinearthink's blog</title><meta name="keywords" content="VSCode,Python"><meta name="author" content="Jaycee Chow"><meta name="copyright" content="Jaycee Chow"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="我不会直接给出完整的配置，因为我不希望你复制粘贴了配置却不了解每一个参数的含义。 我会在文章中一边讲解，一边给出配置方案。 安装 Python 插件在插件商店搜索 ms-python.python ，安装即可。 配置 pythonPathvscode 依赖于本地的命令行工具来运行 python代码。 Ctrl+Shift+P 打开命令面板，搜索 Preferences: Open Settings">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSCode Python 运行环境配置">
+<meta property="og:url" content="https://nonlinearthink.github.io/vscode/vscode-python/index.html">
+<meta property="og:site_name" content="nonlinearthink&#39;s blog">
+<meta property="og:description" content="我不会直接给出完整的配置，因为我不希望你复制粘贴了配置却不了解每一个参数的含义。 我会在文章中一边讲解，一边给出配置方案。 安装 Python 插件在插件商店搜索 ms-python.python ，安装即可。 配置 pythonPathvscode 依赖于本地的命令行工具来运行 python代码。 Ctrl+Shift+P 打开命令面板，搜索 Preferences: Open Settings">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200626231114377.png">
+<meta property="article:published_time" content="2020-03-07T20:30:40.000Z">
+<meta property="article:modified_time" content="2021-03-11T00:59:38.656Z">
+<meta property="article:author" content="Jaycee Chow">
+<meta property="article:tag" content="VSCode">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200626231114377.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://nonlinearthink.github.io/vscode/vscode-python/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-11 08:59:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://img-blog.csdnimg.cn/20200903101052796.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于博主</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img-blog.csdnimg.cn/20200626231114377.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">nonlinearthink's blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于博主</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">VSCode Python 运行环境配置</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-03-07T20:30:40.000Z" title="发表于 2020-03-08 04:30:40">2020-03-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-03-11T00:59:38.656Z" title="更新于 2021-03-11 08:59:38">2021-03-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/VSCode-%E9%85%8D%E7%BD%AE%E6%89%8B%E5%86%8C/">VSCode 配置手册</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>我不会直接给出完整的配置，因为我不希望你复制粘贴了配置却不了解每一个参数的含义。</strong></p>
+<p>我会在文章中一边讲解，一边给出配置方案。</p>
+<h2 id="安装-Python-插件"><a href="#安装-Python-插件" class="headerlink" title="安装 Python 插件"></a>安装 Python 插件</h2><p>在插件商店搜索 <code>ms-python.python</code> ，安装即可。</p>
+<h2 id="配置-pythonPath"><a href="#配置-pythonPath" class="headerlink" title="配置 pythonPath"></a>配置 pythonPath</h2><p>vscode 依赖于本地的命令行工具来运行 python代码。</p>
+<p><code>Ctrl+Shift+P</code> 打开命令面板，搜索 <code>Preferences: Open Settings(JSON)</code>，进 <code>settings.json</code> 添加配置项，添加这样一条: </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;python.pythonPath&quot;</span>: <span class="string">&quot;python&quot;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于部分 Linux 和 macOS 用户来说，<code>python</code> 在系统中一般内置，且是 <code>2.x</code> 的版本。你们如果自己安装了 python3，则应该改成这样子: <code>&quot;python.pythonPath&quot;: &quot;python3&quot;</code>。</p>
+<blockquote>
+<p>macOS 和 Linux 部分发行版的最新版也已经内置了 <code>python 3.x</code></p>
+</blockquote>
+<p>你也可以使用更加详细的路径，比如:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;python.pythonPath&quot;</span>: <span class="string">&quot;/usr/local/bin/python3&quot;</span>, <span class="comment">//linux or mac</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有时候我们可能会为项目创建独立的虚拟环境，参考<a target="_blank" rel="noopener" href="https://virtualenv.pypa.io/en/stable/user_guide.html">virtualenv</a>，这个时候也需要把这里的路径改成虚拟环境的 <code>Python解释器</code> 的路径。</p>
+<hr>
+<h2 id="添加代码补全功能"><a href="#添加代码补全功能" class="headerlink" title="添加代码补全功能"></a>添加代码补全功能</h2><p>网上很多人推荐 <a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.VSIntelliCode">Visual Studio IntelliCode插件</a>。</p>
+<p>这个插件还可用于 python , ts/js, java 等等代码的智能补全。</p>
+<p>但是，因为它是基于深度学习的一个项目，所以有时候你打开项目之后，它会去下载一个训练好的模型，这段时间你的自动补全基本就废掉了，所以我不推荐使用。</p>
+<p>还是去 <code>settings.json</code> 里面配置一下。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;python.languageServer&quot;</span>: <span class="string">&quot;Jedi&quot;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="代码规范化"><a href="#代码规范化" class="headerlink" title="代码规范化"></a>代码规范化</h2><p>为了拥有风格统一的代码，我们肯定需要使用一些插件来约束我们写代码，比如，当出现一些不符合规范的代码的时候能够提醒我们。</p>
+<p>甚至再往上，能够自动修复我们写的不规范的代码。</p>
+<p>安装 <code>pylint</code>，根据你的系统自己选择该运行哪一个:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install pylint</span><br><span class="line">pip3 install pylint</span><br></pre></td></tr></table></figure>
+<p><code>pylint</code> 有一套自己的命令行工具和 python 库，具体请到<a target="_blank" rel="noopener" href="https://pylint.readthedocs.io/en/latest/">pylint官网</a>学习，可以让你自定义更多的代码规范规则。没特殊需求使用默认配置就行。</p>
+<p>还有一个地方需要注意，确保 <code>settings.json</code> 中的 <code>linting.enabled</code> 开启。一般默认是 true，但如果发现自己在执行了上面步骤后没有代码规范检查，可以去 <code>settings.json</code> 中添加:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;python.linting.enabled&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="代码格式化"><a href="#代码格式化" class="headerlink" title="代码格式化"></a>代码格式化</h2><p>一般是和代码规范化一起工作的。</p>
+<p>我们使用 vscode 自带的格式化工具就行了，还是打开 <code>settings.json</code> :</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;python.formatting.provider&quot;</span>: <span class="string">&quot;yapf&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;python.formatting.yapfPath&quot;</span>: <span class="string">&quot;yapf&quot;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，使用 <code>Shift+Alt+F</code>(Windows) ｜ <code>Option+Shift+F</code>(macOS) ｜ <code>Ctrl+Shift+L</code>(Ubuntu) 就可以格式化我们的代码了。</p>
+<hr>
+<h2 id="自动修复"><a href="#自动修复" class="headerlink" title="自动修复"></a>自动修复</h2><p>前面我们稍微提了一下自动修复。</p>
+<p>vscode 默认是按 <code>Ctrl+S</code> 保存文件，这个是可以改的。</p>
+<p>还是打开 <code>settings.json</code>:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;files.autoSave&quot;: &quot;afterDelay&quot;,</span><br><span class="line">&quot;files.autoSaveDelay&quot;: 1000,</span><br><span class="line">&quot;[python]&quot;:&#123;</span><br><span class="line">    &quot;editor.formatOnSave&quot;: true,</span><br><span class="line">    &quot;editor.formatOnPaste&quot;: true</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>首先，我们通过设置了 <code>files.autoSave</code> 来改变默认的保存文件行为，<code>afterDelay</code> 代表每过一段时间保存一次。</p>
+<p><code>files.autoSaveDelay</code> 代表了每过 <code>1000ms</code> 保存一次，你可以根据需求自行调节。</p>
+<p><code>[python]</code> 这个选项代表下面的配置仅仅针对 Python 生效。</p>
+<ul>
+<li><code>editor.formatOnSave</code> 代表了在文件保存的时候进行一次格式化。</li>
+<li><code>editor.formatOnPaste</code> 代表了你从其他地方粘贴的代码在粘贴到 VSCode 的时候自动格式化。</li>
+</ul>
+<hr>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>调试非常简单，只要按一下 <code>F5</code> 就好了，然后会跳出来这个界面:</p>
+<p><img src="https://img-blog.csdnimg.cn/20200308035915787.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMzMzg0NDAy,size_16,color_FFFFFF,t_70" alt="python debug"></p>
+<p>一般选<code>Python File</code>就好了，意思是运行当前的那个文件。</p>
+<p>其他的模式请参考 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/python/debugging">python debugging</a>、<a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/python/tutorial-django">Django</a>、<a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/python/tutorial-flask">Flask</a>。</p>
+<p>如果你不希望每次运行都要选择一遍，可以配置一下。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200626235934393.png" alt="debug"></p>
+<p>下面有一个不起眼的选项 <code>create a launch.json file</code>。</p>
+<p>点击创建launch，这是系统默认生成的配置：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;version&quot;: &quot;0.2.0&quot;,</span><br><span class="line">&quot;configurations&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Python: Current File&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;python&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;request&quot;</span>: <span class="string">&quot;launch&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;program&quot;</span>: <span class="string">&quot;$&#123;file&#125;&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;console&quot;</span>: <span class="string">&quot;integratedTerminal&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>这里对可以写在 <code>$&#123;&#125;</code> 里面的一些奇怪变量做一下说明。</p>
+<ul>
+<li><code>workspaceFolder</code> - vscode 中打开的文件夹的<strong>路径</strong></li>
+<li><code>workspaceRootFolderName</code> - vscode 中打开的文件夹的<strong>名字</strong></li>
+<li><code>file </code>- 正在打开编辑的文件的<strong>绝对路径</strong></li>
+<li><code>fileBasename</code> - 正在打开编辑的文件的<strong>名字</strong></li>
+<li><code>fileBasenameNoExtension</code> - 正在打开编辑的文件的<strong>名字(无扩展名)</strong></li>
+</ul>
+<p>这些是常用的，还有一些不常用的，less is more，先了解这么点就够了，其他的一般用不到。</p>
+<hr>
+<h2 id="Jupyter支持"><a href="#Jupyter支持" class="headerlink" title="Jupyter支持"></a>Jupyter支持</h2><p>vscode 自带 <code>jupyter notebooks扩展</code>，可以直接打开 <code>.ipynb</code> 。而且比 <code>原生jupyter</code> 要强大许多，你有足够的理由选择 vscode，而不是不 <code>原生jupyter</code>。</p>
+<p>它比 <code>原生jupyter</code> 强在:</p>
+<ul>
+<li>智能补全比原生 jupyter 好。</li>
+<li>支持 <code>.ipynb</code> 转换成 <code>.py</code> 文件。</li>
+<li>查看内核中的变量。</li>
+</ul>
+<p>虽然，这些 <code>原生jupyter</code> 也可以通过安装 <code>nbextensions插件</code> 来获得支持。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Jaycee Chow</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://nonlinearthink.github.io/vscode/vscode-python/">https://nonlinearthink.github.io/vscode/vscode-python/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://nonlinearthink.github.io" target="_blank">nonlinearthink's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/VSCode/">VSCode</a><a class="post-meta__tags" href="/tags/Python/">Python</a></div><div class="post_share"><div class="social-share" data-image="https://img-blog.csdnimg.cn/20200626231114377.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img-blog.csdnimg.cn/20200903101052701.png" target="_blank"><img class="post-qr-code-img" src="https://img-blog.csdnimg.cn/20200903101052701.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://img-blog.csdnimg.cn/20200903101051871.png" target="_blank"><img class="post-qr-code-img" src="https://img-blog.csdnimg.cn/20200903101051871.png" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/linux/environment-variables-linux/"><img class="prev-cover" src="https://img-blog.csdnimg.cn/20200624171822629.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Linux 环境变量的那些事</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/vscode/vscode-vue/" title="VSCode Vue 运行环境配置"><img class="cover" src="https://img-blog.csdnimg.cn/20200626231114377.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-16</div><div class="title">VSCode Vue 运行环境配置</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://img-blog.csdnimg.cn/20200903101052796.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Jaycee Chow</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/nonlinearthink"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/nonlinearthink" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:2832203391@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-Python-%E6%8F%92%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">安装 Python 插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-pythonPath"><span class="toc-number">2.</span> <span class="toc-text">配置 pythonPath</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%BB%A3%E7%A0%81%E8%A1%A5%E5%85%A8%E5%8A%9F%E8%83%BD"><span class="toc-number">3.</span> <span class="toc-text">添加代码补全功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">代码规范化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">代码格式化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E4%BF%AE%E5%A4%8D"><span class="toc-number">6.</span> <span class="toc-text">自动修复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-number">7.</span> <span class="toc-text">调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jupyter%E6%94%AF%E6%8C%81"><span class="toc-number">8.</span> <span class="toc-text">Jupyter支持</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/react/deal-with-default-props-in-react-typescript/" title="处理 React/Typescript 中的 Default Props"><img src="https://img-blog.csdnimg.cn/20210311084557803.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理 React/Typescript 中的 Default Props"/></a><div class="content"><a class="title" href="/react/deal-with-default-props-in-react-typescript/" title="处理 React/Typescript 中的 Default Props">处理 React/Typescript 中的 Default Props</a><time datetime="2021-03-10T16:12:00.000Z" title="发表于 2021-03-11 00:12:00">2021-03-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/react-native/react-native-ios-build-error/" title="React Native iOS 编译错误"><img src="https://img-blog.csdnimg.cn/20210311084557803.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="React Native iOS 编译错误"/></a><div class="content"><a class="title" href="/react-native/react-native-ios-build-error/" title="React Native iOS 编译错误">React Native iOS 编译错误</a><time datetime="2021-03-10T15:44:54.000Z" title="发表于 2021-03-10 23:44:54">2021-03-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/react-native/why-you-need-stylesheet-rather-than-inline-style/" title="为什么你需要 StyleSheet 而不是 Inline Style"><img src="https://img-blog.csdnimg.cn/20210311084557803.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="为什么你需要 StyleSheet 而不是 Inline Style"/></a><div class="content"><a class="title" href="/react-native/why-you-need-stylesheet-rather-than-inline-style/" title="为什么你需要 StyleSheet 而不是 Inline Style">为什么你需要 StyleSheet 而不是 Inline Style</a><time datetime="2021-01-13T04:45:21.000Z" title="发表于 2021-01-13 12:45:21">2021-01-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/python/aliyun-ddns-python/" title="Python实现阿里云DDNS动态域名解析"><img src="https://img-blog.csdnimg.cn/2020102313510094.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python实现阿里云DDNS动态域名解析"/></a><div class="content"><a class="title" href="/python/aliyun-ddns-python/" title="Python实现阿里云DDNS动态域名解析">Python实现阿里云DDNS动态域名解析</a><time datetime="2020-10-22T15:29:05.000Z" title="发表于 2020-10-22 23:29:05">2020-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/git/git-multi-platform/" title="Git 多平台认证"><img src="https://img-blog.csdnimg.cn/20201017135344686.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git 多平台认证"/></a><div class="content"><a class="title" href="/git/git-multi-platform/" title="Git 多平台认证">Git 多平台认证</a><time datetime="2020-10-17T04:43:01.000Z" title="发表于 2020-10-17 12:43:01">2020-10-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jaycee Chow</div><div class="footer_custom_text">Power by Hexo | Theme Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk({
+      clientID: '654af703ab6f907212af',
+      clientSecret: 'fd331eab22fb25edb096b1bc12b61162ad44882d',
+      repo: 'nonlinearthink.github.io',
+      owner: 'nonlinearthink',
+      admin: ['nonlinearthink'],
+      id: '576df719875e085d6dd00a6a0d53debc',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    })
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

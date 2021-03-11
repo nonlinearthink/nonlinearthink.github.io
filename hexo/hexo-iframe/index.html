@@ -1,0 +1,277 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hexo内嵌网页踩坑记录 | nonlinearthink's blog</title><meta name="keywords" content="hexo,butterfly,gittalk"><meta name="author" content="Jaycee Chow"><meta name="copyright" content="Jaycee Chow"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="首先，我先来说一说这个需求产生的原因，我前些日子更新了一些 CSS 相关的博客，但是我发现，要展示 CSS 的效果，必须要用到一些交互的功能，我必须要写一些小 demo，然后嵌入到网页中去。 一开始，我使用的就是纯粹的 HTML 代码，加上 style 和 script 标签，直接写在 .md 里面。 我意识到这不是一个好方法，一篇博客有时候需要多个 demo ，随着代码越来越多，每个 demo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo内嵌网页踩坑记录">
+<meta property="og:url" content="https://nonlinearthink.github.io/hexo/hexo-iframe/index.html">
+<meta property="og:site_name" content="nonlinearthink&#39;s blog">
+<meta property="og:description" content="首先，我先来说一说这个需求产生的原因，我前些日子更新了一些 CSS 相关的博客，但是我发现，要展示 CSS 的效果，必须要用到一些交互的功能，我必须要写一些小 demo，然后嵌入到网页中去。 一开始，我使用的就是纯粹的 HTML 代码，加上 style 和 script 标签，直接写在 .md 里面。 我意识到这不是一个好方法，一篇博客有时候需要多个 demo ，随着代码越来越多，每个 demo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200903100614330.png">
+<meta property="article:published_time" content="2020-07-09T07:45:47.000Z">
+<meta property="article:modified_time" content="2021-03-11T01:01:55.136Z">
+<meta property="article:author" content="Jaycee Chow">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="butterfly">
+<meta property="article:tag" content="gittalk">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200903100614330.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://nonlinearthink.github.io/hexo/hexo-iframe/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-11 09:01:55'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://img-blog.csdnimg.cn/20200903101052796.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于博主</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img-blog.csdnimg.cn/20200903100614330.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">nonlinearthink's blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于博主</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Hexo内嵌网页踩坑记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-07-09T07:45:47.000Z" title="发表于 2020-07-09 15:45:47">2020-07-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-03-11T01:01:55.136Z" title="更新于 2021-03-11 09:01:55">2021-03-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Hexo-%E9%85%8D%E7%BD%AE%E6%89%8B%E5%86%8C/">Hexo 配置手册</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>首先，我先来说一说这个需求产生的原因，我前些日子更新了一些 CSS 相关的博客，但是我发现，要展示 CSS 的效果，必须要用到一些交互的功能，我必须要写一些小 demo，然后嵌入到网页中去。</p>
+<p>一开始，我使用的就是纯粹的 <code>HTML</code> 代码，加上 <code>style</code> 和 <code>script</code> 标签，直接写在 <code>.md</code> 里面。</p>
+<p>我意识到这不是一个好方法，一篇博客有时候需要多个 demo ，随着代码越来越多，每个 demo 之间会产生冲突，我迫切需要隔离它们。</p>
+<h2 id="使用-iframe"><a href="#使用-iframe" class="headerlink" title="使用 iframe"></a>使用 iframe</h2><p>随着我的代码越来越多，我发现在一篇博客中定义很多 demo 并管理好样式和脚本不冲突是非常困难的。</p>
+<p>我决定使用 iframe 来内嵌网页，做到每一个 demo 的隔离，不互相影响对方。</p>
+<p>这是我写的一个网页 demo :</p>
+<iframe src="/assets/css-box-model/example4.html" height="300px" width="100%" scrolling="auto" frameborder="0" style="box-shadow: 0px 0px 20px -10px #888;">
+</iframe>
+
+<p>想要嵌入这样的一个网页，我需要先编写好 HTML、CSS、JS，然后在文章中使用 iframe 把他们挂载进来:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;/assets/css-box-model/example4.html&quot;</span> <span class="attr">height</span>=<span class="string">&quot;300px&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span> <span class="attr">scrolling</span>=<span class="string">&quot;auto&quot;</span> <span class="attr">frameborder</span>=<span class="string">&quot;0&quot;</span> <span class="attr">style</span>=<span class="string">&quot;box-shadow: 0px 0px 20px -10px #888;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>src</code> 代表网页的地址，这个<a href="/assets/css-box-model/example4.html">网页</a>你们也是可以访问的，只不过在我的博客里面没有直接的跳转链接而已。</p>
+<p><code>scrolling</code> 设置成 <code>auto</code> ，它的意思是，只有当你的网页超过 iframe 的大小的时候，才会有滚动条，默认情况下不会有。</p>
+<p><code>frameborder</code>，默认是 1 ，我设置成了 0 ，这个主要看你的 Hexo 主题适合哪种了，由于我用的 butterfly 采用的是 CardUI 的设计，为了适配这个主题的风格，我没有设置边框，才是采用了阴影代替边框。</p>
+<p><code>style=&quot;box-shadow: 0px 0px 20px -10px #888;&quot;</code> 是一条非常简单的内嵌 CSS 代码，它的作用是定义了一个阴影，这个阴影的秘诀在于负扩散半径，我之前在另外一篇文章中有提到过，<a href="https://nonlinearthink.github.io/2020/06/30/css-box-shadow/">CSS阴影: 偏移、模糊半径、扩散半径</a>。</p>
+<h2 id="不要使用-post-asset-folder"><a href="#不要使用-post-asset-folder" class="headerlink" title="不要使用 post_asset_folder"></a>不要使用 post_asset_folder</h2><p><strong>资源文件夹(post_asset_folder)</strong> 是 Hexo 的一项功能。具体使用方式是在 <code>_config.yml</code> 中修改:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>这样子修改之后，当你使用 <code>hexo new</code> 命令创建文件的时候，会生成一个和你的文章同名的文件夹，里面可以放一些资源文件。</p>
+<p>它的优势是，当你在同名的 markdown 文件中编写链接的时候，不需要写冗长的路径名，这些同名文件夹里面的资源和文章是在同一个级别下的，故不需要写冗长的路径。</p>
+<p>比如你把一个头像图片放到里面，直接写成 <code>[](avatar.png)</code> 就可以链接了。</p>
+<p>我一开始曾经想要把 HTML 网页放在这些资源文件夹里面，但是我发现这样不行。</p>
+<p>因为 Hexo 默认会把所有 <code>source/_posts</code> 下的 <code>.md</code>、<code>.html</code> 甚至是 <code>.js</code> 文件都作为文章来处理。而资源文件夹里面的内容是和同名的 markdown 文件同一级别的，就会被放到博客的首页上去。</p>
+<p>我当然不希望这样，这样首页会被很多奇怪的文章占领。</p>
+<p>所以我不推荐你们使用资源文件夹来存放网页，放一些图片直接在网页中链接倒是可以。</p>
+<p>我们需要一个路径来存放我们的资源，我建议<strong>在 source 下面新建一个文件夹，比如叫 <code>assets</code> ，然后把我们的网页代码放到那里面去</strong>。</p>
+<div class="note info modern"><p>不要把 assets 暴露出去</p>
+<p>Hexo 会把 source 下面的每一个文件夹都编译到最后的网页中去。其中比较特殊的 <code>_post</code> 文件夹里面存放的是首页展示的博客。</p>
+<p><code>archives</code>、<code>tags</code>、<code>categories</code> 文件夹等等，很多教程都会让你在 source 下面创建这三个文件夹，其实就是三个页面。同样 <code>assets</code> 文件夹里面的内容当然也是能访问的。</p>
+<p>但是你不在配置文件中配置菜单，是无法直接访问的，比如我使用的 butterfly 主题的配置文件的一部分:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="string">首页:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="string">时间轴:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="string">标签:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="string">分类:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-folder-open</span></span><br><span class="line">  <span class="string">友情链接:</span> <span class="string">/link/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-link</span></span><br><span class="line">  <span class="string">关于博主:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-heart</span></span><br></pre></td></tr></table></figure>
+<p>由于我的菜单里面并没有 <code>assets</code> ，所以你们无法在我的首页通过跳转访问。</p>
+<p>但是你们可以通过链接看到 <a href="https://nonlinearthink.github.io/assets/avatar.png"><a href="https://nonlinearthink.github.io/assets/avatar.png">nonlinearthink</a></a>。</p>
+<p>不要把 <code>assets</code> 作为一个页面放到菜单中，这会暴露你的那些资源文件。</p>
+</div>
+
+<h2 id="避开主题渲染"><a href="#避开主题渲染" class="headerlink" title="避开主题渲染"></a>避开主题渲染</h2><p>我们终于可以在 iframe 中看到网页了，但是不幸的是，Hexo 会渲染所有在 source 文件夹下面的内容，我们在 assets 里面的网页也被渲染了。</p>
+<p>所以你在 iframe 中看到的网页可能多了很多东西，你的自己写的 CSS 样式可能被你的 Hexo 主题覆盖了，导致你的网页 demo 无法正确地被展示。并且你还能看到你主题的 header、footer、sidebar 等等都被放进来了。</p>
+<p>好在 Hexo 提供了一个功能让用户自定义那些文件需要渲染，打开 Hexo 的 <code>_config.yml</code>，修改一个配置项：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">skip_render:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&#x27;assets/**&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>skip_render 的意思是 Hexo 会保留这些文件原来的样子，而不是渲染他们。添加 Hexo 和主题的样式。</p>
+<p>如果文件很多，使用具体的路径是一件疯狂的事情，我们需要使用通配符。</p>
+<div class="note info modern"><p>关于 skip_render 支持的通配符</p>
+<ol>
+<li>单个文件夹下全部文件：</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">skip_render:</span> <span class="string">demo/*</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>单个文件夹下指定类型文件：</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">skip_render:</span> <span class="string">demo/*.html</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>单个文件夹下全部文件以及子目录:</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">skip_render:</span> <span class="string">demo/**</span></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>多个文件夹以及各种复杂情况：</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">skip_render:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;demo/*.html&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;demo/**&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><strong>做完上述的这些之后，记得使用 <code>hexo clean</code>，然后再使用 <code>hexo s</code>重新查看，根据我的测试，如果你不运行 <code>hexo clean</code>，那么对 <code>skip_render</code> 的设置是不会生效的。</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Jaycee Chow</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://nonlinearthink.github.io/hexo/hexo-iframe/">https://nonlinearthink.github.io/hexo/hexo-iframe/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://nonlinearthink.github.io" target="_blank">nonlinearthink's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/hexo/">hexo</a><a class="post-meta__tags" href="/tags/butterfly/">butterfly</a><a class="post-meta__tags" href="/tags/gittalk/">gittalk</a></div><div class="post_share"><div class="social-share" data-image="https://img-blog.csdnimg.cn/20200903100614330.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img-blog.csdnimg.cn/20200903101052701.png" target="_blank"><img class="post-qr-code-img" src="https://img-blog.csdnimg.cn/20200903101052701.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://img-blog.csdnimg.cn/20200903101051871.png" target="_blank"><img class="post-qr-code-img" src="https://img-blog.csdnimg.cn/20200903101051871.png" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/java/java-hanlp-quickstart/"><img class="prev-cover" src="https://img-blog.csdnimg.cn/20201010003555623.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">在 Maven 项目中使用 HanLP</div></div></a></div><div class="next-post pull-right"><a href="/css/css-box-model/"><img class="next-cover" src="https://img-blog.csdnimg.cn/20200630153529688.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CSS盒模型详解</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/hexo/hexo-gitalk/" title="Hexo评论系统配置: Gitalk"><img class="cover" src="https://img-blog.csdnimg.cn/20200903100614330.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-08</div><div class="title">Hexo评论系统配置: Gitalk</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://img-blog.csdnimg.cn/20200903101052796.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Jaycee Chow</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/nonlinearthink"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/nonlinearthink" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:2832203391@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-iframe"><span class="toc-number">1.</span> <span class="toc-text">使用 iframe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E8%A6%81%E4%BD%BF%E7%94%A8-post-asset-folder"><span class="toc-number">2.</span> <span class="toc-text">不要使用 post_asset_folder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%BF%E5%BC%80%E4%B8%BB%E9%A2%98%E6%B8%B2%E6%9F%93"><span class="toc-number">3.</span> <span class="toc-text">避开主题渲染</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/react/deal-with-default-props-in-react-typescript/" title="处理 React/Typescript 中的 Default Props"><img src="https://img-blog.csdnimg.cn/20210311084557803.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理 React/Typescript 中的 Default Props"/></a><div class="content"><a class="title" href="/react/deal-with-default-props-in-react-typescript/" title="处理 React/Typescript 中的 Default Props">处理 React/Typescript 中的 Default Props</a><time datetime="2021-03-10T16:12:00.000Z" title="发表于 2021-03-11 00:12:00">2021-03-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/react-native/react-native-ios-build-error/" title="React Native iOS 编译错误"><img src="https://img-blog.csdnimg.cn/20210311084557803.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="React Native iOS 编译错误"/></a><div class="content"><a class="title" href="/react-native/react-native-ios-build-error/" title="React Native iOS 编译错误">React Native iOS 编译错误</a><time datetime="2021-03-10T15:44:54.000Z" title="发表于 2021-03-10 23:44:54">2021-03-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/react-native/why-you-need-stylesheet-rather-than-inline-style/" title="为什么你需要 StyleSheet 而不是 Inline Style"><img src="https://img-blog.csdnimg.cn/20210311084557803.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="为什么你需要 StyleSheet 而不是 Inline Style"/></a><div class="content"><a class="title" href="/react-native/why-you-need-stylesheet-rather-than-inline-style/" title="为什么你需要 StyleSheet 而不是 Inline Style">为什么你需要 StyleSheet 而不是 Inline Style</a><time datetime="2021-01-13T04:45:21.000Z" title="发表于 2021-01-13 12:45:21">2021-01-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/python/aliyun-ddns-python/" title="Python实现阿里云DDNS动态域名解析"><img src="https://img-blog.csdnimg.cn/2020102313510094.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python实现阿里云DDNS动态域名解析"/></a><div class="content"><a class="title" href="/python/aliyun-ddns-python/" title="Python实现阿里云DDNS动态域名解析">Python实现阿里云DDNS动态域名解析</a><time datetime="2020-10-22T15:29:05.000Z" title="发表于 2020-10-22 23:29:05">2020-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/git/git-multi-platform/" title="Git 多平台认证"><img src="https://img-blog.csdnimg.cn/20201017135344686.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git 多平台认证"/></a><div class="content"><a class="title" href="/git/git-multi-platform/" title="Git 多平台认证">Git 多平台认证</a><time datetime="2020-10-17T04:43:01.000Z" title="发表于 2020-10-17 12:43:01">2020-10-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jaycee Chow</div><div class="footer_custom_text">Power by Hexo | Theme Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk({
+      clientID: '654af703ab6f907212af',
+      clientSecret: 'fd331eab22fb25edb096b1bc12b61162ad44882d',
+      repo: 'nonlinearthink.github.io',
+      owner: 'nonlinearthink',
+      admin: ['nonlinearthink'],
+      id: '8ce6a92b69a002b2c24947eb354555a7',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    })
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
