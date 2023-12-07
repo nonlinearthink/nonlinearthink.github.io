@@ -13,6 +13,8 @@ image:
 comments: true
 ---
 
+施工中...
+
 ## DDA (Digital Differential Analyzer)
 
 ## Bresenham's Line

@@ -1,5 +1,5 @@
 # Change baseurl before deploy
-baseurl = "https://nonlinearthink.github.io"
+baseurl = "https://nonlinearthink.github.io/graphic-daily"
 languageCode = "en-us"
 paginate = 5
 title = "nonlinearthink"
@@ -13,4 +13,4 @@ defaultContentLanguage = "zh-cn"
 hasCJKLanguage = true
 
 # Change it to your Disqus shortname before using
-disqusShortname = "hugo-theme-stack"
+disqusShortname = "nonlinearthink"
