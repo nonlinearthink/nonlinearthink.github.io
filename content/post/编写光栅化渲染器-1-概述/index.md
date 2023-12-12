@@ -1,6 +1,5 @@
 ---
 title: 编写光栅化渲染器（一）概述
-description: 
 date: 2023-12-02T14:15:23+08:00
 tags:
     - Computer Graphics
@@ -9,7 +8,6 @@ tags:
     - SoftRenderer
 categories:
     - 编写光栅化渲染器
-image: 
 comments: true
 ---
 

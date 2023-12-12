@@ -1,13 +1,11 @@
 ---
 title: 编写光栅化渲染器（二）SDL库简介
-description: 
 date: 2023-12-05T12:08:06+08:00
 tags:
     - C++
     - SDL
 categories:
     - 编写光栅化渲染器
-image: 
 comments: true
 ---
 
