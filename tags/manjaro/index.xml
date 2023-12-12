@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Manjaro on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/manjaro/</link><description>Recent content in Manjaro on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 15 Jan 2019 14:49:48 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/manjaro/index.xml" rel="self" type="application/rss+xml"/><item><title>Manjaro KDE 安装 ibus 中文输入法</title><link>https://nonlinearthink.github.io/p/manjaro-kde-%E5%AE%89%E8%A3%85-ibus-%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95/</link><pubDate>Tue, 15 Jan 2019 14:49:48 +0800</pubDate><guid>https://nonlinearthink.github.io/p/manjaro-kde-%E5%AE%89%E8%A3%85-ibus-%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95/</guid><description>&lt;p>之前一直玩 &lt;code>ubuntu&lt;/code>，今天体验了一把 &lt;code>manjaro KDE&lt;/code>，界面相当舒适。&lt;/p>
+&lt;p>但是，不像 &lt;code>ubuntu gnome&lt;/code> 那样自带中文输入法，需要自己安装输入法。&lt;/p>
+&lt;p>以 &lt;code>ibus输入法&lt;/code> 为例，分享一下如何安装中文输入法。&lt;/p>
+&lt;hr>
+&lt;h2 id="安装ibus">安装ibus&lt;/h2>
+&lt;ol>
+&lt;li>安装ibus软件包&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ sudo pacman -S ibus
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol>
+&lt;li>查看所有可用的输入法&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ sudo pacman -Ss ^ibus-*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol>
+&lt;li>选择一个可用的输入法引擎并安装&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ sudo pacman -S ibus-pinyin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol>
+&lt;li>运行ibus&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ ibus-setup
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>发现出现提示：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/manjaro-kde-%E5%AE%89%E8%A3%85-ibus-%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95/ibus-lint.png"
+width="545"
+height="201"
+srcset="https://nonlinearthink.github.io/p/manjaro-kde-%E5%AE%89%E8%A3%85-ibus-%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95/ibus-lint_hudb92a88b7c1f45396120845b70ce777c_6017_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/manjaro-kde-%E5%AE%89%E8%A3%85-ibus-%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95/ibus-lint_hudb92a88b7c1f45396120845b70ce777c_6017_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="IBus Lint"
+class="gallery-image"
+data-flex-grow="271"
+data-flex-basis="650px"
+>&lt;/p>
+&lt;p>在 &lt;code>$HOME/.bashrc&lt;/code> 中加入下面这段就好了&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GTK_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>ibus
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">XMODIFIERS&lt;/span>&lt;span class="o">=&lt;/span>@im&lt;span class="o">=&lt;/span>ibus
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">QT_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>ibus
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol>
+&lt;li>添加中文输入法&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/manjaro-kde-%E5%AE%89%E8%A3%85-ibus-%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95/ibus-preferences.png"
+width="647"
+height="482"
+srcset="https://nonlinearthink.github.io/p/manjaro-kde-%E5%AE%89%E8%A3%85-ibus-%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95/ibus-preferences_huac21b586dc3978e57a47d8c7fa0f71ea_7220_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/manjaro-kde-%E5%AE%89%E8%A3%85-ibus-%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95/ibus-preferences_huac21b586dc3978e57a47d8c7fa0f71ea_7220_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="IBus Preferences"
+class="gallery-image"
+data-flex-grow="134"
+data-flex-basis="322px"
+>&lt;/p>
+&lt;p>上一步执行完成之后，就会出现这个界面，到这里添加中文输入法。&lt;/p>
+&lt;h2 id="安装过程中的其他问题">安装过程中的其他问题&lt;/h2>
+&lt;p>这个时候，突然发现每次开机都要在命令行中输入 &lt;code>ibus-setup&lt;/code> 才能启动ibus。&lt;/p>
+&lt;p>这样很麻烦，为了解决这个问题，原来我们把 &lt;code>$HOME/.bashrc&lt;/code> 的内容：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GTK_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>ibus
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">XMODIFIERS&lt;/span>&lt;span class="o">=&lt;/span>@im&lt;span class="o">=&lt;/span>ibus
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">QT_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>ibus
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>转移到 &lt;code>$HOME/.xprofile&lt;/code> 中，并且在最后一行添加一条新的内容：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GTK_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>ibus
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">XMODIFIERS&lt;/span>&lt;span class="o">=&lt;/span>@im&lt;span class="o">=&lt;/span>ibus
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">QT_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>ibus
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ibus-daemon -x -d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>再重启发现输入法能开机自动启动了。&lt;/p></description></item></channel></rss>

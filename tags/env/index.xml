@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>env on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/env/</link><description>Recent content in env on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 24 Jun 2019 02:14:27 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/env/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux 环境变量的那些事</title><link>https://nonlinearthink.github.io/p/linux-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</link><pubDate>Mon, 24 Jun 2019 02:14:27 +0800</pubDate><guid>https://nonlinearthink.github.io/p/linux-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</guid><description>&lt;h2 id="环境变量">环境变量&lt;/h2>
+&lt;h3 id="打印环境变量">打印环境变量&lt;/h3>
+&lt;p>环境变量就是程序运行时的一系列静态参数，程序在运行时无法修改。&lt;/p>
+&lt;p>想要查看所有环境变量，可以使用这个命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">env
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="打印单个环境变量">打印单个环境变量&lt;/h3>
+&lt;p>几个比较常见的环境变量。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>变量名&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>PATH&lt;/td>
+&lt;td>shell将会去这里搜寻命令和程序&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>SHELL&lt;/td>
+&lt;td>当前使用的shell类型&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>HOME&lt;/td>
+&lt;td>当前用户的根目录&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>LOGNAME&lt;/td>
+&lt;td>当前用户的登录名&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$PATH&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SHELL&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$HOME&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$LOGNAME&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="定义环境变量">定义环境变量&lt;/h3>
+&lt;p>这是 Go 语言的一个环境变量配置。&lt;code>~/.bashrc&lt;/code> 中添加下面几行。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GOROOT&lt;/span>&lt;span class="o">=&lt;/span>/usr/local/Cellar/go/1.13.5/bin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>保存退出后，就可以使用 &lt;code>echo $GOROOT&lt;/code> 打印出来了。&lt;/p>
+&lt;blockquote>
+&lt;p>在一个目录下创建 &lt;code>.env&lt;/code> 文件，并写入：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">GOROOT /usr/local/Cellar/go/1.13.5/bin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>可以让这个环境变量仅对在当前目录下运行的应用程序生效。&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="更改环境变量的值">更改环境变量的值&lt;/h3>
+&lt;p>有一个比较特殊的环境变量 &lt;code>$PATH&lt;/code>，它是环境变量的一个路径集合，既然是集合就可以被不断添加。&lt;/p>
+&lt;p>&lt;code>$PATH&lt;/code> 以 &lt;code>:&lt;/code> 分割，以 &lt;code>path/to/first:path/to/second&lt;/code> 这样的形式存在。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nv">$PATH&lt;/span>:&lt;span class="nv">$GOROOT&lt;/span>/bin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>上面的命令相当于执行了一个 &lt;code>+=&lt;/code> 操作。也就是在原先的 &lt;code>$PATH&lt;/code> 的基础上加上了 &lt;code>$GOROOT/bin&lt;/code>。&lt;/p>
+&lt;hr>
+&lt;h2 id="shell-配置文件">Shell 配置文件&lt;/h2>
+&lt;h3 id="多用户配置">多用户配置&lt;/h3>
+&lt;p>在 unix-like 系统中，系统配置文件都被放在一个叫 &lt;code>/etc&lt;/code> 的目录下。其中也包含了 shell 配置文件。&lt;/p>
+&lt;p>shell 配置文件可以分为两类: &lt;code>*profile&lt;/code> 和 &lt;code>*shrc&lt;/code>。&lt;/p>
+&lt;p>&lt;code>*profile&lt;/code> 中的内容会在用户登录时被运行。&lt;/p>
+&lt;p>&lt;code>*shrc&lt;/code> 会在 shell 启动时被运行。&lt;/p>
+&lt;p>从生命周期的角度讲，写在 &lt;code>*profile&lt;/code> 中的环境变量的生命周期是整个系统运行期间，而 &lt;code>*shrc&lt;/code> 仅仅在 shell 被启动的时候才有效。&lt;/p>
+&lt;p>生命周期长不一定好，因为我们可能不希望操作系统做太多的初始化而导致开机变慢，所以大部分我们用户自定义的环境变量都是在 &lt;code>*shrc&lt;/code> 中。&lt;/p>
+&lt;p>但是有些软件，需要他们一开机就运行，比如输入法，就需要写在 &lt;code>*profile&lt;/code> 中。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /etc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls *profile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># output:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># profile zprofile&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls *shrc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># output:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># bashrc csh.cshrc zshrc&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>因为我安装了 zsh，所以多了 &lt;code>zprofile&lt;/code> 和 &lt;code>zshrc&lt;/code>，没安装过其他的 shell，只有默认的 bash 的话，应该只有 &lt;code>profile&lt;/code> 和 &lt;code>bashrc&lt;/code>。&lt;/p>
+&lt;/blockquote>
+&lt;p>除此之外，忘记说了一点，&lt;code>/etc&lt;/code> 文件夹下的配置是针对全部操作系统的用户的，所以请谨慎修改。&lt;/p>
+&lt;h3 id="单用户配置">单用户配置&lt;/h3>
+&lt;p>上面说了多用户的环境变量配置，单用户的配置应该使用&lt;code>.bashrc&lt;/code> 和 &lt;code>.bash_profile&lt;/code>，它们在用户的根目录(&lt;code>~&lt;/code>)下，默认是不创建的，如果需要则自己创建。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls .*profile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># output:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># .bash_profile&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls .*shrc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># output:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># .zshrc&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>我这里给 bash 创建了 profile，而给 zsh 创建了 shrc，其他没创建。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;strong>值得注意的是，&lt;code>.bash_profile&lt;/code> 在默认状态下，还会执行 &lt;code>.bashrc&lt;/code>。&lt;/strong>&lt;/p>
+&lt;hr>
+&lt;h2 id="环境变量的优先级">环境变量的优先级&lt;/h2>
+&lt;p>如果在 &lt;code>etc/profile&lt;/code> 中和 &lt;code>~/.bash_profile&lt;/code> 都定义了相同的名字的环境变量，会发生什么？&lt;/p>
+&lt;p>这个问题，我们可以从配置文件被加载的顺序来考虑。&lt;/p>
+&lt;p>以 bash 为例。&lt;/p>
+&lt;ul>
+&lt;li>操作系统启动的时候，&lt;code>/etc/profile&lt;/code> 被调用，然后 &lt;code>/etc/profile&lt;/code> 调用 &lt;code>/etc/bashrc&lt;/code>。&lt;/li>
+&lt;li>用户启动 shell 的时候，&lt;code>~/.bash_profile&lt;/code> 被调用，然后 &lt;code>~/.bash_profile&lt;/code> 调用 &lt;code>~/.bashrc&lt;/code>。&lt;/li>
+&lt;/ul>
+&lt;p>最后被调用的会覆盖前面被调用的。&lt;/p>
+&lt;hr>
+&lt;h2 id="补充">补充&lt;/h2>
+&lt;h3 id="export-命令">export 命令&lt;/h3>
+&lt;p>&lt;code>export&lt;/code> 命令就是设置环境变量。分两个场景来看：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>在命令行下&lt;/p>
+&lt;p>在命令行下的 &lt;code>export&lt;/code> 的作用域只有在这次登录期间。&lt;/p>
+&lt;p>也就是说 &lt;code>shell&lt;/code> 一旦退出，设置的环境变量就消失了。&lt;/p>
+&lt;p>如果想要它一直存在，就要写到配置文件中。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在配置文件中&lt;/p>
+&lt;p>如果仔细看过上面的分析，就会知道配置文件是在 &lt;code>shell&lt;/code> 登录时候自动加载的。&lt;/p>
+&lt;p>自然就不会消失了。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="source-命令">source 命令&lt;/h3>
+&lt;p>配置文件写入之后，环境变量不会马上更新。&lt;/p>
+&lt;p>&lt;code>source&lt;/code> 命令可以加载一次配置文件的内容。&lt;/p>
+&lt;p>比如，配置完上面的内容，使用 &lt;code>source&lt;/code>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> .zshrc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="alias-命令">alias 命令&lt;/h3>
+&lt;p>&lt;code>alias&lt;/code> 就是别名，也就是为命令创建一个别名。&lt;/p>
+&lt;p>比如，在 &lt;code>linux&lt;/code> 中，&lt;code>python&lt;/code> 往往默认是 &lt;code>python2&lt;/code>。&lt;/p>
+&lt;p>使用 &lt;code>alias&lt;/code> 可以设置成 &lt;code>python3&lt;/code>。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">alias&lt;/span> &lt;span class="nv">python&lt;/span>&lt;span class="o">=&lt;/span>python3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>alias&lt;/code> 也可以当成 &lt;code>export&lt;/code> 用。&lt;/p>
+&lt;p>区别在于，&lt;code>export&lt;/code> 可以直接导入一个文件夹下面的全部可执行文件。&lt;/p>
+&lt;p>而 &lt;code>alias&lt;/code> 只能针对一个可执行文件，需要你一个一个写。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">alias&lt;/span> &lt;span class="nv">mysql&lt;/span>&lt;span class="o">=&lt;/span>/usr/local/mysql/bin/mysql
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这样之后，我们每次用 &lt;code>mysql&lt;/code> 的命令，就会被替换成 &lt;code>/usr/local/mysql/bin/mysql&lt;/code>。&lt;/p>
+&lt;p>&lt;code>alias&lt;/code> 略微简洁明了一点，但其实优势并不是很大，一般都推荐用 &lt;code>export&lt;/code>。&lt;/p></description></item></channel></rss>
