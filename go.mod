@@ -1,4 +1,4 @@
-module github.com/nonlinearthink/graphic-daily
+module github.com/nonlinearthink/nonlinearthink.github.io
 
 go 1.17
 

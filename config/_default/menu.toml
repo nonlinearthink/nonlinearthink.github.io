@@ -16,9 +16,9 @@ url = "https://github.com/nonlinearthink"
 icon = "brand-github"
 
 [[social]]
-identifier = "twitter"
-name = "Twitter"
-url = "https://twitter.com"
+identifier = "zhihu"
+name = "知乎"
+url = "https://www.zhihu.com/people/neweden-85"
 
 [social.params]
-icon = "brand-twitter"
+icon = "brand-zhihu"

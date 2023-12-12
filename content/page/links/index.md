@@ -1,5 +1,5 @@
 ---
-title: about
+title: 关于
 links:
   - title: 真实的hello world
     description: 大学时期的CSDN博客（停止更新）
