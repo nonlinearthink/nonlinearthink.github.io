@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Jupyter Notebook on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/jupyter-notebook/</link><description>Recent content in Jupyter Notebook on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 10 May 2020 12:01:48 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/jupyter-notebook/index.xml" rel="self" type="application/rss+xml"/><item><title>搭建 Jupyter Notebook 云端工作站</title><link>https://nonlinearthink.github.io/p/%E6%90%AD%E5%BB%BA-jupyter-notebook-%E4%BA%91%E7%AB%AF%E5%B7%A5%E4%BD%9C%E7%AB%99/</link><pubDate>Sun, 10 May 2020 12:01:48 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E6%90%AD%E5%BB%BA-jupyter-notebook-%E4%BA%91%E7%AB%AF%E5%B7%A5%E4%BD%9C%E7%AB%99/</guid><description>&lt;p>因为几个月前买了一台 iPad，而我发现 iPad 最大的问题就是无法编程，所以打算自己搭建一个 jupyter notebook 的远程服务器，云服务器使用的是阿里云。&lt;/p>
+&lt;blockquote>
+&lt;p>我使用的是 Ubuntu 18.04 的镜像，对于其他 linux 服务器，可能也就是包管理器不一样而已。&lt;/p>
+&lt;/blockquote>
+&lt;ol>
+&lt;li>
+&lt;p>远程连接 root 账户。&lt;/p>
+&lt;p>无论是本地使用 SSH 还是去阿里云的网站都可，无所谓。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>安装 pip3。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">apt install python3-pip
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>经测试，阿里云的 Ubuntu 18.04 自带 python3，但不带 pip3。&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>安装 jupyter 和一些其他想要使用的库。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">pip3 install jupyter
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pip3 install matplotlib
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pip3 install sklearn
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>创建一个文件夹专门来放置 jupyter 的工作目录。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /var/local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir jupyter
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> jupyter
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir home
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /var/log
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch jupyter.log
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>生成 jupyter 配置和生成密码的 SHA 值。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">jupyter notebook --generate-config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ipython
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt; from notebook.auth import passwd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt; passwd&lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>注意复制下来，待会要用。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>使用 vim 修改 jupyter_notebook_config.py。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vim ~/.jupyter/jupyter_notebook_config.py
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在最后插入以下信息。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">NotebookApp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ip&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;*&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">NotebookApp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">allow_root&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">True&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">NotebookApp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">open_browser&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">False&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">NotebookApp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">port&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">8888&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">NotebookApp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">password&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sa">u&lt;/span>&lt;span class="s1">&amp;#39;上面生成的sha值&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ContentsManager&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">root_dir&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;/var/local/jupyter/home&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>安装 nbextensions&lt;/p>
+&lt;p>原生 jupyter 的很多体验不是很好，推荐使用一个 jupyter 插件来弥补。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">pip3 install jupyter_contrib_nbextensions
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">jupyter contrib nbextension install --user --skip-running-check
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">jupyter nbextensions_configurator &lt;span class="nb">enable&lt;/span> --user
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>先进入 jupyter 配置一下，勾选 Hinterland，这个是自动补全功能。虽然比较简陋，但是也很不错了。&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E6%90%AD%E5%BB%BA-jupyter-notebook-%E4%BA%91%E7%AB%AF%E5%B7%A5%E4%BD%9C%E7%AB%99/jupyter-notebook-setting.jpg"
+width="2390"
+height="1254"
+srcset="https://nonlinearthink.github.io/p/%E6%90%AD%E5%BB%BA-jupyter-notebook-%E4%BA%91%E7%AB%AF%E5%B7%A5%E4%BD%9C%E7%AB%99/jupyter-notebook-setting_hu03670c8d119048c0fb22a01babfa0533_63892_480x0_resize_q75_box.jpg 480w, https://nonlinearthink.github.io/p/%E6%90%AD%E5%BB%BA-jupyter-notebook-%E4%BA%91%E7%AB%AF%E5%B7%A5%E4%BD%9C%E7%AB%99/jupyter-notebook-setting_hu03670c8d119048c0fb22a01babfa0533_63892_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="Jupyter Notebook Setting"
+class="gallery-image"
+data-flex-grow="190"
+data-flex-basis="457px"
+>&lt;/p>
+&lt;p>你可以看到这个插件还有很多其他的功能，可以自己探索一下。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>后台守护进程开启服务器。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">nohup jupyter notebook &amp;gt; /var/local/jupyter/runtime.log 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="p">&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>可能需要权限：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">nohup jupyter notebook --allow-root &amp;gt; /var/local/jupyter/runtime.log 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="p">&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>由于阿里云的限制，还需要配置一下安全策略。&lt;/p>
+&lt;p>打开云服务器的实例界面，选择 &lt;code>本实例安全组&lt;/code>-&lt;code>配置规则&lt;/code>，可以看到下面的这个界面，添加一条规则就行了。&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E6%90%AD%E5%BB%BA-jupyter-notebook-%E4%BA%91%E7%AB%AF%E5%B7%A5%E4%BD%9C%E7%AB%99/aliyun-setting.jpg"
+width="3354"
+height="1660"
+srcset="https://nonlinearthink.github.io/p/%E6%90%AD%E5%BB%BA-jupyter-notebook-%E4%BA%91%E7%AB%AF%E5%B7%A5%E4%BD%9C%E7%AB%99/aliyun-setting_hu9085147c8eec94f36ad09f0b40bee3f5_67892_480x0_resize_q75_box.jpg 480w, https://nonlinearthink.github.io/p/%E6%90%AD%E5%BB%BA-jupyter-notebook-%E4%BA%91%E7%AB%AF%E5%B7%A5%E4%BD%9C%E7%AB%99/aliyun-setting_hu9085147c8eec94f36ad09f0b40bee3f5_67892_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="Aliyun Setting"
+class="gallery-image"
+data-flex-grow="202"
+data-flex-basis="484px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在 Safari 中，打开服务器的 IP+端口号 8888。&lt;/p>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

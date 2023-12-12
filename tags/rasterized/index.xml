@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Rasterized on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/rasterized/</link><description>Recent content in Rasterized on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 02 Dec 2023 14:15:23 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/rasterized/index.xml" rel="self" type="application/rss+xml"/><item><title>编写光栅化渲染器（一）概述</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/</link><pubDate>Sat, 02 Dec 2023 14:15:23 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/</guid><description>&lt;h2 id="光栅化-vs-光线追踪">光栅化 VS 光线追踪&lt;/h2>
+&lt;p>对图形学稍微有了解的小伙伴应该知道，现在的实时渲染领域用的主要都是 &lt;code>Rasterization(光栅化)&lt;/code>，而不是 &lt;code>Ray Tracing(光线追踪)&lt;/code>，主要原因是实时渲染需要保证帧数稳定在 30 帧以上，而 &lt;code>Ray Tracing&lt;/code> 需要非常庞大的计算量，完全不是多少 ms 之内能计算完的。&lt;/p>
+&lt;blockquote>
+&lt;p>等完成 &lt;code>编写光栅化渲染器&lt;/code> 这个系列之后有一个关于 &lt;code>Ray Tracing&lt;/code> 的新系列。&lt;/p>
+&lt;/blockquote>
+&lt;p>屏幕由一个一个像素构成，每一个像素都可以被认为是一个小网格（实际上从物理结构上来讲并不是完全正方形的）&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/rasterization.jpg"
+width="462"
+height="354"
+srcset="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/rasterization_hu58dd0e14bf45c77a963c58f7c4819a3e_19596_480x0_resize_q75_box.jpg 480w, https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/rasterization_hu58dd0e14bf45c77a963c58f7c4819a3e_19596_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="Rasterization"
+class="gallery-image"
+data-flex-grow="130"
+data-flex-basis="313px"
+>&lt;/p>
+&lt;p>那么如果要渲染一个场景，只需要把每一个网格填上颜色就可以了，光栅化实际上就是在聊怎么填颜色这件事情。比如你需要对场景里的物体进行排序，离相机近的物体表面颜色就是你想要绘制的图形的颜色。&lt;/p>
+&lt;blockquote>
+&lt;p>光线追踪技术则是基于物理，从一个像素点出发，经过多次反射，得到最终颜色，但是一个像素一条射线远远不够，因为这样误差会很大，往往一个像素需要数百条射线的结果求平均。&lt;/p>
+&lt;p>&lt;strong>光线追踪的本质就是对场景不断进行采样以降低噪点，最终得到最接近真实的图像。&lt;/strong>&lt;/p>
+&lt;/blockquote>
+&lt;p>从时间复杂度来说，光栅化无疑比光线追踪来得更加好，但是因为缺少严谨的物理模型，光栅化的效果比光线追踪差很多，所以在对性能要求不高，但是对效果要求高的离线渲染中，光线追踪被普遍运用。&lt;/p>
+&lt;blockquote>
+&lt;p>截至文章编写日期，已经有游戏比如 &lt;code>赛博朋克2077 2.0&lt;/code> 运用了 &lt;code>Path Tracing&lt;/code> 技术，也叫 &lt;code>Monte Calo Ray Tracing&lt;/code>，比传统的 &lt;code>Whitted Style Ray Tracing&lt;/code> 性能更加好，效果也更棒。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="光栅化程序开发流程">光栅化程序开发流程&lt;/h2>
+&lt;ol>
+&lt;li>创建一个窗口，并绘制直线，三角形，带有顶点数据的物体。&lt;/li>
+&lt;/ol>
+&lt;p>施工中&amp;hellip;&lt;/p>
+&lt;h2 id="reference">Reference&lt;/h2>
+&lt;p>Fundamentals of Computer Graphics&lt;/p></description></item></channel></rss>
