@@ -1,0 +1,511 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="JDBC (Java Database Connectivity) ，属于 Java 应用编程中比较基础的一块，虽然你可以直接使用 MyBatis，但是了解一下 JDBC 可以帮你更好地理解 Java 的数据库编程。 连接数据库 驱动初"><title>JDBC 数据库编程</title>
+<link rel=canonical href=https://nonlinearthink.github.io/p/jdbc-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A8%8B/><link rel=stylesheet href=/scss/style.min.4b9518f16bd19ab6bbb2a194725da3324cb4c22e005b31272620915af25354d0.css><meta property="og:title" content="JDBC 数据库编程"><meta property="og:description" content="JDBC (Java Database Connectivity) ，属于 Java 应用编程中比较基础的一块，虽然你可以直接使用 MyBatis，但是了解一下 JDBC 可以帮你更好地理解 Java 的数据库编程。 连接数据库 驱动初"><meta property="og:url" content="https://nonlinearthink.github.io/p/jdbc-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A8%8B/"><meta property="og:site_name" content="nonlinearthink"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="Java"><meta property="article:tag" content="JDBC"><meta property="article:tag" content="MySQL"><meta property="article:tag" content="OR Mapping"><meta property="article:published_time" content="2020-06-28T00:32:28+08:00"><meta property="article:modified_time" content="2020-06-28T00:32:28+08:00"><meta name=twitter:title content="JDBC 数据库编程"><meta name=twitter:description content="JDBC (Java Database Connectivity) ，属于 Java 应用编程中比较基础的一块，虽然你可以直接使用 MyBatis，但是了解一下 JDBC 可以帮你更好地理解 Java 的数据库编程。 连接数据库 驱动初"><link rel="shortcut icon" href=/favicon.ico></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_huf560c7c6fec8c335206896d97bd53249_68145_300x0_resize_q75_box.jpg width=300 height=301 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>☕</span></figure><div class=site-meta><h1 class=site-name><a href=/>nonlinearthink</a></h1><h2 class=site-description>Coding a fantasy world.</h2></div></header><ol class=social-menu><li><a href=https://github.com/nonlinearthink target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.zhihu.com/people/neweden-85 target=_blank title=知乎 rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-zhihu" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 6h6v12h-2l-2 2-1-2h-1z"/><path d="M4 12h6.5"/><path d="M10.5 6h-5"/><path d="M6 4c-.5 2.5-1.5 3.5-2.5 4.5"/><path d="M8 6v7c0 4.5-2 5.5-4 7"/><path d="M11 18l-3-5"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>博客</span></a></li><li><a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>归档</span></a></li><li><a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>搜索</span></a></li><li><a href=/%E5%85%B3%E4%BA%8E/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>关于</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>暗色模式</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#连接数据库>连接数据库</a><ol><li><a href=#驱动初始化>驱动初始化</a><ol><li><a href=#基于-classforname-的初始化>基于 Class.forName 的初始化</a></li><li><a href=#基于-registerdriver-的初始化>基于 registerDriver 的初始化</a></li></ol></li><li><a href=#建立连接>建立连接</a></li></ol></li><li><a href=#jdbc-基础>JDBC 基础</a><ol><li><a href=#statement>Statement</a></li><li><a href=#executeexecutequeryexecuteupdate>execute、executeQuery、executeUpdate</a><ol><li><a href=#executequery>executeQuery</a></li><li><a href=#executeupdate>executeUpdate</a></li><li><a href=#execute>execute</a></li></ol></li><li><a href=#resultset>ResultSet</a></li><li><a href=#preparedstatement>PreparedStatement</a><ol><li><a href=#字符串拼接问题>字符串拼接问题</a></li><li><a href=#性能问题>性能问题</a></li><li><a href=#sql-注入式攻击>SQL 注入式攻击</a></li></ol></li><li><a href=#close>close</a></li></ol></li><li><a href=#jdbc时间类型的处理>JDBC时间类型的处理</a><ol><li><a href=#systemcurrenttimemillis>System.currentTimeMillis()</a></li><li><a href=#设置timestamp>设置Timestamp</a></li><li><a href=#取出timestamp>取出Timestamp</a></li></ol></li><li><a href=#事务控制>事务控制</a><ol><li><a href=#为什么需要事务>为什么需要事务</a></li><li><a href=#如何实现>如何实现</a></li><li><a href=#jdbc中的事务编程>JDBC中的事务编程</a></li></ol></li><li><a href=#连接池>连接池</a><ol><li><a href=#连接池的概念>连接池的概念</a></li><li><a href=#实现连接池>实现连接池</a></li><li><a href=#使用开源连接池以-c3p0-为例>使用开源连接池(以 C3P0 为例)</a></li></ol></li><li><a href=#or映射>OR映射</a><ol><li><a href=#javabean>JavaBean</a></li><li><a href=#pojo-plain-ordinary-java-object>POJO (Plain Ordinary Java Object)</a></li><li><a href=#entitybean-与-or映射>EntityBean 与 OR映射</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/%E6%88%90%E4%B8%BA%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%E5%91%98/>成为一个程序员</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/jdbc-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A8%8B/>JDBC 数据库编程</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Jun 28, 2020</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--reading>阅读时长: 10 分钟</time></div></footer></div></header><section class=article-content><p>JDBC (Java Database Connectivity) ，属于 Java 应用编程中比较基础的一块，虽然你可以直接使用 <code>MyBatis</code>，但是了解一下 JDBC 可以帮你更好地理解 Java 的数据库编程。</p><h2 id=连接数据库>连接数据库</h2><h3 id=驱动初始化>驱动初始化</h3><h4 id=基于-classforname-的初始化>基于 Class.forName 的初始化</h4><p>想要开始 JDBC 编程，第一步是需要把 <code>数据库驱动程序</code> 的代码加载进来。</p><p>可以利用 <code>Class.forName</code> 函数，它原本的功能是返回一个 类或者接口的 Class 对象 ，也就是相当于初始化了一个类，一般用它<strong>执行这个类的静态代码段</strong>。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Class</span><span class=p>.</span><span class=na>forName</span><span class=p>(</span><span class=s>&#34;com.mysql.cj.jdbc.Driver&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>ClassNotFoundException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>这样，<code>com.mysql.jdbc.Driver</code> 类中的静态代码段就会被执行，进行初始化。</p><p>不过，驱动初始化还有另外一种写法。</p><h4 id=基于-registerdriver-的初始化>基于 registerDriver 的初始化</h4><p>我们知道 <code>Class.forName</code> 是执行类的静态代码段，那我们把 <code>com.mysql.jdbc.Driver</code> 里面的静态代码段照着样子抄一遍不也可以实现初始化吗?</p><p>这是 <code>com.mysql.jdbc.Driver</code> 静态代码段的源代码:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>static</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>DriverManager</span><span class=p>.</span><span class=na>registerDriver</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>Driver</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>SQLException</span><span class=w> </span><span class=n>E</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>RuntimeException</span><span class=p>(</span><span class=s>&#34;Can&#39;t register driver!&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>这段代码可以完全代替上一小节的代码，我们可以认为 <code>DriverManager.registerDriver(new Driver())</code> 和 <code>Class.forName</code> 的写法是等效的。</p><blockquote><p>什么是 <code>数据库驱动程序</code> ？</p><p>JDK 提供了一个 JDBC 的接口(Interface)。但是，因为是接口，所以还是没有实现的，每个数据库的厂商需要自己实现这个接口，这样用户才能正常调用。</p><p>以 mysql 为例，下载地址: <a class=link href=https://dev.mysql.com/downloads/connector/j/ target=_blank rel=noopener>dev.mysql.com/downloads/connector/j</a></p><p>接口变动</p><p>mysql5 和 mysql6 的驱动程序接口有区别，从 <code>com.mysql.jdbc.Driver</code> 换成了 <code>com.mysql.cj.jdbc.Driver</code>，再往上的版本同 mysql6 。</p></blockquote><h3 id=建立连接>建立连接</h3><p>数据库打开后会在本地开一个端口，运行进程，我们可以通过这个端口的 URL 来访问数据库。</p><p>当然，还需要数据库的用户名和密码。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>DriverManager</span><span class=p>.</span><span class=na>getConnection</span><span class=p>(</span><span class=n>url</span><span class=p>,</span><span class=w> </span><span class=n>user</span><span class=p>,</span><span class=w> </span><span class=n>password</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>JDBC 的 URL 格式: <code>jdbc:[数据库连接名]://localhost:[端口号]/[数据库名]</code></p><ul><li>数据库连接名
+mysql、sqlserver</li><li>端口号
+3306(mysql)、1433(sqlserver)</li><li>数据库名
+业务相关的数据库名，自定义</li></ul><p>一个 JDBC 连接数据库的例子:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>Connection</span><span class=w> </span><span class=n>conn</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>DriverManager</span><span class=p>.</span><span class=na>getConnection</span><span class=p>(</span><span class=s>&#34;jdbc:mysql://localhost:3306/booklib&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;root&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;123456&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>SQLException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=jdbc-基础>JDBC 基础</h2><h3 id=statement>Statement</h3><p>Statement 可以根据给出的一条 SQL 字符串，然后调用运行。</p><p>借用上一节连接得到的 <code>conn</code> 对象，它有一个 <code>createStatement</code> 函数，可以创建一个 Statement。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>Connection</span><span class=w> </span><span class=n>conn</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>DriverManager</span><span class=p>.</span><span class=na>getConnection</span><span class=p>(</span><span class=s>&#34;jdbc:mysql://localhost:3306/booklib&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;root&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;123456&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>Statement</span><span class=w> </span><span class=n>st</span><span class=w> </span><span class=o>=</span><span class=w>  </span><span class=n>conn</span><span class=p>.</span><span class=na>createStatement</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>SQLException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=executeexecutequeryexecuteupdate>execute、executeQuery、executeUpdate</h3><p>创建完 Statement，就要把 SQL 语句交给 Statement 对象去执行了。</p><h4 id=executequery>executeQuery</h4><p>一般如果是运行 查询(select) 语句，推荐使用 第一节中获得的<code>conn</code> 对象的 <code>executeQuery</code> 函数，<code>executeQuery</code>只能返回单个结果集，但是应对大部分的查询已经足够。</p><p>添加下面的代码到上面的 try 代码块中。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;select * from BeanBook&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>executeQuery</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=executeupdate>executeUpdate</h4><p>如果你需要运行 <code>insert</code>、<code>update</code>、<code>delete</code> 等等语句，则可以使用 <code>executeUpdate</code> 函数，它不会返回结果集，但是会返回一个整数，代表受到影响的行数，如果是 0，代表了你没有改变任何数据库的内容，即调用失败了。</p><p>使用 <code>executeUpdate</code> :</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;delete from BeanBook where price&gt;50&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>executeUpdate</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=execute>execute</h4><p><code>execute</code> 是更加通用和强大的函数，但是它也比较复杂。它的返回值类型有很多。</p><p><code>execute</code> 不仅可以做到 <code>executeQuery</code> 能做的事，也能做到 <code>executeUpdate</code> 能做到的事情。而且，它还能返回多个结果集。</p><p>正因为如此，它一般被用在一些<strong>执行未知 SQL 字符串</strong>的情况下，如果 SQL 语句能够确定，请尽可能不用 <code>execute</code>。</p><p>它的返回值比较复杂，我们一般使用 <code>getResultSet</code> 和 <code>getUpdateCount</code> 获取，而不是直接把 <code>st.execute(sql);</code> 的结果拿来。</p><p>以下两段代码和上面两小节的 demo 的效果是一样的。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>//代码段1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;select * from BeanBook&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>execute</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>getResultSet</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>//代码段2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;delete from BeanBook where price&gt;50&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>execute</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>getUpdateCount</span><span class=p>();</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=resultset>ResultSet</h3><p>前面一直没提 ResultSet，ResultSet 就是 <code>executeQuery</code> 的返回值。</p><p>举个例子，使用 ResultSet 遍历 SQL 的结果:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;select * from BeanBook&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>ResultSet</span><span class=w> </span><span class=n>rs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>st</span><span class=p>.</span><span class=na>executeQuery</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>while</span><span class=w> </span><span class=p>(</span><span class=n>rs</span><span class=p>.</span><span class=na>next</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>rs</span><span class=p>.</span><span class=na>getString</span><span class=p>(</span><span class=n>1</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;\t&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>rs</span><span class=p>.</span><span class=na>getString</span><span class=p>(</span><span class=n>2</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;\t&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>rs</span><span class=p>.</span><span class=na>getDouble</span><span class=p>(</span><span class=n>4</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>ResultSet 通过 <code>next</code> 函数来遍历，<code>next</code> 从一条记录跳转到下一条记录。</p><p><code>getString</code>、<code>getDouble</code> 等等函数接受一个数字 n 作为参数，获得当前记录的第 n 个属性的值，并对这个值进行转换。</p><p>比如 <code>getString(1)</code> 获取第一个属性，转换成 <code>String</code> 类型；<code>getDouble(4)</code> 获取第四个属性，转换成 <code>Double</code> 类型。</p><p>下面是一些 get 函数 (不全):</p><ul><li>原始类型相关
+getString、getBoolean、getByte、getShort、getInt、getLong、getFloat、getDouble</li><li>日期相关
+getDate、getTime、getTimestamp</li></ul><h3 id=preparedstatement>PreparedStatement</h3><p>通过 <code>conn.prepareStatement</code> 可以来创建一个 PrepareStatement 对象 (conn 是一个 <code>java.sql.Connection</code>)。</p><p>但是这个函数必须要给出一个 SQL 语句作为参数。</p><p>这里也可以看出 PrepareStatement 与 Statement 的一个比较大的区别。Statement 可以一直被复用，但是 PrepareStatement 每执行一次 SQL，都要创建新的 PrepareStatement。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>//Statement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>Statement</span><span class=w> </span><span class=n>st</span><span class=w> </span><span class=o>=</span><span class=w>  </span><span class=n>conn</span><span class=p>.</span><span class=na>createStatement</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Int</span><span class=w> </span><span class=n>limit</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>50</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;delete from BeanBook where price&gt;50&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>executeUpdate</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>String</span><span class=w> </span><span class=n>sql2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;select * from BeanBook&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>executeQuery</span><span class=p>(</span><span class=n>sql2</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>//PrepareStatement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;delete from BeanBook where price&gt;50&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>PreparedStatement</span><span class=w> </span><span class=n>pst</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>conn</span><span class=p>.</span><span class=na>prepareStatement</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>executeUpdate</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>String</span><span class=w> </span><span class=n>sql2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;select * from BeanBook&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>PreparedStatement</span><span class=w> </span><span class=n>pst2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>conn</span><span class=p>.</span><span class=na>prepareStatement</span><span class=p>(</span><span class=n>sql2</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>executeQuery</span><span class=p>();</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>PreparedStatement 和 Statement 一样是用来执行 SQL 语句的，但是 Statement 有很多问题。</p><h4 id=字符串拼接问题>字符串拼接问题</h4><p>假如我们希望可以动态地设置 SQL 语句，比如，动态改变 <code>where</code> 从句的条件，在 Statement 中，我们需要这样写:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>Statement</span><span class=w> </span><span class=n>st</span><span class=w> </span><span class=o>=</span><span class=w>  </span><span class=n>conn</span><span class=p>.</span><span class=na>createStatement</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Int</span><span class=w> </span><span class=n>limit</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>50</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;delete from BeanBook where price&gt;&#34;</span><span class=o>+</span><span class=n>limit</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>executeUpdate</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>PrepareStatement 允许一种可读性非常好的参数设置语法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;delete from BeanBook where price&gt;?&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>PreparedStatement</span><span class=w> </span><span class=n>pst</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>conn</span><span class=p>.</span><span class=na>prepareStatement</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>pst</span><span class=p>.</span><span class=na>setInt</span><span class=p>(</span><span class=n>1</span><span class=p>,</span><span class=w> </span><span class=n>50</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>st</span><span class=p>.</span><span class=na>executeUpdate</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>这个 <code>?</code> 语法可不止可读性好，还有一个更重要的是，它支持了 <code>预编译</code>，这在我们接下来提到的性能问题中会被具体讨论。</p><blockquote><p>还需要提一下的是 <code>setInt</code> 等等的 <code>set</code> 相关的函数，前面已经提过 <code>get</code> 函数了，基本上把 <code>get</code> 改成 <code>set</code> 就行了。</p></blockquote><h4 id=性能问题>性能问题</h4><p>Statement 的想法是对象只需要创建一次，后续只要传入不同的 SQL 就行了。但是在面对重复都比较高的工作的时候，这可能并不是很好。</p><p>比如，我执行了一次 <code>insert into Beanbook(barcode, bookname, pubid, price, state) values(1, 'Java', 3, 56, '在库')</code>，</p><p>现在我稍微变一下，要插入 <code>insert into Beanbook(barcode, bookname, pubid, price, state) values(2, 'C++', 2, 34, '在库')</code>。</p><p>这两条命令几乎一样，但是我却要编译两次!!!</p><p>我们来看看 PrepareStaement，我们完全可以使用 <code>?</code> 语法，创建一次模版，因为存在预编译机制，当我们第二次插入的时候节省了一次编译的开销。</p><p>也就是说，在可以使用 <code>?</code> 语法替换的一系列 SQL 操作中，使用 PrepareStatement 将会节省一大笔开销。</p><h4 id=sql-注入式攻击>SQL 注入式攻击</h4><p>SQL 注入式攻击其实很简单，这是完全可以避免的，但是使用 Statement 的时候你要格外小心。</p><p>假设不怀好意的用户对你的数据库请求删除一些合法的东西，比如删除 <code>bookname</code> 等于 <code>'Java'</code> 的书，但是他传给你的字符串做了一些手脚:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>//用户的数据</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=o>=</span><span class=s>&#34;&#39;Java&#39; OR price&gt;0&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>//你的代码</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;delete from BeanBook where bookname=&#34;</span><span class=o>+</span><span class=n>name</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>好了，你完了，因为字符串拼接的时候，后面的 <code>OR price>0</code> 没有被当作是 <code>bookname</code> 的一部分，而是被当成是 SQL 命令的一部分!!! 在这里，你的数据库已经被清空了。</p><p>但是使用 <code>?</code> 语法你完全不用担心，因为 PrepareStatement 是<strong>预编译</strong>的，后面只会插入数据，插入的内容不会被当作是 SQL 命令。</p><h3 id=close>close</h3><p>在数据库的最后不能忘记，关闭连接。</p><p>在原先代码的基础上，在最后的 finally 语句块中加入 <code>close()</code> 函数。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>Connection</span><span class=w> </span><span class=n>conn</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>DriverManager</span><span class=p>.</span><span class=na>getConnection</span><span class=p>(</span><span class=s>&#34;jdbc:mysql://localhost:3306/booklib&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;root&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;123456&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>conn</span><span class=p>.</span><span class=na>setAutoCommit</span><span class=p>(</span><span class=kc>false</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;select * from BeanBook&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>PreparedStatement</span><span class=w> </span><span class=n>pst</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>conn</span><span class=p>.</span><span class=na>prepareStatement</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>pst</span><span class=p>.</span><span class=na>executeQuery</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>SQLException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w> </span><span class=k>finally</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>conn</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>conn</span><span class=p>.</span><span class=na>close</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>SQLException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=jdbc时间类型的处理>JDBC时间类型的处理</h2><p>从之前的 <code>get</code> 函数中，我们看到了日期相关的 API。</p><p>JDBC 中一共有三种时间类型:</p><ul><li>Date</li><li>Time</li><li>Timestamp</li></ul><h3 id=systemcurrenttimemillis>System.currentTimeMillis()</h3><p>这个函数可以获得 系统当前的一个时间戳。</p><blockquote><p>时间戳是 1970年1月1日0点0分 到现在的毫秒数。</p></blockquote><h3 id=设置timestamp>设置Timestamp</h3><p>数据库里面存的都是 Timestamp，一般建议存取都用 Timestamp。</p><p>设置当前的时间为 Timestamp:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>pst</span><span class=p>.</span><span class=na>setTimestamp</span><span class=p>(</span><span class=n>5</span><span class=p>,</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>Timestamp</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>currentTimeMillis</span><span class=p>()));</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>通过 Date类 来创建 Timestamp:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>java</span><span class=p>.</span><span class=na>utl</span><span class=p>.</span><span class=na>Date</span><span class=w> </span><span class=n>date</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>java</span><span class=p>.</span><span class=na>util</span><span class=p>.</span><span class=na>Date</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>pst</span><span class=p>.</span><span class=na>setTimestamp</span><span class=p>(</span><span class=n>5</span><span class=p>,</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>Timestamp</span><span class=p>(</span><span class=n>date</span><span class=p>.</span><span class=na>getTime</span><span class=p>()));</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>事实上，一般这里直接用字符串也能设置，但对于数据库存在性能问题，一般不建议这样做:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>pst</span><span class=p>.</span><span class=na>setString</span><span class=p>(</span><span class=n>5</span><span class=p>,</span><span class=w> </span><span class=s>&#34;2020-06-27 00:00:00&#34;</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=取出timestamp>取出Timestamp</h3><p>因为从数据库直接取出的是 Timestamp，需要使用 SimpleDateFormat 来格式化，才能打印出我们可以识别的时间字符串。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Timestamp</span><span class=w> </span><span class=n>timestamp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>rs</span><span class=p>.</span><span class=na>getTimestamp</span><span class=p>(</span><span class=n>5</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>SimpleDateFormat</span><span class=w> </span><span class=n>sdf</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SimpleDateFormat</span><span class=p>(</span><span class=s>&#34;yyyy-MM-dd HH:mm:ss&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>sdf</span><span class=p>.</span><span class=na>format</span><span class=p>(</span><span class=n>timestamp</span><span class=p>));</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=事务控制>事务控制</h2><h3 id=为什么需要事务>为什么需要事务</h3><p>一个事务是一系列用户定义的数据库操作序列(CRUD)。它的目的是把数据库的多个操作合并抽象成一个操作。</p><p>事务的设计哲学: <code>要么都成功，要么都失败</code>。这就是事务的<strong>原子性</strong>。</p><p>事务是隔离的，并发执行的事务之间不互相干扰。</p><h3 id=如何实现>如何实现</h3><p>事务的实现靠的是回滚机制。</p><p>当你做完一个操作的时候，都有日志文件记录下你修改的数据。如果你接下来的操作出现了问题，那么数据库就能根据日志文件，运行逆操作，回到原来的状态。</p><h3 id=jdbc中的事务编程>JDBC中的事务编程</h3><p>可以在最开始使用 <code>setAutoCommit(false)</code> 来关闭自动提交。</p><p>所谓的自动提交就是，mysql 的 JDBC实现 默认是一旦运行了 <code>execute</code> 相关的那三个函数，就会自动运行 <code>commit()</code> 函数，以更新数据库。</p><p>然后在 try 语句的最后使用 <code>commit()</code> 提交。</p><p>最后不要忘记，异常处理，如果发生了异常，就要使用 <code>rollback()</code> 函数回滚，使前面的操作全部无效。</p><p>我们来看一个结合来前面所有知识的例子:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.SQLException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Test</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Class</span><span class=p>.</span><span class=na>forName</span><span class=p>(</span><span class=s>&#34;com.mysql.cj.jdbc.Driver&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>ClassNotFoundException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>Connection</span><span class=w> </span><span class=n>conn</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>DriverManager</span><span class=p>.</span><span class=na>getConnection</span><span class=p>(</span><span class=s>&#34;jdbc:mysql://localhost:3306/booklib&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;root&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=s>&#34;123456&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>conn</span><span class=p>.</span><span class=na>setAutoCommit</span><span class=p>(</span><span class=kc>false</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;select * from BeanBook&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>PreparedStatement</span><span class=w> </span><span class=n>pst</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>conn</span><span class=p>.</span><span class=na>prepareStatement</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>java</span><span class=p>.</span><span class=na>sql</span><span class=p>.</span><span class=na>ResultSet</span><span class=w> </span><span class=n>rs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>pst</span><span class=p>.</span><span class=na>executeQuery</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>while</span><span class=w> </span><span class=p>(</span><span class=n>rs</span><span class=p>.</span><span class=na>next</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>rs</span><span class=p>.</span><span class=na>getString</span><span class=p>(</span><span class=n>1</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;\t&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>rs</span><span class=p>.</span><span class=na>getString</span><span class=p>(</span><span class=n>2</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;\t&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>rs</span><span class=p>.</span><span class=na>getDouble</span><span class=p>(</span><span class=n>4</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>sql</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;delete from BeanBook where price&gt;50&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>pst</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>conn</span><span class=p>.</span><span class=na>prepareStatement</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>conn</span><span class=p>.</span><span class=na>commit</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>SQLException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>finally</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>conn</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>conn</span><span class=p>.</span><span class=na>rollback</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>conn</span><span class=p>.</span><span class=na>close</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>SQLException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><blockquote><p>mysql 中的存储引擎有: <code>InnoDB</code>、<code>MyISAM</code>等等，但是事务控制只有 InnoDB 支持。</p></blockquote><hr><h2 id=连接池>连接池</h2><h3 id=连接池的概念>连接池的概念</h3><p>之前每次我们使用数据库 CRUD 的时候，我们每次都需要新建一个连接 Connection。</p><p>创建连接和关闭连接的过程也是比较消耗时间的，当线程数量很大的时候，系统就会变得卡顿。</p><p>连接池就是为了解决这个问题。连接池的设计哲学是: <code>总是借，而不创建</code>。</p><p>我们在一开始先创建一定数量的连接 Connection，然后每次有请求连接的时候，就找空闲的连接分配过去。如果没有空闲，则需要等待。</p><h3 id=实现连接池>实现连接池</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.Connection</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.DriverManager</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.SQLException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>java.util.ArrayList</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>java.util.List</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ConnectionPool</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>size</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Connection</span><span class=o>&gt;</span><span class=w> </span><span class=n>conns</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ArrayList</span><span class=o>&lt;</span><span class=n>Connection</span><span class=o>&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>ConnectionPool</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>size</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//构造器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>size</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>size</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>init</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>init</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//初始化连接池</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// Class.forName(&#34;com.mysql.jdbc.Driver&#34;); //mysql5</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Class</span><span class=p>.</span><span class=na>forName</span><span class=p>(</span><span class=s>&#34;com.mysql.cj.jdbc.Driver&#34;</span><span class=p>);</span><span class=w> </span><span class=c1>// mysql6+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>size</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>Connection</span><span class=w> </span><span class=n>conn</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>DriverManager</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=p>.</span><span class=na>getConnection</span><span class=p>(</span><span class=s>&#34;jdbc:mysql://127.0.0.1:3306/booklib&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;root&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;123456&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>conns</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=n>conn</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>ClassNotFoundException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>SQLException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>synchronized</span><span class=w> </span><span class=n>Connection</span><span class=w> </span><span class=nf>getConnection</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//获得一个连接</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>while</span><span class=w> </span><span class=p>(</span><span class=n>conns</span><span class=p>.</span><span class=na>isEmpty</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>this</span><span class=p>.</span><span class=na>wait</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>InterruptedException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>e</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Connection</span><span class=w> </span><span class=n>conn</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>conns</span><span class=p>.</span><span class=na>remove</span><span class=p>(</span><span class=n>0</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>conn</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>synchronized</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>returnConnection</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>conn</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//返还一个连接</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>conns</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=n>conn</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>notifyAll</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=使用开源连接池以-c3p0-为例>使用开源连接池(以 C3P0 为例)</h3><p>一些著名的开源连接池</p><ul><li>DBCP</li><li>C3P0</li></ul><p><code>C3P0连接池</code> 的使用:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.beans.PropertyVetoException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.Connection</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.SQLException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>com.mchange.v2.c3p0.ComboPooledDataSource</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ConnectionPoo</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>url</span><span class=o>=</span><span class=s>&#34;jdbc:mysql://localhost:3306/booklib&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>user</span><span class=o>=</span><span class=s>&#34;root&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>password</span><span class=o>=</span><span class=s>&#34;123456&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>ComboPooledDataSource</span><span class=w> </span><span class=n>dataSource</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dataSource</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ComboPooledDataSource</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dataSource</span><span class=p>.</span><span class=na>setUser</span><span class=p>(</span><span class=n>user</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dataSource</span><span class=p>.</span><span class=na>setPassword</span><span class=p>(</span><span class=n>password</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dataSource</span><span class=p>.</span><span class=na>setJdbcUrl</span><span class=p>(</span><span class=n>url</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>//dataSource.setDriverClass(&#34;com.mysql.jdbc.Driver&#34;);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dataSource</span><span class=p>.</span><span class=na>setDriverClass</span><span class=p>(</span><span class=s>&#34;com.mysql.cj.jdbc.Driver&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dataSource</span><span class=p>.</span><span class=na>setInitialPoolSize</span><span class=p>(</span><span class=n>5</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dataSource</span><span class=p>.</span><span class=na>setMinPoolSize</span><span class=p>(</span><span class=n>1</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dataSource</span><span class=p>.</span><span class=na>setMaxPoolSize</span><span class=p>(</span><span class=n>10</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dataSource</span><span class=p>.</span><span class=na>setMaxStatements</span><span class=p>(</span><span class=n>50</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dataSource</span><span class=p>.</span><span class=na>setMaxIdleTime</span><span class=p>(</span><span class=n>60</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>PropertyVetoException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>RuntimeException</span><span class=p>(</span><span class=n>e</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>Connection</span><span class=w> </span><span class=nf>getConnection</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>dataSource</span><span class=p>.</span><span class=na>getConnection</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><blockquote><p>c3p0 v0.9.2版本 之后，从中分离了一个 <code>mchange-commons-java</code> 包，作为使用 c3p0 的辅助包。我们这里调用的就是辅助包。</p></blockquote><hr><h2 id=or映射>OR映射</h2><h3 id=javabean>JavaBean</h3><p>一个 JavaBean 对象需要满足的条件:</p><ul><li>提供一个默认的无参构造函数。</li><li>需要被序列化并且实现 Serializable 接口。</li><li>一系列可读写属性。</li><li>一系列的 getter 或 setter 方法。</li></ul><p>所有对 JavaBean 属性的访问都应当使用 getter 和 setter 方法。</p><p>JavaBean 是一个可复用的组件，把应用的业务逻辑和显示逻辑分离开，降低了开发的复杂程度和维护成本。</p><h3 id=pojo-plain-ordinary-java-object>POJO (Plain Ordinary Java Object)</h3><p>POJO 是纯粹的 JavaBean。</p><p>JavaBean除了满足上面的条件，没有规定你不能定义其他东西，就算你把一些业务的代码加入进来也没关系。</p><p>POJO 不允许有业务方法，也不能携带 Connection 之类的方法。</p><p>一个简单的 POJO 对象:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>BeanPublisher</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>pubid</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>publisherName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>address</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getPubid</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>pubid</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setPubid</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>pubid</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>pubid</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>pubid</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getPublisherName</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>publisherName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setPublisherName</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>publisherName</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>publisherName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>publisherName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getAddress</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>address</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setAddress</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>address</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>address</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>address</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=entitybean-与-or映射>EntityBean 与 OR映射</h3><p>OR映射 是把数据库对象和编程语言中的对象映射在一起，他们拥有一样的属性。</p><p><code>EntityBean</code> 一般用于ORM对象关系映射，一个实体映射成一张表。</p><p>它能执行很多自动化操作:</p><ul><li>创建一个 <code>EntityBean</code> 对象相当于创建一条记录</li><li>删除一个 <code>EntityBean</code> 对象会同时从数据库中删除对应记录</li><li>修改一个 <code>EntityBean</code> 时，容器会自动将 <code>EntityBean</code> 的状态和数据库同步</li></ul><p>一些流行的 ORM 框架:</p><ul><li>Hibernate</li><li>MyBatis</li></ul></section><footer class=article-footer><section class=article-tags><a href=/tags/java/>Java</a>
+<a href=/tags/jdbc/>JDBC</a>
+<a href=/tags/mysql/>MySQL</a>
+<a href=/tags/or-mapping/>OR Mapping</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/p/python-%E5%AE%9E%E7%8E%B0%E9%98%BF%E9%87%8C%E4%BA%91-ddns-%E5%8A%A8%E6%80%81%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90/><div class=article-details><h2 class=article-title>Python 实现阿里云 DDNS 动态域名解析</h2></div></a></article><article><a href=/p/cordova-vue-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%89%93%E5%8C%85/><div class=article-details><h2 class=article-title>Cordova Vue 跨平台打包</h2></div></a></article><article><a href=/p/css-%E5%83%8F%E7%B4%A0%E5%92%8C%E5%8D%95%E4%BD%8D%E8%AE%A1%E7%AE%97/><div class=article-details><h2 class=article-title>CSS 像素和单位计算</h2></div></a></article><article><a href=/p/css-%E9%98%B4%E5%BD%B1-%E5%81%8F%E7%A7%BB%E6%A8%A1%E7%B3%8A%E5%8D%8A%E5%BE%84%E6%89%A9%E6%95%A3%E5%8D%8A%E5%BE%84/><div class=article-details><h2 class=article-title>CSS 阴影: 偏移、模糊半径、扩散半径</h2></div></a></article><article><a href=/p/%E6%90%AD%E5%BB%BA-jupyter-notebook-%E4%BA%91%E7%AB%AF%E5%B7%A5%E4%BD%9C%E7%AB%99/><div class=article-details><h2 class=article-title>搭建 Jupyter Notebook 云端工作站</h2></div></a></article></div></div></aside><script src=https://giscus.app/client.js data-repo=nonlinearthink/nonlinearthink.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkyNTQ3MTc3NDc=" data-category=Announcements data-category-id=DIC_kwDODy6vM84CbsFQ data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=top data-theme=light data-lang=en crossorigin=anonymous async></script><script>function setGiscusTheme(e){let t=document.querySelector("iframe.giscus-frame");t&&t.contentWindow.postMessage({giscus:{setConfig:{theme:e}}},"https://giscus.app")}(function(){addEventListener("message",t=>{if(event.origin!=="https://giscus.app")return;e()}),window.addEventListener("onColorSchemeChange",e);function e(){setGiscusTheme(document.documentElement.dataset.scheme==="light"?"light":"dark")}})()</script><footer class=site-footer><section class=copyright>&copy;
+2019 -
+2023 nonlinearthink</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
