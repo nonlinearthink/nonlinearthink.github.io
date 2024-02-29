@@ -358,7 +358,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>在这里，FileController 类依赖了 ILoginService 接口，而不是直接使用 UserService 类，这样就避免了后续添加 AdminService 类后，FileController 类需要兼容 AdminService 类的逻辑。&lt;/p></description></item><item><title>Cesium 加载 Supermap Rest 服务</title><link>https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/</link><pubDate>Tue, 09 Jan 2024 19:08:00 +0800</pubDate><guid>https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/</guid><description>&lt;img src="https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium.jpg" alt="Featured image of post Cesium 加载 Supermap Rest 服务" />&lt;h2 id="解析-supermap-rest-根目录">解析 Supermap Rest 根目录&lt;/h2>
+&lt;/div>&lt;p>在这里，FileController 类依赖了 ILoginService 接口，而不是直接使用 UserService 类，这样就避免了后续添加 AdminService 类后，FileController 类需要兼容 AdminService 类的逻辑。&lt;/p></description></item><item><title>CesiumJS 加载 Supermap Rest 服务</title><link>https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/</link><pubDate>Tue, 09 Jan 2024 19:08:00 +0800</pubDate><guid>https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/</guid><description>&lt;img src="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium.jpg" alt="Featured image of post CesiumJS 加载 Supermap Rest 服务" />&lt;h2 id="解析-supermap-rest-根目录">解析 Supermap Rest 根目录&lt;/h2>
 &lt;p>从 Supermap Rest 服务的根目录出发，第一步是请求 CatalogList。返回的结构大致是这样子的：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -587,10 +587,10 @@
 &lt;/div>&lt;p>这个返回的 json 里面有很多信息，但是没有我们最需要的地图瓦片地址，先忽略它，之后再来看。&lt;/p>
 &lt;h3 id="获取地图瓦片">获取地图瓦片&lt;/h3>
 &lt;p>打开 iServer 的 Rest 服务地图列表界面，可以看到有一些可以预览效果的链接。&lt;/p>
-&lt;p>&lt;img src="https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/iserver.png"
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/iserver.png"
 width="1906"
 height="824"
-srcset="https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/iserver_hu4b79b557697ff759ec967ec81417ae91_16717_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/iserver_hu4b79b557697ff759ec967ec81417ae91_16717_1024x0_resize_box_3.png 1024w"
+srcset="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/iserver_hu4b79b557697ff759ec967ec81417ae91_16717_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/iserver_hu4b79b557697ff759ec967ec81417ae91_16717_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="iServer"
 class="gallery-image"
@@ -598,15 +598,15 @@ data-flex-grow="231"
 data-flex-basis="555px"
 >&lt;/p>
 &lt;p>通过查看网络请求，可以找到地图瓦片请求，显示最后请求的是一个 &lt;code>tileImage.png&lt;/code> 的图片：&lt;/p>
-&lt;p>&lt;img src="https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/WebGL3D.png"
-width="1879"
-height="913"
-srcset="https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/WebGL3D_hu83e505d290528a16a1b95933415667e1_209712_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/WebGL3D_hu83e505d290528a16a1b95933415667e1_209712_1024x0_resize_box_3.png 1024w"
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/tileImage-Request.png"
+width="1159"
+height="485"
+srcset="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/tileImage-Request_huabfdf193c1884327c4d9505f13d6c077_40301_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/tileImage-Request_huabfdf193c1884327c4d9505f13d6c077_40301_1024x0_resize_box_3.png 1024w"
 loading="lazy"
-alt="WebGL3D"
+alt="tileImage Request"
 class="gallery-image"
-data-flex-grow="205"
-data-flex-basis="493px"
+data-flex-grow="238"
+data-flex-basis="573px"
 >&lt;/p>
 &lt;p>以此，可以为 SupermapRestStaticResourceClient 添加一个新的方法来构造这个请求：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -950,10 +950,10 @@ $$&lt;/p>
 &lt;/div>&lt;h2 id="完整代码效果图">完整代码&amp;amp;效果图&lt;/h2>
 &lt;p>完整代码：&lt;a class="link" href="https://github.com/nonlinearthink/cesium-dev/tree/main/packages/cesium-supermap-rest-imagery-provider" target="_blank" rel="noopener"
 >cesium-supermap-rest-imagery-provider&lt;/a>&lt;/p>
-&lt;p>&lt;img src="https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium.jpg"
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium.jpg"
 width="1876"
 height="910"
-srcset="https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium_hu0485d4a175c61522316e77db0dafcef6_72500_480x0_resize_q75_box.jpg 480w, https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium_hu0485d4a175c61522316e77db0dafcef6_72500_1024x0_resize_q75_box.jpg 1024w"
+srcset="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium_hu0485d4a175c61522316e77db0dafcef6_72500_480x0_resize_q75_box.jpg 480w, https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium_hu0485d4a175c61522316e77db0dafcef6_72500_1024x0_resize_q75_box.jpg 1024w"
 loading="lazy"
 alt="效果图"
 class="gallery-image"
