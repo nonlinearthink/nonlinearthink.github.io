@@ -1,0 +1,474 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content='解析 Supermap Rest 根目录 从 Supermap Rest 服务的根目录出发，第一步是请求 CatalogList。返回的结构大致是这样子的： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 [ {'><title>Cesium 加载 Supermap Rest 服务</title>
+<link rel=canonical href=https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/><link rel=stylesheet href=/scss/style.min.4b9518f16bd19ab6bbb2a194725da3324cb4c22e005b31272620915af25354d0.css><meta property='og:title' content='Cesium 加载 Supermap Rest 服务'><meta property='og:description' content='解析 Supermap Rest 根目录 从 Supermap Rest 服务的根目录出发，第一步是请求 CatalogList。返回的结构大致是这样子的： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 [ {'><meta property='og:url' content='https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/'><meta property='og:site_name' content='nonlinearthink'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='CesiumJS'><meta property='article:tag' content='Supermap'><meta property='article:tag' content='Supermap Rest'><meta property='article:published_time' content='2024-01-09T19:08:00+08:00'><meta property='article:modified_time' content='2024-01-09T19:08:00+08:00'><meta property='og:image' content='https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium.jpg'><meta name=twitter:title content="Cesium 加载 Supermap Rest 服务"><meta name=twitter:description content="解析 Supermap Rest 根目录 从 Supermap Rest 服务的根目录出发，第一步是请求 CatalogList。返回的结构大致是这样子的： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 [ {"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://nonlinearthink.github.io/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium.jpg'><link rel="shortcut icon" href=/favicon.ico></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_huf560c7c6fec8c335206896d97bd53249_68145_300x0_resize_q75_box.jpg width=300 height=301 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>☕</span></figure><div class=site-meta><h1 class=site-name><a href=/>nonlinearthink</a></h1><h2 class=site-description>Coding a fantasy world.</h2></div></header><ol class=social-menu><li><a href=https://github.com/nonlinearthink target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.zhihu.com/people/neweden-85 target=_blank title=知乎 rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-zhihu" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 6h6v12h-2l-2 2-1-2h-1z"/><path d="M4 12h6.5"/><path d="M10.5 6h-5"/><path d="M6 4c-.5 2.5-1.5 3.5-2.5 4.5"/><path d="M8 6v7c0 4.5-2 5.5-4 7"/><path d="M11 18l-3-5"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>博客</span></a></li><li><a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/%E5%85%B3%E4%BA%8E/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>关于</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#解析-supermap-rest-根目录>解析 Supermap Rest 根目录</a></li><li><a href=#获取-cataloglist>获取 CatalogList</a></li><li><a href=#获取-staticresource>获取 StaticResource</a><ol><li><a href=#获取-capabilities>获取 Capabilities</a></li><li><a href=#获取地图瓦片>获取地图瓦片</a></li><li><a href=#计算-scale>计算 scale</a></li><li><a href=#获取-rectangle-和-tilingscheme>获取 Rectangle 和 TilingScheme</a></li></ol></li><li><a href=#构造-supermaprestimageryprovider>构造 SupermapRestImageryProvider</a></li><li><a href=#整合代码>整合代码</a><ol><li><a href=#请求-cataloglist>请求 CatalogList</a></li><li><a href=#请求-staticresource>请求 StaticResource</a></li><li><a href=#添加-imageryprovider>添加 ImageryProvider</a></li></ol></li><li><a href=#完整代码效果图>完整代码&效果图</a></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/><img src=/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium_hu0485d4a175c61522316e77db0dafcef6_72500_800x0_resize_q75_box.jpg srcset="/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium_hu0485d4a175c61522316e77db0dafcef6_72500_800x0_resize_q75_box.jpg 800w, /p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium_hu0485d4a175c61522316e77db0dafcef6_72500_1600x0_resize_q75_box.jpg 1600w" width=800 height=388 loading=lazy alt="Featured image of post Cesium 加载 Supermap Rest 服务"></a></div><div class=article-details><header class=article-category><a href=/categories/cesiumjs-%E7%BC%96%E7%A8%8B/>CesiumJS 编程</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/>Cesium 加载 Supermap Rest 服务</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jan 09, 2024</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 4 分钟</time></div></footer></div></header><section class=article-content><h2 id=解析-supermap-rest-根目录>解析 Supermap Rest 根目录</h2><p>从 Supermap Rest 服务的根目录出发，第一步是请求 CatalogList。返回的结构大致是这样子的：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;resourceConfigID&#34;</span><span class=p>:</span> <span class=s2>&#34;maps&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;supportedMediaTypes&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;application/xml&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;text/xml&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;application/json&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;application/fastjson&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;application/rjson&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;text/html&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=err>...</span>
+</span></span><span class=line><span class=cl>        <span class=p>],</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;http://192.168.31.4:8090/iserver/services/map-China/rest/maps&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;maps&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;resourceType&#34;</span><span class=p>:</span> <span class=s2>&#34;CatalogList&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=err>...</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div><p>我们需要里面的 <code>"path"</code>，去请求一个 CatalogList，可以取出对应的 <code>"name"</code>，让用户自己去选择请求哪个 CatalogList。</p><p>一个简单的 SupermapRestClient 实现：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>export</span> <span class=kr>class</span> <span class=nx>SupermapRestClient</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kr>private</span> <span class=nx>_url</span>: <span class=kt>string</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>constructor</span><span class=p>(</span><span class=nx>url</span>: <span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>_url</span> <span class=o>=</span> <span class=nx>url</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>async</span> <span class=nx>doRequest() {</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>resource</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>Resource</span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>_url</span> <span class=o>+</span> <span class=s2>&#34;.json&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>json</span> <span class=o>=</span> <span class=k>await</span> <span class=nx>resource</span><span class=p>.</span><span class=nx>fetchJson</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>resourceList</span><span class=o>:</span> <span class=p>{</span> <span class=nx>name</span>: <span class=kt>string</span><span class=p>;</span> <span class=nx>client</span>: <span class=kt>SupermapCatalogListClient</span> <span class=p>}[]</span> <span class=o>=</span> <span class=p>[];</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=kr>const</span> <span class=nx>item</span> <span class=k>of</span> <span class=nx>json</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=p>(</span><span class=nx>item</span><span class=p>.</span><span class=nx>resourceType</span> <span class=o>===</span> <span class=s2>&#34;CatalogList&#34;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>resourceList</span><span class=p>.</span><span class=nx>push</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>          <span class=nx>name</span>: <span class=kt>item.name</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nx>client</span>: <span class=kt>new</span> <span class=nx>SupermapCatalogListClient</span><span class=p>(</span><span class=nx>item</span><span class=p>.</span><span class=nx>path</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>resourceList</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>其中的 <code>SupermapCatalogListClient</code> 在下一小节实现。</p><h2 id=获取-cataloglist>获取 CatalogList</h2><p>现在假如用户已经选择需要请求的 CatalogList，再来看以一下 CatalogList 的结构：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;resourceConfigID&#34;</span><span class=p>:</span> <span class=s2>&#34;map&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;supportedMediaTypes&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;application/xml&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;text/xml&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;application/json&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;application/fastjson&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;application/rjson&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;text/html&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=err>...</span>
+</span></span><span class=line><span class=cl>        <span class=p>],</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;http://192.168.31.4:8090/iserver/services/map-China/rest/maps/China&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;China&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;resourceType&#34;</span><span class=p>:</span> <span class=s2>&#34;StaticResource&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=err>...</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div><p>同理，取出 <code>"path"</code> 和 <code>"name"</code>，一个简单的 SupermapCatalogListClient 实现：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>export</span> <span class=kr>class</span> <span class=nx>SupermapCatalogListClient</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kr>private</span> <span class=nx>_url</span>: <span class=kt>string</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>constructor</span><span class=p>(</span><span class=nx>url</span>: <span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>_url</span> <span class=o>=</span> <span class=nx>url</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>async</span> <span class=nx>doRequest() {</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>resource</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>Resource</span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>_url</span> <span class=o>+</span> <span class=s2>&#34;.json&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>json</span> <span class=o>=</span> <span class=k>await</span> <span class=nx>resource</span><span class=p>.</span><span class=nx>fetchJson</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>resourceList</span><span class=o>:</span> <span class=p>{</span> <span class=nx>name</span>: <span class=kt>string</span><span class=p>;</span> <span class=nx>client</span>: <span class=kt>SupermapRestStaticResourceClient</span> <span class=p>}[]</span> <span class=o>=</span> <span class=p>[];</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=kr>const</span> <span class=nx>item</span> <span class=k>of</span> <span class=nx>json</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=p>(</span><span class=nx>item</span><span class=p>.</span><span class=nx>resourceType</span> <span class=o>===</span> <span class=s2>&#34;StaticResource&#34;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>resourceList</span><span class=p>.</span><span class=nx>push</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>          <span class=nx>name</span>: <span class=kt>item.name</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nx>client</span>: <span class=kt>new</span> <span class=nx>SupermapRestStaticResourceClient</span><span class=p>(</span><span class=nx>item</span><span class=p>.</span><span class=nx>path</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>resourceList</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>其中的 <code>SupermapRestStaticResourceClient</code> 在下一小节实现。</p><h2 id=获取-staticresource>获取 StaticResource</h2><h3 id=获取-capabilities>获取 Capabilities</h3><p>在很多地图协议中，地图的 metadata 一般也叫做 Capabilities， StaticResource 请求的就是地图的 metadata，所以一个简单的 SupermapRestStaticResourceClient 实现：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>export</span> <span class=kr>class</span> <span class=nx>SupermapRestStaticResourceClient</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kr>private</span> <span class=nx>_url</span>: <span class=kt>string</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>constructor</span><span class=p>(</span><span class=nx>url</span>: <span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>_url</span> <span class=o>=</span> <span class=nx>url</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>async</span> <span class=nx>getCapabilities() {</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>jsonResource</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>Resource</span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>_url</span> <span class=o>+</span> <span class=s2>&#34;.json&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=k>await</span> <span class=nx>jsonResource</span><span class=p>.</span><span class=nx>fetchJson</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>这个返回的 json 里面有很多信息，但是没有我们最需要的地图瓦片地址，先忽略它，之后再来看。</p><h3 id=获取地图瓦片>获取地图瓦片</h3><p>打开 iServer 的 Rest 服务地图列表界面，可以看到有一些可以预览效果的链接。</p><p><img src=/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/iserver.png width=1906 height=824 srcset="/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/iserver_hu4b79b557697ff759ec967ec81417ae91_16717_480x0_resize_box_3.png 480w, /p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/iserver_hu4b79b557697ff759ec967ec81417ae91_16717_1024x0_resize_box_3.png 1024w" loading=lazy alt=iServer class=gallery-image data-flex-grow=231 data-flex-basis=555px></p><p>通过查看网络请求，可以找到地图瓦片请求，显示最后请求的是一个 <code>tileImage.png</code> 的图片：</p><p><img src=/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/WebGL3D.png width=1879 height=913 srcset="/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/WebGL3D_hu83e505d290528a16a1b95933415667e1_209712_480x0_resize_box_3.png 480w, /p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/WebGL3D_hu83e505d290528a16a1b95933415667e1_209712_1024x0_resize_box_3.png 1024w" loading=lazy alt=WebGL3D class=gallery-image data-flex-grow=205 data-flex-basis=493px></p><p>以此，可以为 SupermapRestStaticResourceClient 添加一个新的方法来构造这个请求：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>export</span> <span class=kr>class</span> <span class=nx>SupermapRestStaticResourceClient</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=p>...</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>getTileImageResource</span><span class=p>(</span><span class=nx>tilingScheme</span>: <span class=kt>Cesium.TilingScheme</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>originX</span>: <span class=kt>number</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>originY</span>: <span class=kt>number</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>tilingScheme</span> <span class=k>instanceof</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>WebMercatorTilingScheme</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>originX</span> <span class=o>=</span> <span class=o>-</span><span class=mf>20037508.342787</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=nx>originY</span> <span class=o>=</span> <span class=mf>20037508.342787</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>originX</span> <span class=o>=</span> <span class=o>-</span><span class=mi>180</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=nx>originY</span> <span class=o>=</span> <span class=mi>90</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>tileImageResource</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>Resource</span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>_url</span> <span class=o>+</span> <span class=s2>&#34;/tileImage.png&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nx>tileImageResource</span><span class=p>.</span><span class=nx>appendQueryParameters</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>transparent</span>: <span class=kt>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>cacheEnabled</span>: <span class=kt>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>width</span>: <span class=kt>256</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>height</span>: <span class=kt>256</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>redirect</span>: <span class=kt>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>overlapDisplayed</span>: <span class=kt>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>origin</span><span class=o>:</span> <span class=sb>`{x:</span><span class=si>${</span><span class=nx>originX</span><span class=si>}</span><span class=sb>,y:</span><span class=si>${</span><span class=nx>originY</span><span class=si>}</span><span class=sb>}`</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>x</span><span class=o>:</span> <span class=s2>&#34;{x}&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>y</span><span class=o>:</span> <span class=s2>&#34;{y}&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>scale</span><span class=o>:</span> <span class=s2>&#34;{scale}&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>tileImageResource</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>其中，<code>origin</code> 需要根据不同的投影坐标系或者地理坐标系进行修改，<code>x</code>, <code>y</code>, <code>scale</code> 这三个参数交给 Cesium 去填写。</p><p><code>x</code> 和 <code>y</code> 很好理解，就是水平和垂直方向上的瓦片坐标，但是 <code>scale</code> 是什么。</p><h3 id=计算-scale>计算 scale</h3><p>在 Supermap 的文档中，可以找到相关的描述：<a class=link href=https://enonline.supermap.com/iExpress9D/Appendix/scale.htm target=_blank rel=noopener>scale</a></p><p>$$
+scale = \frac{1}{Resolution \frac{PPI}{0.0254}}
+$$</p><ul><li>Resolution 代表每一个像素有多少实际距离</li><li>PPI 代表了每一英尺有多少个像素，这个数值一般为 <code>96</code></li><li>0.0254 是英尺和米的转换比例</li></ul><p>以 WebMercator 为例，它的第 0 级瓦片整张地图实际大小为 <code>40075016.68×40075016.68</code> 米左右，假如向 Supermap 发起一个 <code>256×256</code> 像素大小的图片请求，那么：</p><p>$$
+\begin{aligned}
+\cr
+Resolution &= \frac{40075016.68}{256} = 156543.03\cr
+scale &= \frac{1}{156543.03 \frac{96}{0.0254}} = 1.6901635718379278e-9
+\end{aligned}
+$$</p><p>以此类推，我们可以计算出 WGS84 和 WebMercator 各个级别下的 scale 值，并用一个数组来表示：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>WGS84Scales</span> <span class=o>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=mf>3.38032714321</span><span class=nx>e</span><span class=o>-</span><span class=mi>9</span><span class=p>,</span> <span class=mf>6.76065428641</span><span class=nx>e</span><span class=o>-</span><span class=mi>9</span><span class=p>,</span> <span class=mf>1.352130857282</span><span class=nx>e</span><span class=o>-</span><span class=mi>8</span><span class=p>,</span> <span class=mf>2.704261714564</span><span class=nx>e</span><span class=o>-</span><span class=mi>8</span><span class=p>,</span> <span class=mf>5.408523429128</span><span class=nx>e</span><span class=o>-</span><span class=mi>8</span><span class=p>,</span> <span class=mf>1.0817046858257</span><span class=nx>e</span><span class=o>-</span><span class=mi>7</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=mf>2.1634093716514</span><span class=nx>e</span><span class=o>-</span><span class=mi>7</span><span class=p>,</span> <span class=mf>4.3268187433028</span><span class=nx>e</span><span class=o>-</span><span class=mi>7</span><span class=p>,</span> <span class=mf>8.6536374866056</span><span class=nx>e</span><span class=o>-</span><span class=mi>7</span><span class=p>,</span> <span class=mf>1.73072749732112</span><span class=nx>e</span><span class=o>-</span><span class=mi>6</span><span class=p>,</span> <span class=mf>3.46145499464224</span><span class=nx>e</span><span class=o>-</span><span class=mi>6</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=mf>6.92290998928448</span><span class=nx>e</span><span class=o>-</span><span class=mi>6</span><span class=p>,</span> <span class=mf>1.3845819978568952</span><span class=nx>e</span><span class=o>-</span><span class=mi>5</span><span class=p>,</span> <span class=mf>2.7691639957137904</span><span class=nx>e</span><span class=o>-</span><span class=mi>5</span><span class=p>,</span> <span class=mf>5.538327991427581</span><span class=nx>e</span><span class=o>-</span><span class=mi>5</span><span class=p>,</span> <span class=mf>1.1076655982855162</span><span class=nx>e</span><span class=o>-</span><span class=mi>4</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=mf>2.2153311965710323</span><span class=nx>e</span><span class=o>-</span><span class=mi>4</span><span class=p>,</span> <span class=mf>4.4306623931420646</span><span class=nx>e</span><span class=o>-</span><span class=mi>4</span><span class=p>,</span> <span class=mf>8.861324786284129</span><span class=nx>e</span><span class=o>-</span><span class=mi>4</span><span class=p>,</span> <span class=mf>0.0017722649572568258</span><span class=p>,</span> <span class=mf>0.0035445299145136517</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=mf>0.007089059829027303</span>
+</span></span><span class=line><span class=cl><span class=p>];</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>WebmercatorScales</span> <span class=o>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=mf>1.6901635716</span><span class=nx>e</span><span class=o>-</span><span class=mi>9</span><span class=p>,</span> <span class=mf>3.38032714321</span><span class=nx>e</span><span class=o>-</span><span class=mi>9</span><span class=p>,</span> <span class=mf>6.76065428641</span><span class=nx>e</span><span class=o>-</span><span class=mi>9</span><span class=p>,</span> <span class=mf>1.352130857282</span><span class=nx>e</span><span class=o>-</span><span class=mi>8</span><span class=p>,</span> <span class=mf>2.704261714564</span><span class=nx>e</span><span class=o>-</span><span class=mi>8</span><span class=p>,</span> <span class=mf>5.408523429128</span><span class=nx>e</span><span class=o>-</span><span class=mi>8</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=mf>1.0817046858257</span><span class=nx>e</span><span class=o>-</span><span class=mi>7</span><span class=p>,</span> <span class=mf>2.1634093716514</span><span class=nx>e</span><span class=o>-</span><span class=mi>7</span><span class=p>,</span> <span class=mf>4.3268187433028</span><span class=nx>e</span><span class=o>-</span><span class=mi>7</span><span class=p>,</span> <span class=mf>8.6536374866056</span><span class=nx>e</span><span class=o>-</span><span class=mi>7</span><span class=p>,</span> <span class=mf>1.73072749732112</span><span class=nx>e</span><span class=o>-</span><span class=mi>6</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=mf>3.46145499464224</span><span class=nx>e</span><span class=o>-</span><span class=mi>6</span><span class=p>,</span> <span class=mf>6.92290998928448</span><span class=nx>e</span><span class=o>-</span><span class=mi>6</span><span class=p>,</span> <span class=mf>1.3845819978568952</span><span class=nx>e</span><span class=o>-</span><span class=mi>5</span><span class=p>,</span> <span class=mf>2.7691639957137904</span><span class=nx>e</span><span class=o>-</span><span class=mi>5</span><span class=p>,</span> <span class=mf>5.538327991427581</span><span class=nx>e</span><span class=o>-</span><span class=mi>5</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=mf>1.1076655982855162</span><span class=nx>e</span><span class=o>-</span><span class=mi>4</span><span class=p>,</span> <span class=mf>2.2153311965710323</span><span class=nx>e</span><span class=o>-</span><span class=mi>4</span><span class=p>,</span> <span class=mf>4.4306623931420646</span><span class=nx>e</span><span class=o>-</span><span class=mi>4</span><span class=p>,</span> <span class=mf>8.861324786284129</span><span class=nx>e</span><span class=o>-</span><span class=mi>4</span><span class=p>,</span> <span class=mf>0.0017722649572568258</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=mf>0.0035445299145136517</span><span class=p>,</span> <span class=mf>0.007089059829027303</span>
+</span></span><span class=line><span class=cl><span class=p>];</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=获取-rectangle-和-tilingscheme>获取 Rectangle 和 TilingScheme</h3><p>Rectangle 就是 Cesium 里面的经纬度范围，TilingScheme 就是 Cesium 里面的投影坐标系和地理坐标系。</p><p>这些信息被记录在一开始我们请求的 Capabilities 里面。</p><p>为 SupermapRestStaticResourceClient 添加一个新的方法：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>export</span> <span class=kr>class</span> <span class=nx>SupermapRestStaticResourceClient</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=p>...</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>getTilingSchemeFromCapabilities</span><span class=p>(</span><span class=nx>capabilities</span>: <span class=kt>any</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>tilingScheme</span>: <span class=kt>Cesium.TilingScheme</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>capabilities</span><span class=p>.</span><span class=nx>prjCoordSys</span><span class=p>.</span><span class=nx>epsgCode</span> <span class=o>===</span> <span class=mi>4326</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=kr>const</span> <span class=nx>rectangle</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>Rectangle</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=nx>capabilities</span><span class=p>.</span><span class=nx>bounds</span><span class=p>.</span><span class=nx>left</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>capabilities</span><span class=p>.</span><span class=nx>bounds</span><span class=p>.</span><span class=nx>bottom</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>capabilities</span><span class=p>.</span><span class=nx>bounds</span><span class=p>.</span><span class=nx>right</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>capabilities</span><span class=p>.</span><span class=nx>bounds</span><span class=p>.</span><span class=nx>top</span>
+</span></span><span class=line><span class=cl>      <span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=nx>tilingScheme</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>GeographicTilingScheme</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>numberOfLevelZeroTilesX</span>: <span class=kt>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>numberOfLevelZeroTilesY</span>: <span class=kt>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>rectangle</span>
+</span></span><span class=line><span class=cl>      <span class=p>});</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=nx>capabilities</span><span class=p>.</span><span class=nx>prjCoordSys</span><span class=p>.</span><span class=nx>epsgCode</span> <span class=o>===</span> <span class=mi>3857</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=kr>const</span> <span class=nx>southwest</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>Cartesian2</span><span class=p>(</span><span class=nx>capabilities</span><span class=p>.</span><span class=nx>bounds</span><span class=p>.</span><span class=nx>left</span><span class=p>,</span> <span class=nx>capabilities</span><span class=p>.</span><span class=nx>bounds</span><span class=p>.</span><span class=nx>bottom</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=kr>const</span> <span class=nx>northeast</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>Cartesian2</span><span class=p>(</span><span class=nx>capabilities</span><span class=p>.</span><span class=nx>bounds</span><span class=p>.</span><span class=nx>right</span><span class=p>,</span> <span class=nx>capabilities</span><span class=p>.</span><span class=nx>bounds</span><span class=p>.</span><span class=nx>top</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=nx>tilingScheme</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>WebMercatorTilingScheme</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>numberOfLevelZeroTilesX</span>: <span class=kt>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>numberOfLevelZeroTilesY</span>: <span class=kt>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>rectangleSouthwestInMeters</span>: <span class=kt>southwest</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>rectangleNortheastInMeters</span>: <span class=kt>northeast</span>
+</span></span><span class=line><span class=cl>      <span class=p>});</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>throw</span> <span class=k>new</span> <span class=nb>Error</span><span class=p>(</span><span class=sb>`espsgCode </span><span class=si>${</span><span class=nx>capabilities</span><span class=p>.</span><span class=nx>prjCoordSys</span><span class=p>.</span><span class=nx>epsgCode</span><span class=si>}</span><span class=sb> is not supported.`</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>tilingScheme</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=构造-supermaprestimageryprovider>构造 SupermapRestImageryProvider</h2><p>最后使用 SupermapRestStaticResourceClient 去构造一个 SupermapRestImageryProvider，它继承自 Cesium.UrlTemplateImageryProvider：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>export</span> <span class=kr>class</span> <span class=nx>SupermapRestImageryProvider</span> <span class=kr>extends</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>UrlTemplateImageryProvider</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kr>private</span> <span class=kr>constructor</span><span class=p>(</span><span class=nx>options</span>: <span class=kt>Cesium.UrlTemplateImageryProvider.ConstructorOptions</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>super</span><span class=p>(</span><span class=nx>options</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>static</span> <span class=kr>async</span> <span class=nx>fromSupermapRestStaticResourceClient</span><span class=p>(</span><span class=nx>client</span>: <span class=kt>SupermapRestStaticResourceClient</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>capabilities</span> <span class=o>=</span> <span class=k>await</span> <span class=nx>client</span><span class=p>.</span><span class=nx>getCapabilities</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>tilingScheme</span> <span class=o>=</span> <span class=nx>client</span><span class=p>.</span><span class=nx>getTilingSchemeFromCapabilities</span><span class=p>(</span><span class=nx>capabilities</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>tileImageResource</span> <span class=o>=</span> <span class=nx>client</span><span class=p>.</span><span class=nx>getTileImageResource</span><span class=p>(</span><span class=nx>tilingScheme</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=k>new</span> <span class=nx>SupermapRestImageryProvider</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>url</span>: <span class=kt>tileImageResource</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>tilingScheme</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>customTags</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>scale</span>: <span class=kt>function</span> <span class=p>(</span><span class=nx>_imageryProvider</span>: <span class=kt>Cesium.UrlTemplateImageryProvider</span><span class=p>,</span> <span class=nx>_x</span>: <span class=kt>number</span><span class=p>,</span> <span class=nx>_y</span>: <span class=kt>number</span><span class=p>,</span> <span class=nx>level</span>: <span class=kt>number</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=k>if</span> <span class=p>(</span><span class=nx>tilingScheme</span> <span class=k>instanceof</span> <span class=nx>Cesium</span><span class=p>.</span><span class=nx>WebMercatorTilingScheme</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=nx>WebmercatorScales</span><span class=p>[</span><span class=nx>level</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=nx>WGS84Scales</span><span class=p>[</span><span class=nx>level</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>});</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>其中，使用了 customTags 功能，因为 scale 不是 Cesium.UrlTemplateImageryProvider 默认有的参数，需要我们自定义一个函数返回在不同 level 下的 scale 值。</p><h2 id=整合代码>整合代码</h2><p>最后，演示如何去使用上面编写的方法。</p><h3 id=请求-cataloglist>请求 CatalogList</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>url</span> <span class=o>=</span> <span class=s2>&#34;你的 Supermap Rest 地址&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 创建 SupermapRestClient
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>client</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>SupermapRestClient</span><span class=p>(</span><span class=nx>url</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 请求 CatalogList。
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>catalogList</span> <span class=o>=</span> <span class=k>await</span> <span class=nx>client</span><span class=p>.</span><span class=nx>doRequest</span><span class=p>();</span>
+</span></span></code></pre></td></tr></table></div></div><p>等待用户选择哪一个 CatalogList。</p><h3 id=请求-staticresource>请求 StaticResource</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=c1>// 假设用户选择了第一个
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>selectId</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 获取用户选择的 CatalogListClient
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>catalogListClient</span>: <span class=kt>SupermapCatalogListClient</span> <span class=o>=</span> <span class=nx>catalogList</span><span class=p>[</span><span class=nx>selectId</span><span class=p>].</span><span class=nx>client</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 请求 StaticResource
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>staticResourceList</span> <span class=o>=</span> <span class=k>await</span> <span class=nx>catalogListClient</span><span class=p>.</span><span class=nx>doRequest</span><span class=p>();</span>
+</span></span></code></pre></td></tr></table></div></div><p>等待用户选择哪一个 StaticResource。</p><h3 id=添加-imageryprovider>添加 ImageryProvider</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=c1>// 假设用户选择了第一个
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>selectId</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 获取用户选择的 StaticResourceClient
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>staticResourceClient</span>: <span class=kt>SupermapRestStaticResourceClient</span> <span class=o>=</span> <span class=nx>staticResourceList</span><span class=p>[</span><span class=nx>selectId</span><span class=p>].</span><span class=nx>client</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 创建 ImageryProvider
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>provider</span> <span class=o>=</span> <span class=k>await</span> <span class=nx>SupermapRestImageryProvider</span><span class=p>.</span><span class=nx>fromSupermapRestStaticResourceClient</span><span class=p>(</span><span class=nx>staticResourceClient</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 添加 ImageryProvider
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>viewer</span><span class=p>.</span><span class=nx>imageryLayers</span><span class=p>.</span><span class=nx>addImageryProvider</span><span class=p>(</span><span class=nx>provider</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=完整代码效果图>完整代码&效果图</h2><p>完整代码：<a class=link href=https://github.com/nonlinearthink/cesium-dev/tree/main/packages/cesium-supermap-rest-imagery-provider target=_blank rel=noopener>cesium-supermap-rest-imagery-provider</a></p><p><img src=/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium.jpg width=1876 height=910 srcset="/p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium_hu0485d4a175c61522316e77db0dafcef6_72500_480x0_resize_q75_box.jpg 480w, /p/cesium-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium_hu0485d4a175c61522316e77db0dafcef6_72500_1024x0_resize_q75_box.jpg 1024w" loading=lazy alt=效果图 class=gallery-image data-flex-grow=206 data-flex-basis=494px></p></section><footer class=article-footer><section class=article-tags><a href=/tags/cesiumjs/>CesiumJS</a>
+<a href=/tags/supermap/>Supermap</a>
+<a href=/tags/supermap-rest/>Supermap Rest</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><script src=https://giscus.app/client.js data-repo=nonlinearthink/nonlinearthink.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkyNTQ3MTc3NDc=" data-category=Announcements data-category-id=DIC_kwDODy6vM84CbsFQ data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=top data-theme=light data-lang=en crossorigin=anonymous async></script><script>function setGiscusTheme(e){let t=document.querySelector("iframe.giscus-frame");t&&t.contentWindow.postMessage({giscus:{setConfig:{theme:e}}},"https://giscus.app")}(function(){addEventListener("message",t=>{if(event.origin!=="https://giscus.app")return;e()}),window.addEventListener("onColorSchemeChange",e);function e(){setGiscusTheme(document.documentElement.dataset.scheme==="light"?"light":"dark")}})()</script><footer class=site-footer><section class=copyright>&copy;
+2019 -
+2024 nonlinearthink</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.22.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
