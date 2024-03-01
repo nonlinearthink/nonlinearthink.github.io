@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>C++ on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/c++/</link><description>Recent content in C++ on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 27 Feb 2024 21:56:50 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml"/><item><title>面向对象 SOLID 设计原则</title><link>https://nonlinearthink.github.io/p/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-solid-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</link><pubDate>Tue, 27 Feb 2024 21:56:50 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-solid-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</guid><description>&lt;p>&lt;strong>如何编写一个可维护、可理解和可扩展的软件？&lt;/strong>&lt;/p>
-&lt;p>这是一个非常重要的问题，本文旨在介绍一个有着 20 年历史的面向对象设计原则，希望对你能产生帮助。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>C++ on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/c++/</link><description>Recent content in C++ on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 27 Feb 2024 21:56:50 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml"/><item><title>面向对象 SOLID 设计原则</title><link>https://nonlinearthink.github.io/p/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-solid-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</link><pubDate>Tue, 27 Feb 2024 21:56:50 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-solid-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</guid><description>&lt;p>软件由需求驱动，而需求会不断变化，随着时间的变化，系统的熵必然会不断增加，软件开发就是控制系统熵减的一个过程。那么，&lt;strong>如何编写一个可维护、可理解和可扩展的软件？&lt;/strong>&lt;/p>
+&lt;p>本文旨在介绍一个有着 20 年历史的面向对象 SOLID 设计原则，可能会对你有所帮助。&lt;/p>
 &lt;h2 id="solid-简介">SOLID 简介&lt;/h2>
 &lt;p>SOLID 是面向对象编程领域的五个设计原则，由它们的首字母缩写而来：&lt;/p>
 &lt;ul>
@@ -414,6 +414,12 @@
 &lt;ul>
 &lt;li>&lt;a class="link" href="https://www.baeldung.com/solid-principles" target="_blank" rel="noopener"
 >A Solid Guide to SOLID Principles&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.baeldung.com/java-single-responsibility-principle" target="_blank" rel="noopener"
+>Single Responsibility Principle in Java&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.baeldung.com/java-open-closed-principle" target="_blank" rel="noopener"
+>Open/Closed Principle in Java&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.baeldung.com/java-liskov-substitution-principle" target="_blank" rel="noopener"
+>Liskov Substitution Principle in Java&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>编写光栅化渲染器（四）绘制三角形</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/</link><pubDate>Tue, 12 Dec 2023 16:42:50 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/</guid><description>&lt;h2 id="求解绘制三角形问题">求解绘制三角形问题&lt;/h2>
 &lt;p>绘制三角形就是遍历每一个像素，然后，判断这个像素是否在三角形内部。&lt;/p>
 &lt;p>但是万一，三角形很小，而屏幕很大，遍历每一个像素显然是非常低效的，在正式遍历前可以求出 &lt;code>Bounding Rect&lt;/code> 来缩小范围：&lt;/p>

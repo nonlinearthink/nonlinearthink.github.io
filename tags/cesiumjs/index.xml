@@ -238,10 +238,10 @@ data-flex-grow="231"
 data-flex-basis="555px"
 >&lt;/p>
 &lt;p>通过查看网络请求，可以找到地图瓦片请求，显示最后请求的是一个 &lt;code>tileImage.png&lt;/code> 的图片：&lt;/p>
-&lt;p>&lt;img src="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/tileImage-Request.png"
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/tileImage.png"
 width="1159"
 height="485"
-srcset="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/tileImage-Request_huabfdf193c1884327c4d9505f13d6c077_40301_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/tileImage-Request_huabfdf193c1884327c4d9505f13d6c077_40301_1024x0_resize_box_3.png 1024w"
+srcset="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/tileImage_huabfdf193c1884327c4d9505f13d6c077_40301_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/tileImage_huabfdf193c1884327c4d9505f13d6c077_40301_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="tileImage Request"
 class="gallery-image"
@@ -510,7 +510,7 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>其中，使用了 customTags 功能，因为 scale 不是 Cesium.UrlTemplateImageryProvider 默认有的参数，需要我们自定义一个函数返回在不同 level 下的 scale 值。&lt;/p>
-&lt;h2 id="整合代码">整合代码&lt;/h2>
+&lt;h2 id="代码调用流程">代码调用流程&lt;/h2>
 &lt;p>最后，演示如何去使用上面编写的方法。&lt;/p>
 &lt;h3 id="请求-cataloglist">请求 CatalogList&lt;/h3>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -599,4 +599,9 @@ alt="效果图"
 class="gallery-image"
 data-flex-grow="206"
 data-flex-basis="494px"
->&lt;/p></description></item></channel></rss>
+>&lt;/p>
+&lt;h2 id="参考资料">参考资料&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://blog.csdn.net/supermapsupport/article/details/109642980" target="_blank" rel="noopener"
+>SuperMap iClient3D for WebGL SuperMapImageryProvider自定义实现&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>
