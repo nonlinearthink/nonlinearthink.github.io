@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CPU on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/cpu/</link><description>Recent content in CPU on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 06 Mar 2024 12:23:24 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/cpu/index.xml" rel="self" type="application/rss+xml"/><item><title>PARALLEL COMPUTING 课程笔记（一）</title><link>https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/</link><pubDate>Wed, 06 Mar 2024 12:23:24 +0800</pubDate><guid>https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/</guid><description>&lt;p>课程的链接：&lt;a class="link" href="https://gfxcourses.stanford.edu/cs149/fall23" target="_blank" rel="noopener"
+>PARALLEL COMPUTING(Standford CS149)&lt;/a>&lt;/p>
+&lt;p>本文是我个人的学习笔记，适合没那么多时间想要快速过一遍或者英文不好的同学阅读。&lt;/p>
+&lt;h2 id="why-parallelism-why-efficiency">Why Parallelism? Why Efficiency?&lt;/h2>
+&lt;h3 id="为什么需要并行">为什么需要并行？&lt;/h3>
+&lt;p>在过去很长一段时间，处理器性能的提升得益于两方面：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>指令级并行（Instruction Level Parallelism）的发展&lt;/p>
+&lt;p>处理器底层实际上有并行运行的机制，但因为对程序员是不可见的，所以一般人不知道。对于没有依赖关系的指令，现代的处理器会使用并行执行。类似如图所示：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/ILP-Example.png"
+width="761"
+height="464"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/ILP-Example_hu9aec48c03d118b15d18658d4974aa80e_45814_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/ILP-Example_hu9aec48c03d118b15d18658d4974aa80e_45814_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Instruction Level Parallelism"
+class="gallery-image"
+data-flex-grow="164"
+data-flex-basis="393px"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>“没有依赖关系”是指，这条指令不需要等待其他指令执行完毕，才能执行。&lt;/p>
+&lt;/blockquote>
+&lt;p>超标量处理器（Superscalar Processor）是指能找到可并行执行的指令，并行运行的处理器，其与普通处理器的区别如图所示：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Simple-Processor.png"
+width="172"
+height="225"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Simple-Processor_hua11f16dc4db978e1a333e29b0fa29c56_5880_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Simple-Processor_hua11f16dc4db978e1a333e29b0fa29c56_5880_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Simple Processor"
+class="gallery-image"
+data-flex-grow="76"
+data-flex-basis="183px"
+>
+&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Superscalar-Processor.png"
+width="260"
+height="226"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Superscalar-Processor_hubda5b55b6ae455fa4940e6c8ff0a20ef_7889_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Superscalar-Processor_hubda5b55b6ae455fa4940e6c8ff0a20ef_7889_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Superscalar Processor"
+class="gallery-image"
+data-flex-grow="115"
+data-flex-basis="276px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>CPU 频率的提升&lt;/p>
+&lt;p>著名的摩尔定律：处理器的性能每 18 个月就会翻一番。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>得益于这些原因，在过去很长一段时间内，软件开发者不需要修改任何程序，仅仅更换硬件就能让程序越来越快。&lt;/p>
+&lt;p>不幸的是 ILP 的研究已经到顶，CPU 的频率由于要考虑功耗无法再继续提升，如今，处理器的性能提升主要来自于在单位面积中堆叠更多的晶体管：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Processor-Bottleneck.png"
+width="658"
+height="448"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Processor-Bottleneck_huba270ea9e92bc200c0fd65852bb0fd45_118733_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Processor-Bottleneck_huba270ea9e92bc200c0fd65852bb0fd45_118733_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Processor Bottleneck"
+class="gallery-image"
+data-flex-grow="146"
+data-flex-basis="352px"
+>&lt;/p>
+&lt;p>与此同时，多核处理器如今已经成为了主流，程序员必须要编写并行的程序才能利用多核处理器的优势。No more free lunch for software developers!&lt;/p>
+&lt;h3 id="为什么需要高效">为什么需要高效？&lt;/h3>
+&lt;p>仅仅编写并行的程序是不行的，程序也必须是高效的。高效也是讨论并行编程的关键主题。&lt;/p>
+&lt;hr>
+&lt;p>高效的并行编程往往来自于高效的数据访问。&lt;/p>
+&lt;p>例如，使用 &lt;code>R0 &amp;lt;- mem[R2]&lt;/code> 指令访问数据，它发起一个请求，把内存中地址 R2 位置的数据传送给 R0 寄存器。在这个过程中，因为需要等待数据传输完毕，会造成一个延迟（Memory Access Latency）:&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Memory-Access-Latency.png"
+width="891"
+height="217"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Memory-Access-Latency_hu5e66e14cccb08da32a344cdcf3fd83b4_34747_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Memory-Access-Latency_hu5e66e14cccb08da32a344cdcf3fd83b4_34747_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Memory Access Latency"
+class="gallery-image"
+data-flex-grow="410"
+data-flex-basis="985px"
+>&lt;/p>
+&lt;p>处理器无法运行下一条指令，因为需要等待上一条指令完成。这种现象叫做 &lt;code>停顿(Stalls)&lt;/code>。&lt;/p>
+&lt;hr>
+&lt;p>使用缓存(Cache)可以减少停顿的长度。什么是缓存？&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>缓存是硬件实现，软件程序不需要关注。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>缓存只是管理一份数据的拷贝。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在缓存中读取/写入的速度要比内存快得多。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>缓存以“缓存行(Cache Lines)” 的形式读取/写入数据。&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Cache.png"
+width="185"
+height="90"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Cache_hu4b4c51c3c9b0e9674f1b41b519940502_6041_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Cache_hu4b4c51c3c9b0e9674f1b41b519940502_6041_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Cache"
+class="gallery-image"
+data-flex-grow="205"
+data-flex-basis="493px"
+>&lt;/p>
+&lt;p>如图所示，每行由一条指向内存的地址和一定长度的数据组成。每次读取/写入以一行为单位。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>缓存分为很多级别，级别越高，访问速度越快，但容量越小。各个级别的缓存延迟对比图：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Cache-Latency.png"
+width="694"
+height="205"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Cache-Latency_hu8767f4c8e3549bd9e481ce06bed13a5a_24328_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Cache-Latency_hu8767f4c8e3549bd9e481ce06bed13a5a_24328_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Cache Latency"
+class="gallery-image"
+data-flex-grow="338"
+data-flex-basis="812px"
+>&lt;/p>
+&lt;h2 id="a-modern-multi-core-processor">A Modern Multi-Core Processor&lt;/h2>
+&lt;h3 id="多核处理器">多核处理器&lt;/h3>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Multi-Core-Processor.png"
+width="622"
+height="340"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Multi-Core-Processor_hu05d690df6a319b173859bf07b7841acb_30107_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Multi-Core-Processor_hu05d690df6a319b173859bf07b7841acb_30107_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Multi-Core Processor"
+class="gallery-image"
+data-flex-grow="182"
+data-flex-basis="439px"
+>&lt;/p></description></item></channel></rss>
