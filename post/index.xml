@@ -44,7 +44,7 @@ data-flex-basis="276px"
 >&lt;/p>
 &lt;/li>
 &lt;li>
-&lt;p>CPU 频率的提升&lt;/p>
+&lt;p>处理器频率的提升&lt;/p>
 &lt;p>著名的摩尔定律：处理器的性能每 18 个月就会翻一番。&lt;/p>
 &lt;/li>
 &lt;/ol>
@@ -63,9 +63,9 @@ data-flex-basis="352px"
 &lt;p>与此同时，多核处理器如今已经成为了主流，程序员必须要编写并行的程序才能利用多核处理器的优势。No more free lunch for software developers!&lt;/p>
 &lt;h3 id="为什么需要高效">为什么需要高效？&lt;/h3>
 &lt;p>仅仅编写并行的程序是不行的，程序也必须是高效的。高效也是讨论并行编程的关键主题。&lt;/p>
-&lt;hr>
-&lt;p>高效的并行编程往往来自于高效的数据访问。&lt;/p>
-&lt;p>例如，使用 &lt;code>R0 &amp;lt;- mem[R2]&lt;/code> 指令访问数据，它发起一个请求，把内存中地址 R2 位置的数据传送给 R0 寄存器。在这个过程中，因为需要等待数据传输完毕，会造成一个延迟（Memory Access Latency）:&lt;/p>
+&lt;p>而高效的并行编程往往来自于高效的数据访问。&lt;/p>
+&lt;h4 id="latency--stall">Latency &amp;amp; Stall&lt;/h4>
+&lt;p>使用 &lt;code>R0 &amp;lt;- mem[R2]&lt;/code> 指令访问数据，它发起一个请求，把内存中地址 R2 位置的数据传送给 R0 寄存器。在这个过程中，因为需要等待数据传输完毕，会造成一个延迟（Memory Access Latency）:&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Memory-Access-Latency.png"
 width="891"
 height="217"
@@ -76,8 +76,8 @@ class="gallery-image"
 data-flex-grow="410"
 data-flex-basis="985px"
 >&lt;/p>
-&lt;p>处理器无法运行下一条指令，因为需要等待上一条指令完成。这种现象叫做 &lt;code>停顿(Stalls)&lt;/code>。&lt;/p>
-&lt;hr>
+&lt;p>处理器无法运行下一条指令，因为需要等待上一条指令完成。这种现象叫做 &lt;code>停顿(Stall)&lt;/code>。&lt;/p>
+&lt;h4 id="cache">Cache&lt;/h4>
 &lt;p>使用缓存(Cache)可以减少停顿的长度。什么是缓存？&lt;/p>
 &lt;ol>
 &lt;li>
@@ -115,8 +115,9 @@ class="gallery-image"
 data-flex-grow="338"
 data-flex-basis="812px"
 >&lt;/p>
-&lt;h2 id="a-modern-multi-core-processor">A Modern Multi-Core Processor&lt;/h2>
-&lt;h3 id="多核处理器">多核处理器&lt;/h3>
+&lt;p>为了尽可能使用速度快的缓存，需要缓存调度策略。比如：Least Recently Used(LRU)。&lt;/p>
+&lt;p>在一些现代处理器中，存在预测在未来可能会被访问的数据，并提前放入 Cache 中的逻辑。&lt;/p>
+&lt;h3 id="早期的多核处理器">早期的多核处理器&lt;/h3>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Multi-Core-Processor.png"
 width="622"
 height="340"
@@ -126,6 +127,85 @@ alt="Multi-Core Processor"
 class="gallery-image"
 data-flex-grow="182"
 data-flex-basis="439px"
+>&lt;/p>
+&lt;h2 id="a-modern-multi-core-processor">A Modern Multi-Core Processor&lt;/h2>
+&lt;h3 id="simd">SIMD&lt;/h3>
+&lt;h4 id="什么是-simd">什么是 SIMD&lt;/h4>
+&lt;p>SIMD(Single Instruction, Multiple Data) 的核心理念是在多个 ALU 中分摊管理指令流的成本/复杂性，把相同的指令广播给所有的 ALU 并行运行。即一条指令处理多个数据，常用于向量或者矩阵的计算。一个支持 SIMD 的处理器的例子：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Processor.png"
+width="173"
+height="233"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Processor_hu6f760c5cfe9b47fb3af84e8403cf442b_6941_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Processor_hu6f760c5cfe9b47fb3af84e8403cf442b_6941_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="SIMD Processor"
+class="gallery-image"
+data-flex-grow="74"
+data-flex-basis="178px"
+>&lt;/p>
+&lt;p>在汇编代码中，有专用的指令：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Instruction.png"
+width="154"
+height="235"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Instruction_hu71a1251920508e927550de5608b884df_6411_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Instruction_hu71a1251920508e927550de5608b884df_6411_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="SIMD Instruction"
+class="gallery-image"
+data-flex-grow="65"
+data-flex-basis="157px"
+>&lt;/p>
+&lt;p>这段代码使用一个 256(8 * 32) 位的寄存器存储 8 个数字，并行计算它们并输出结果。&lt;/p>
+&lt;blockquote>
+&lt;p>SIMD 和 ILP 并不同，SIMD 是使用一条指令计算多个数据，而 ILP 则是基于指令的依赖关系去让一些指令可以并行执行。它们可以同时存在。&lt;/p>
+&lt;/blockquote>
+&lt;h4 id="simd-的执行分歧">SIMD 的执行分歧&lt;/h4>
+&lt;p>如果遇到需要条件执行的程序，使用 SIMD 会导致执行分歧：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Conditional-Execution.png"
+width="436"
+height="289"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Conditional-Execution_hu13eccc39ddc8d84f37456630df44087a_21413_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Conditional-Execution_hu13eccc39ddc8d84f37456630df44087a_21413_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="SIMD Conditional Execution"
+class="gallery-image"
+data-flex-grow="150"
+data-flex-basis="362px"
+>&lt;/p>
+&lt;p>这意味着在一段时间内部分 ALU 是不工作的，导致了性能的浪费。在极端的情况下，可能会导致 CPU 仅使用 $\frac{1}{N}$ 的性能（仅有一个 ALU 工作）。&lt;/p>
+&lt;h4 id="如何使用-simd">如何使用 SIMD&lt;/h4>
+&lt;ul>
+&lt;li>Explicit SIMD，程序员使用显式调用封装了 SIMD 的库&lt;/li>
+&lt;li>Implicit SIMD，程序员仅编写高级语言的代码，由特殊的编译器自动生成 SIMD 的汇编指令&lt;/li>
+&lt;/ul>
+&lt;h3 id="thread">Thread&lt;/h3>
+&lt;p>线程（Thread），是指在一个处理器核心（Core）中，有多个执行上下文，线程并不能真正并行运行，它只是从一个执行上下文切换到另外一个执行上下文，轮流执行。在其他线程执行的时候，执行完的线程也不会结束，会有很长的停顿。&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Threads.png"
+width="523"
+height="296"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Threads_huca5b485f9c6929f902bba6b48060303e_44609_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Threads_huca5b485f9c6929f902bba6b48060303e_44609_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Threads"
+class="gallery-image"
+data-flex-grow="176"
+data-flex-basis="424px"
+>&lt;/p>
+&lt;p>使用线程还需要付出代价：因为存储执行上下文的物理单元也是有限的，更多的线程意味着程序的可用执行上下文会更小。&lt;/p>
+&lt;h2 id="总结">总结&lt;/h2>
+&lt;p>在现代处理器中，实现并行程序的方法有：&lt;/p>
+&lt;ul>
+&lt;li>Muti-Core&lt;/li>
+&lt;li>ILP&lt;/li>
+&lt;li>SIMD&lt;/li>
+&lt;li>Thread&lt;/li>
+&lt;/ul>
+&lt;p>外加实现高效数据读取/写入的 Cache，它们一起构成了这张现代处理器的并行架构图（同时适用于 CPU 和 GPU）：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Parallel-Architectures.png"
+width="369"
+height="212"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Parallel-Architectures_hua5d7a035de717b3e9cb1022e794ad11a_46897_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Parallel-Architectures_hua5d7a035de717b3e9cb1022e794ad11a_46897_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Parallel Architectures"
+class="gallery-image"
+data-flex-grow="174"
+data-flex-basis="417px"
 >&lt;/p></description></item><item><title>面向对象 SOLID 设计原则</title><link>https://nonlinearthink.github.io/p/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-solid-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</link><pubDate>Tue, 27 Feb 2024 21:56:50 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-solid-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</guid><description>&lt;p>软件由需求驱动，而需求会不断变化，随着时间的变化，系统的熵必然会不断增加，软件开发就是控制系统熵减的一个过程。那么，&lt;strong>如何编写一个可维护、可理解和可扩展的软件？&lt;/strong>&lt;/p>
 &lt;p>本文旨在介绍一个有着 20 年历史的面向对象 SOLID 设计原则，可能会对你有所帮助。&lt;/p>
 &lt;h2 id="solid-简介">SOLID 简介&lt;/h2>
