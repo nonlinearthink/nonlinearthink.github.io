@@ -64,8 +64,8 @@ data-flex-basis="352px"
 &lt;h3 id="为什么需要高效">为什么需要高效？&lt;/h3>
 &lt;p>仅仅编写并行的程序是不行的，程序也必须是高效的。高效也是讨论并行编程的关键主题。&lt;/p>
 &lt;p>而高效的并行编程往往来自于高效的数据访问。&lt;/p>
-&lt;h4 id="latency--stall">Latency &amp;amp; Stall&lt;/h4>
-&lt;p>使用 &lt;code>R0 &amp;lt;- mem[R2]&lt;/code> 指令访问数据，它发起一个请求，把内存中地址 R2 位置的数据传送给 R0 寄存器。在这个过程中，因为需要等待数据传输完毕，会造成一个延迟（Memory Access Latency）:&lt;/p>
+&lt;h4 id="延迟和停顿">延迟和停顿&lt;/h4>
+&lt;p>使用 &lt;code>R0 &amp;lt;- mem[R2]&lt;/code> 指令访问数据，它发起一个请求，把内存中地址 R2 位置的数据传送给 R0 寄存器。在这个过程中，因为需要等待数据传输完毕，会造成一个&lt;code>延迟（Memory Access Latency）&lt;/code>:&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Memory-Access-Latency.png"
 width="891"
 height="217"
@@ -77,7 +77,26 @@ data-flex-grow="410"
 data-flex-basis="985px"
 >&lt;/p>
 &lt;p>处理器无法运行下一条指令，因为需要等待上一条指令完成。这种现象叫做 &lt;code>停顿(Stall)&lt;/code>。&lt;/p>
-&lt;h4 id="cache">Cache&lt;/h4>
+&lt;h4 id="带宽">带宽&lt;/h4>
+&lt;p>时钟（Clock） 是指处理器执行一次运算需要的时间。如图所示：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Instruction-Per-Clock.png"
+width="605"
+height="320"
+srcset="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Instruction-Per-Clock_hu37ef6c801c6583a5d9cf4362cab99d6e_44169_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Instruction-Per-Clock_hu37ef6c801c6583a5d9cf4362cab99d6e_44169_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Instruction Per Clock"
+class="gallery-image"
+data-flex-grow="189"
+data-flex-basis="453px"
+>&lt;/p>
+&lt;ul>
+&lt;li>Math instruction 的运行时长是一次时钟&lt;/li>
+&lt;li>Load instruction 的运行时长是不固定的，取决于&lt;code>内存带宽（Memory Bandwidth）&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>如果一些 Math instruction 需要依赖于 Load instruction 的结果，就只能等待，于是就造成一次停顿。&lt;/p>
+&lt;p>大部分时候，处理器都在等待数据被加载，内存带宽几乎决定了处理器的运行速度。相比于从内存中加载数据，&lt;strong>The math is &amp;ldquo;free&amp;rdquo;&lt;/strong>.&lt;/p>
+&lt;p>所以，高性能的并行程序会尽可能减少从内存中请求数据的次数，并且更倾向于重新计算而不是存储/加载值，这一点可以从 GPU 的 Shader 编程中看出来。&lt;/p>
+&lt;h4 id="缓存">缓存&lt;/h4>
 &lt;p>使用缓存(Cache)可以减少停顿的长度。什么是缓存？&lt;/p>
 &lt;ol>
 &lt;li>
@@ -175,7 +194,7 @@ data-flex-basis="362px"
 &lt;li>Explicit SIMD，程序员使用显式调用封装了 SIMD 的库&lt;/li>
 &lt;li>Implicit SIMD，程序员仅编写高级语言的代码，由特殊的编译器自动生成 SIMD 的汇编指令&lt;/li>
 &lt;/ul>
-&lt;h3 id="thread">Thread&lt;/h3>
+&lt;h3 id="线程">线程&lt;/h3>
 &lt;p>线程（Thread），是指在一个处理器核心（Core）中，有多个执行上下文，线程并不能真正并行运行，它只是从一个执行上下文切换到另外一个执行上下文，轮流执行。在其他线程执行的时候，执行完的线程也不会结束，会有很长的停顿。&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Threads.png"
 width="523"
@@ -189,7 +208,7 @@ data-flex-basis="424px"
 >&lt;/p>
 &lt;p>使用线程还需要付出代价：因为存储执行上下文的物理单元也是有限的，更多的线程意味着程序的可用执行上下文会更小。&lt;/p>
 &lt;h2 id="总结">总结&lt;/h2>
-&lt;p>在现代处理器中，实现并行程序的方法有：&lt;/p>
+&lt;p>在现代处理器中，实现并行的方法有：&lt;/p>
 &lt;ul>
 &lt;li>Muti-Core&lt;/li>
 &lt;li>ILP&lt;/li>
