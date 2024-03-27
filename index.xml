@@ -1,4 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>nonlinearthink</title><link>https://nonlinearthink.github.io/</link><description>Recent content on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 13 Mar 2024 09:26:59 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>PARALLEL COMPUTING 课程笔记（一）</title><link>https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/</link><pubDate>Wed, 06 Mar 2024 12:23:24 +0800</pubDate><guid>https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/</guid><description>&lt;p>课程的链接：&lt;a class="link" href="https://gfxcourses.stanford.edu/cs149/fall23" target="_blank" rel="noopener"
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>nonlinearthink</title><link>https://nonlinearthink.github.io/</link><description>Recent content on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 27 Mar 2024 23:23:06 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>为什么低代码很糟糕</title><link>https://nonlinearthink.github.io/p/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%8E%E4%BB%A3%E7%A0%81%E5%BE%88%E7%B3%9F%E7%B3%95/</link><pubDate>Wed, 27 Mar 2024 23:23:06 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%8E%E4%BB%A3%E7%A0%81%E5%BE%88%E7%B3%9F%E7%B3%95/</guid><description>&lt;p>我从毕业后就一直在一家自称做低代码的公司工作，这篇文章主要写一些自己对低代码的心得体会。&lt;/p>
+&lt;h2 id="用户视角">用户视角&lt;/h2>
+&lt;h3 id="低代码比代码更难学习">低代码比代码更难学习&lt;/h3>
+&lt;p>大部分人都会有这样一种感觉，低代码比代码更难学习。&lt;/p>
+&lt;p>主要的原因是因为，代码往往是图灵完备的，虽然实现一个功能可能会非常麻烦，需要编写很多东西，但是你只是写更多的代码。&lt;/p>
+&lt;p>反过来看低代码，低代码总是希望用最简单和轻松的方式去完成一件事情。这就导致了，有太多需要被编排的流程，他们总是以一个简单的按钮、设置项开始，然后背后不知道做了多少事情。这还是在基于你开放的低代码功能是逻辑自洽的基础上，因为实际上，你的流程可能是混乱不堪的，被各种混杂的需求所裹挟，不断增加新的流程。&lt;/p>
+&lt;p>在我看来，这就是低代码的癌症：&lt;strong>在追求通用性的同时，还在追求易用性。&lt;/strong>&lt;/p>
+&lt;hr>
+&lt;p>因为低代码的难学，导致了另外一件事情，很多低代码平台的开发者，可能梦想是卖 License 赚钱，但是因为别人不会用，难以推广，到头来最后只有自己会用，那就只能自己帮客户去做了，到头来变相成了外包。&lt;/p>
+&lt;h3 id="低代码难以完成需求">低代码难以完成需求&lt;/h3>
+&lt;p>现实中的需求千奇百怪，低代码平台往往难以覆盖，用户最容易遇到的问题是，这个好像和我预期的不太一样。&lt;/p>
+&lt;p>这个问题就大了，因为无论怎么样，需求都是必须要覆盖的指标，不然别人不会花钱采购。如果没有覆盖又想要拿下客户，就需要做更多的定制。&lt;/p>
+&lt;h2 id="程序员视角">程序员视角&lt;/h2>
+&lt;h3 id="低代码程序员不熟悉业务">低代码程序员不熟悉业务&lt;/h3>
+&lt;p>&lt;strong>如果你不懂 Business Domain，你就不可能设计出合理的软件。&lt;/strong> 这是来自领域驱动设计思想的观点。&lt;/p>
+&lt;p>做低代码的程序员，有一个非常大的特点，那就是离需求和业务太远，只专注于技术的细节。&lt;/p>
+&lt;p>程序员在设计软件的时候必须要知道需求是什么，公司的业务是如何工作的，一个非常简单的例子，为什么拼多多没有购物车？&lt;/p>
+&lt;p>如果按照正常的软件设计思维，其他的软件都有购物车，这似乎也是一个非常常见和实用的设计，那我的软件就是应该有购物车啊！但是，拼多多的最大特色是拼团和砍一刀，都是一次争对一个商品，增加购物车反而还会增加用户思考、犹豫、比较的时间，更不容易下单。&lt;/p>
+&lt;p>所以，创新的业务往往是和现有常见软件的架构是不符的，如果程序员不知道到底要打造什么样的产品，他可能会倾向于延用和抄袭其他的软件设计。&lt;/p>
+&lt;p>另外，如果程序员不知道未来软件会怎么发展，会增加哪些功能，可能会导致后期加入一个新功能，整个软件都需要做大幅度调整。&lt;/p>
+&lt;p>无论如何，我想要说，即便是一个经验丰富，水平很高，设计过非常多大型软件的程序员，如果他不知道需求，不懂业务，就不可能设计出真正合理的软件。&lt;/p>
+&lt;hr>
+&lt;p>单论技术水平，低代码程序员水平可能确实高一些，因为他们可以专心研究技术，而不用去思考复杂的、繁乱的各种业务。但是，公司直接靠业务赚钱，并不直接靠技术赚钱。&lt;/p>
+&lt;p>很多程序员不想承认的一点就是，技术其实根本不重要，赚到钱才是真的重要。&lt;/p>
+&lt;p>不过要是打工的话，还是做技术吧，原因是打工就注定你赚取不到公司大部分的收益，整天忙需求和业务的程序员，随着你对需求和业务的情况掌握得越来越多，你对公司的价值实际上是会越来越大的，但一旦你离开这个公司，这些东西很难延续，你的价值就会受到打击。&lt;/p>
+&lt;p>相反，专注技术的程序员简历可以写得非常高大上，跳槽会容易很多，因为技术的价值更容易延续。&lt;/p>
+&lt;h3 id="臃肿的架构和功能">臃肿的架构和功能&lt;/h3>
+&lt;p>我认为低代码和阿里曾经鼓吹的中台的概念非常像，可以说，低代码就是技术中台，但是技术中台不一定是低代码，中台也不止只有技术中台。所以，中台有的问题，低代码也有。&lt;/p>
+&lt;p>阿里因为集团非常庞大，子公司和团队非常多，每个子公司和团队都有自己的业务，其中涉及到很多重复的内容。所以，就希望有一个提供通用服务的中台，然后每个前台的团队就可以利用中台提供的服务，快速实现业务的搭建，而不用自己重复搞一遍。&lt;/p>
+&lt;p>这个想法并没有什么问题，看上去可以优化企业的效率。但是，在执行的过程中，遇到了一些问题。&lt;/p>
+&lt;p>第一点就是，随着接入的业务越来越多，阿里的中台变得越来越庞大，越来越复杂。很多东西，看上去是一样的，但是具体到更加细节的地方，又不太一样，需要特殊处理、特殊对待。这点完美体现在了我日常的低代码平台开发当中，低代码，似乎就是在不停地编写复杂的 &lt;code>if-else&lt;/code>，处理更多的特殊情况，让这个软件看上去更加“Low Code”。&lt;/p>
+&lt;p>第二点就是，因为中台被搞得过于复杂和臃肿，所以，一些无法融入、特殊的业务被拒绝。这些业务往往是更加创新的业务，他摧毁了阿里持续创新的动力。当然，这个法则作用在低代码平台上，不会这么夸张，但是，我想说的是，你需要明确，低代码不可能容纳所有的业务，只会把成本推得越来越高，不要盲目地满足需求。&lt;/p>
+&lt;h2 id="总结">总结&lt;/h2>
+&lt;ul>
+&lt;li>从用户的角度来说，低代码很难学，而且还不一定能满足需求。&lt;/li>
+&lt;li>从程序员的角度来说，低代码并不一定有利于自身的发展，因为工程师不是只写代码，而是把控和规划整个软件的生命周期。低代码只要持续维护下去必然会导致软件变得极其复杂和臃肿。&lt;/li>
+&lt;/ul></description></item><item><title>PARALLEL COMPUTING 课程笔记（一）</title><link>https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/</link><pubDate>Wed, 06 Mar 2024 12:23:24 +0800</pubDate><guid>https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/</guid><description>&lt;p>课程的链接：&lt;a class="link" href="https://gfxcourses.stanford.edu/cs149/fall23" target="_blank" rel="noopener"
 >PARALLEL COMPUTING(Standford CS149)&lt;/a>&lt;/p>
 &lt;p>本文是我个人的学习笔记，适合没那么多时间想要快速过一遍或者英文不好的同学阅读。&lt;/p>
 &lt;h2 id="why-parallelism-why-efficiency">Why Parallelism? Why Efficiency?&lt;/h2>
