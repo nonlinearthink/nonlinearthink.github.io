@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GIS on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/gis/</link><description>Recent content in GIS on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 09 Jan 2024 19:08:00 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/gis/index.xml" rel="self" type="application/rss+xml"/><item><title>CesiumJS 加载 Supermap Rest 服务</title><link>https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/</link><pubDate>Tue, 09 Jan 2024 19:08:00 +0800</pubDate><guid>https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/</guid><description>&lt;img src="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium.jpg" alt="Featured image of post CesiumJS 加载 Supermap Rest 服务" />&lt;h2 id="解析-supermap-rest-根目录">解析 Supermap Rest 根目录&lt;/h2>
-&lt;p>从 Supermap Rest 服务的根目录出发，第一步是请求 CatalogList。返回的结构大致是这样子的：&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GIS on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/gis/</link><description>Recent content in GIS on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 09 Jan 2024 19:08:00 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/gis/index.xml" rel="self" type="application/rss+xml"/><item><title>CesiumJS 加载 Supermap Rest 服务</title><link>https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/</link><pubDate>Tue, 09 Jan 2024 19:08:00 +0800</pubDate><guid>https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/</guid><description>&lt;img src="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium.jpg" alt="Featured image of post CesiumJS 加载 Supermap Rest 服务" />&lt;h2 id="解析-supermap-rest-根目录">
+&lt;a href="#%e8%a7%a3%e6%9e%90-supermap-rest-%e6%a0%b9%e7%9b%ae%e5%bd%95">#&lt;/a>
+解析 Supermap Rest 根目录
+&lt;/h2>&lt;p>从 Supermap Rest 服务的根目录出发，第一步是请求 CatalogList。返回的结构大致是这样子的：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -95,8 +97,10 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>其中的 &lt;code>SupermapCatalogListClient&lt;/code> 在下一小节实现。&lt;/p>
-&lt;h2 id="获取-cataloglist">获取 CatalogList&lt;/h2>
-&lt;p>现在假如用户已经选择需要请求的 CatalogList，再来看以一下 CatalogList 的结构：&lt;/p>
+&lt;h2 id="获取-cataloglist">
+&lt;a href="#%e8%8e%b7%e5%8f%96-cataloglist">#&lt;/a>
+获取 CatalogList
+&lt;/h2>&lt;p>现在假如用户已经选择需要请求的 CatalogList，再来看以一下 CatalogList 的结构：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -191,9 +195,13 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>其中的 &lt;code>SupermapRestStaticResourceClient&lt;/code> 在下一小节实现。&lt;/p>
-&lt;h2 id="获取-staticresource">获取 StaticResource&lt;/h2>
-&lt;h3 id="获取-capabilities">获取 Capabilities&lt;/h3>
-&lt;p>在很多地图协议中，地图的 metadata 一般也叫做 Capabilities， StaticResource 请求的就是地图的 metadata，所以一个简单的 SupermapRestStaticResourceClient 实现：&lt;/p>
+&lt;h2 id="获取-staticresource">
+&lt;a href="#%e8%8e%b7%e5%8f%96-staticresource">#&lt;/a>
+获取 StaticResource
+&lt;/h2>&lt;h3 id="获取-capabilities">
+&lt;a href="#%e8%8e%b7%e5%8f%96-capabilities">#&lt;/a>
+获取 Capabilities
+&lt;/h3>&lt;p>在很多地图协议中，地图的 metadata 一般也叫做 Capabilities， StaticResource 请求的就是地图的 metadata，所以一个简单的 SupermapRestStaticResourceClient 实现：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -225,8 +233,10 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>这个返回的 json 里面有很多信息，但是没有我们最需要的地图瓦片地址，先忽略它，之后再来看。&lt;/p>
-&lt;h3 id="获取地图瓦片">获取地图瓦片&lt;/h3>
-&lt;p>打开 iServer 的 Rest 服务地图列表界面，可以看到有一些可以预览效果的链接。&lt;/p>
+&lt;h3 id="获取地图瓦片">
+&lt;a href="#%e8%8e%b7%e5%8f%96%e5%9c%b0%e5%9b%be%e7%93%a6%e7%89%87">#&lt;/a>
+获取地图瓦片
+&lt;/h3>&lt;p>打开 iServer 的 Rest 服务地图列表界面，可以看到有一些可以预览效果的链接。&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/iserver.png"
 width="1906"
 height="824"
@@ -319,8 +329,10 @@ data-flex-basis="573px"
 &lt;/div>
 &lt;/div>&lt;p>其中，&lt;code>origin&lt;/code> 需要根据不同的投影坐标系或者地理坐标系进行修改，&lt;code>x&lt;/code>, &lt;code>y&lt;/code>, &lt;code>scale&lt;/code> 这三个参数交给 Cesium 去填写。&lt;/p>
 &lt;p>&lt;code>x&lt;/code> 和 &lt;code>y&lt;/code> 很好理解，就是水平和垂直方向上的瓦片坐标，但是 &lt;code>scale&lt;/code> 是什么。&lt;/p>
-&lt;h3 id="计算-scale">计算 scale&lt;/h3>
-&lt;p>在 Supermap 的文档中，可以找到相关的描述：&lt;a class="link" href="https://enonline.supermap.com/iExpress9D/Appendix/scale.htm" target="_blank" rel="noopener"
+&lt;h3 id="计算-scale">
+&lt;a href="#%e8%ae%a1%e7%ae%97-scale">#&lt;/a>
+计算 scale
+&lt;/h3>&lt;p>在 Supermap 的文档中，可以找到相关的描述：&lt;a class="link" href="https://enonline.supermap.com/iExpress9D/Appendix/scale.htm" target="_blank" rel="noopener"
 >scale&lt;/a>&lt;/p>
 &lt;p>$$
 scale = \frac{1}{Resolution \frac{PPI}{0.0254}}
@@ -373,8 +385,10 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">];&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="获取-rectangle-和-tilingscheme">获取 Rectangle 和 TilingScheme&lt;/h3>
-&lt;p>Rectangle 就是 Cesium 里面的经纬度范围，TilingScheme 就是 Cesium 里面的投影坐标系和地理坐标系。&lt;/p>
+&lt;/div>&lt;h3 id="获取-rectangle-和-tilingscheme">
+&lt;a href="#%e8%8e%b7%e5%8f%96-rectangle-%e5%92%8c-tilingscheme">#&lt;/a>
+获取 Rectangle 和 TilingScheme
+&lt;/h3>&lt;p>Rectangle 就是 Cesium 里面的经纬度范围，TilingScheme 就是 Cesium 里面的投影坐标系和地理坐标系。&lt;/p>
 &lt;p>这些信息被记录在一开始我们请求的 Capabilities 里面。&lt;/p>
 &lt;p>为 SupermapRestStaticResourceClient 添加一个新的方法：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -447,8 +461,10 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h2 id="构造-supermaprestimageryprovider">构造 SupermapRestImageryProvider&lt;/h2>
-&lt;p>最后使用 SupermapRestStaticResourceClient 去构造一个 SupermapRestImageryProvider，它继承自 Cesium.UrlTemplateImageryProvider：&lt;/p>
+&lt;/div>&lt;h2 id="构造-supermaprestimageryprovider">
+&lt;a href="#%e6%9e%84%e9%80%a0-supermaprestimageryprovider">#&lt;/a>
+构造 SupermapRestImageryProvider
+&lt;/h2>&lt;p>最后使用 SupermapRestStaticResourceClient 去构造一个 SupermapRestImageryProvider，它继承自 Cesium.UrlTemplateImageryProvider：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -510,10 +526,14 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>其中，使用了 customTags 功能，因为 scale 不是 Cesium.UrlTemplateImageryProvider 默认有的参数，需要我们自定义一个函数返回在不同 level 下的 scale 值。&lt;/p>
-&lt;h2 id="代码调用流程">代码调用流程&lt;/h2>
-&lt;p>最后，演示如何去使用上面编写的方法。&lt;/p>
-&lt;h3 id="请求-cataloglist">请求 CatalogList&lt;/h3>
-&lt;div class="highlight">&lt;div class="chroma">
+&lt;h2 id="代码调用流程">
+&lt;a href="#%e4%bb%a3%e7%a0%81%e8%b0%83%e7%94%a8%e6%b5%81%e7%a8%8b">#&lt;/a>
+代码调用流程
+&lt;/h2>&lt;p>最后，演示如何去使用上面编写的方法。&lt;/p>
+&lt;h3 id="请求-cataloglist">
+&lt;a href="#%e8%af%b7%e6%b1%82-cataloglist">#&lt;/a>
+请求 CatalogList
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
 &lt;/span>&lt;span class="lnt">2
@@ -534,8 +554,10 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>等待用户选择哪一个 CatalogList。&lt;/p>
-&lt;h3 id="请求-staticresource">请求 StaticResource&lt;/h3>
-&lt;div class="highlight">&lt;div class="chroma">
+&lt;h3 id="请求-staticresource">
+&lt;a href="#%e8%af%b7%e6%b1%82-staticresource">#&lt;/a>
+请求 StaticResource
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
 &lt;/span>&lt;span class="lnt">2
@@ -558,8 +580,10 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>等待用户选择哪一个 StaticResource。&lt;/p>
-&lt;h3 id="添加-imageryprovider">添加 ImageryProvider&lt;/h3>
-&lt;div class="highlight">&lt;div class="chroma">
+&lt;h3 id="添加-imageryprovider">
+&lt;a href="#%e6%b7%bb%e5%8a%a0-imageryprovider">#&lt;/a>
+添加 ImageryProvider
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
 &lt;/span>&lt;span class="lnt"> 2
@@ -587,8 +611,10 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="nx">viewer&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">imageryLayers&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">addImageryProvider&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">provider&lt;/span>&lt;span class="p">);&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h2 id="完整代码效果图">完整代码&amp;amp;效果图&lt;/h2>
-&lt;p>完整代码：&lt;a class="link" href="https://github.com/nonlinearthink/cesium-dev/tree/main/packages/cesium-supermap-rest-imagery-provider" target="_blank" rel="noopener"
+&lt;/div>&lt;h2 id="完整代码效果图">
+&lt;a href="#%e5%ae%8c%e6%95%b4%e4%bb%a3%e7%a0%81%e6%95%88%e6%9e%9c%e5%9b%be">#&lt;/a>
+完整代码&amp;amp;效果图
+&lt;/h2>&lt;p>完整代码：&lt;a class="link" href="https://github.com/nonlinearthink/cesium-dev/tree/main/packages/cesium-supermap-rest-imagery-provider" target="_blank" rel="noopener"
 >cesium-supermap-rest-imagery-provider&lt;/a>&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/cesiumjs-%E5%8A%A0%E8%BD%BD-supermap-rest-%E6%9C%8D%E5%8A%A1/cesium.jpg"
 width="1876"
@@ -600,8 +626,10 @@ class="gallery-image"
 data-flex-grow="206"
 data-flex-basis="494px"
 >&lt;/p>
-&lt;h2 id="参考资料">参考资料&lt;/h2>
-&lt;ul>
+&lt;h2 id="参考资料">
+&lt;a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99">#&lt;/a>
+参考资料
+&lt;/h2>&lt;ul>
 &lt;li>&lt;a class="link" href="https://blog.csdn.net/supermapsupport/article/details/109642980" target="_blank" rel="noopener"
 >SuperMap iClient3D for WebGL SuperMapImageryProvider自定义实现&lt;/a>&lt;/li>
 &lt;/ul></description></item></channel></rss>

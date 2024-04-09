@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Computer Graphics on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/computer-graphics/</link><description>Recent content in Computer Graphics on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 12 Dec 2023 16:42:50 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/computer-graphics/index.xml" rel="self" type="application/rss+xml"/><item><title>编写光栅化渲染器（四）绘制三角形</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/</link><pubDate>Tue, 12 Dec 2023 16:42:50 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/</guid><description>&lt;h2 id="求解绘制三角形问题">求解绘制三角形问题&lt;/h2>
-&lt;p>绘制三角形就是遍历每一个像素，然后，判断这个像素是否在三角形内部。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Computer Graphics on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/computer-graphics/</link><description>Recent content in Computer Graphics on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 12 Dec 2023 16:42:50 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/computer-graphics/index.xml" rel="self" type="application/rss+xml"/><item><title>编写光栅化渲染器（四）绘制三角形</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/</link><pubDate>Tue, 12 Dec 2023 16:42:50 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/</guid><description>&lt;h2 id="求解绘制三角形问题">
+&lt;a href="#%e6%b1%82%e8%a7%a3%e7%bb%98%e5%88%b6%e4%b8%89%e8%a7%92%e5%bd%a2%e9%97%ae%e9%a2%98">#&lt;/a>
+求解绘制三角形问题
+&lt;/h2>&lt;p>绘制三角形就是遍历每一个像素，然后，判断这个像素是否在三角形内部。&lt;/p>
 &lt;p>但是万一，三角形很小，而屏幕很大，遍历每一个像素显然是非常低效的，在正式遍历前可以求出 &lt;code>Bounding Rect&lt;/code> 来缩小范围：&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/bounding-rect.png"
 width="200"
@@ -32,8 +34,10 @@ data-flex-basis="225px"
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>判断一个点是否在三角形内部，有很多方法，这里主要介绍重心坐标，因为这是图形学非常重要的一个知识点，而且也能非常好地解决这个问题。&lt;/p>
-&lt;h2 id="重心坐标barycentric-coordinate的定义">重心坐标（Barycentric Coordinate）的定义&lt;/h2>
-&lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/barycentric-coordinate.png"
+&lt;h2 id="重心坐标barycentric-coordinate的定义">
+&lt;a href="#%e9%87%8d%e5%bf%83%e5%9d%90%e6%a0%87barycentric-coordinate%e7%9a%84%e5%ae%9a%e4%b9%89">#&lt;/a>
+重心坐标（Barycentric Coordinate）的定义
+&lt;/h2>&lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/barycentric-coordinate.png"
 width="451"
 height="352"
 srcset="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/barycentric-coordinate_hu5392ba57a5595aab1c34a4e3369e79dd_27735_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/barycentric-coordinate_hu5392ba57a5595aab1c34a4e3369e79dd_27735_1024x0_resize_box_3.png 1024w"
@@ -75,9 +79,13 @@ class="gallery-image"
 data-flex-grow="133"
 data-flex-basis="320px"
 >&lt;/p>
-&lt;h2 id="重心坐标的计算">重心坐标的计算&lt;/h2>
-&lt;h3 id="面积法">面积法&lt;/h3>
-&lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/triangle-area.png"
+&lt;h2 id="重心坐标的计算">
+&lt;a href="#%e9%87%8d%e5%bf%83%e5%9d%90%e6%a0%87%e7%9a%84%e8%ae%a1%e7%ae%97">#&lt;/a>
+重心坐标的计算
+&lt;/h2>&lt;h3 id="面积法">
+&lt;a href="#%e9%9d%a2%e7%a7%af%e6%b3%95">#&lt;/a>
+面积法
+&lt;/h3>&lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/triangle-area.png"
 width="211"
 height="201"
 srcset="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/triangle-area_hu5af9fd39f9a730ad016566dc7f15ccaf_12105_480x0_resize_box_3.png 480w, https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/triangle-area_hu5af9fd39f9a730ad016566dc7f15ccaf_12105_1024x0_resize_box_3.png 1024w"
@@ -138,8 +146,10 @@ n_b &amp;amp;= (a-c) \times (p-c)\cr
 n_c &amp;amp;= (b-a) \times (p-a)
 \end{aligned}
 $$&lt;/p>
-&lt;h3 id="代数法">代数法&lt;/h3>
-&lt;p>把上一小节的公式，写成这样的形式：&lt;/p>
+&lt;h3 id="代数法">
+&lt;a href="#%e4%bb%a3%e6%95%b0%e6%b3%95">#&lt;/a>
+代数法
+&lt;/h3>&lt;p>把上一小节的公式，写成这样的形式：&lt;/p>
 &lt;p>$$
 \beta(b-a)+\gamma(c-a)+(a-p)= 0
 $$&lt;/p>
@@ -199,8 +209,10 @@ k
 \end{bmatrix}
 $$&lt;/p>
 &lt;p>这是最快的重心计算法，它只使用了一个叉乘就解决了问题。&lt;/p>
-&lt;h2 id="重心坐标代码实现">重心坐标代码实现&lt;/h2>
-&lt;p>根据上面推导的公式，最终，代码实现：&lt;/p>
+&lt;h2 id="重心坐标代码实现">
+&lt;a href="#%e9%87%8d%e5%bf%83%e5%9d%90%e6%a0%87%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0">#&lt;/a>
+重心坐标代码实现
+&lt;/h2>&lt;p>根据上面推导的公式，最终，代码实现：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -245,13 +257,17 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h2 id="参考资料">参考资料&lt;/h2>
-&lt;ul>
+&lt;/div>&lt;h2 id="参考资料">
+&lt;a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99">#&lt;/a>
+参考资料
+&lt;/h2>&lt;ul>
 &lt;li>Fundamentals of Computer Graphics&lt;/li>
 &lt;li>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/65495373" target="_blank" rel="noopener"
 >三角形重心坐标&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>编写光栅化渲染器（三）绘制直线</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%89%E7%BB%98%E5%88%B6%E7%9B%B4%E7%BA%BF/</link><pubDate>Fri, 08 Dec 2023 23:12:03 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%89%E7%BB%98%E5%88%B6%E7%9B%B4%E7%BA%BF/</guid><description>&lt;h2 id="dda-line">DDA Line&lt;/h2>
-&lt;p>DDA(Digital Differential Analyzer) 正如其名，就是最直观的直线画法，原始的算法的描述如下：&lt;/p>
+&lt;/ul></description></item><item><title>编写光栅化渲染器（三）绘制直线</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%89%E7%BB%98%E5%88%B6%E7%9B%B4%E7%BA%BF/</link><pubDate>Fri, 08 Dec 2023 23:12:03 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%89%E7%BB%98%E5%88%B6%E7%9B%B4%E7%BA%BF/</guid><description>&lt;h2 id="dda-line">
+&lt;a href="#dda-line">#&lt;/a>
+DDA Line
+&lt;/h2>&lt;p>DDA(Digital Differential Analyzer) 正如其名，就是最直观的直线画法，原始的算法的描述如下：&lt;/p>
 &lt;p>假设存在屏幕空间上的两个点 $(x1, y1)$ 和 $(x2, y2)$&lt;/p>
 &lt;ol>
 &lt;li>计算 $dx=x2-x1$，$dy=y2-y1$。&lt;/li>
@@ -340,8 +356,10 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h2 id="bresenhams-line">Bresenham&amp;rsquo;s Line&lt;/h2>
-&lt;p>从上面 DDA 的优化案例可以看出，避免浮点数操作就是优化画线算法的关键。&lt;/p>
+&lt;/div>&lt;h2 id="bresenhams-line">
+&lt;a href="#bresenhams-line">#&lt;/a>
+Bresenham&amp;rsquo;s Line
+&lt;/h2>&lt;p>从上面 DDA 的优化案例可以看出，避免浮点数操作就是优化画线算法的关键。&lt;/p>
 &lt;p>&lt;code>Bresenham's Line&lt;/code> 相比 DDA 不仅有更少的浮点数运算，而且没有浮点数和整数的类型转换。&lt;/p>
 &lt;p>算法的核心思想如下：&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%89%E7%BB%98%E5%88%B6%E7%9B%B4%E7%BA%BF/bresenham-line.png"
@@ -418,10 +436,14 @@ $$&lt;/p>
 &lt;/div>&lt;blockquote>
 &lt;p>最后的代码虽然看起来简洁，但是因为优化过，第一次接触容易摸不着头脑。&lt;/p>
 &lt;/blockquote>
-&lt;h2 id="其他算法">其他算法&lt;/h2>
-&lt;p>还有一种叫 &lt;a class="link" href="https://www.geeksforgeeks.org/mid-point-line-generation-algorithm/" target="_blank" rel="noopener"
->Mid-Point Line&lt;/a> ，因为它即没有 &lt;code>DDA&lt;/code> 简单直接，也没有 &lt;code>Bresenham&lt;/code> 效率高，这里就不介绍了。&lt;/p></description></item><item><title>编写光栅化渲染器（一）概述</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/</link><pubDate>Sat, 02 Dec 2023 14:15:23 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/</guid><description>&lt;h2 id="光栅化-vs-光线追踪">光栅化 VS 光线追踪&lt;/h2>
-&lt;p>图形学研究如何使用计算机模拟现实，当我们在谈渲染的时候，大致可以分为两个方向：&lt;/p>
+&lt;h2 id="其他算法">
+&lt;a href="#%e5%85%b6%e4%bb%96%e7%ae%97%e6%b3%95">#&lt;/a>
+其他算法
+&lt;/h2>&lt;p>还有一种叫 &lt;a class="link" href="https://www.geeksforgeeks.org/mid-point-line-generation-algorithm/" target="_blank" rel="noopener"
+>Mid-Point Line&lt;/a> ，因为它即没有 &lt;code>DDA&lt;/code> 简单直接，也没有 &lt;code>Bresenham&lt;/code> 效率高，这里就不介绍了。&lt;/p></description></item><item><title>编写光栅化渲染器（一）概述</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/</link><pubDate>Sat, 02 Dec 2023 14:15:23 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/</guid><description>&lt;h2 id="光栅化-vs-光线追踪">
+&lt;a href="#%e5%85%89%e6%a0%85%e5%8c%96-vs-%e5%85%89%e7%ba%bf%e8%bf%bd%e8%b8%aa">#&lt;/a>
+光栅化 VS 光线追踪
+&lt;/h2>&lt;p>图形学研究如何使用计算机模拟现实，当我们在谈渲染的时候，大致可以分为两个方向：&lt;/p>
 &lt;ul>
 &lt;li>&lt;code>Ray Tracing&lt;/code>，即光线追踪，一般用于离线渲染，效果好，但是计算量大，耗时长。&lt;/li>
 &lt;li>&lt;code>Rasterization&lt;/code>，即光栅化，一般用于实时渲染，效果差，但是计算量小，耗时短。&lt;/li>
@@ -438,8 +460,10 @@ $$&lt;/p>
 &lt;p>如果你使用了屏幕空间划分技术（例如 BVH），会让结果好很多：&lt;code>Pixel * Sampling * (Reflection + Refraction) * log(Object + Light)&lt;/code>。&lt;/p>
 &lt;p>还有一种优化思路，就是让采样结果更加稳定，一旦采样结果稳定了，就可以大幅减少采样数量，在传统的 &lt;code>Whitted Style Ray Tracing&lt;/code> 中，具体的措施有比如通过蒙特卡洛方法求各种表面和光源的概率分布，比如对光源进行重要性采样。&lt;/p>
 &lt;p>一个简单的光栅化流程：把场景中所有物体的点经过矩阵计算映射到 2D 屏幕空间，三个顶点构成一个三角形，对每一个像素，取最近的三角形，计算三角形在这个像素的颜色（通过三个顶点颜色插值）。&lt;/p>
-&lt;h2 id="像素">像素&lt;/h2>
-&lt;p>无论是哪一种，都需要靠屏幕来展示它们，屏幕由一个一个像素构成，那么什么是像素呢？&lt;/p>
+&lt;h2 id="像素">
+&lt;a href="#%e5%83%8f%e7%b4%a0">#&lt;/a>
+像素
+&lt;/h2>&lt;p>无论是哪一种，都需要靠屏幕来展示它们，屏幕由一个一个像素构成，那么什么是像素呢？&lt;/p>
 &lt;p>通常来说，大部分普通人眼里的像素是这样的：&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/rasterization.jpg"
 width="462"
@@ -463,10 +487,14 @@ data-flex-basis="313px"
 &lt;blockquote>
 &lt;p>截至文章编写日期，已经有游戏比如 &lt;code>赛博朋克2077 2.0&lt;/code> 运用了 &lt;code>Path Tracing&lt;/code> 技术，也叫 &lt;code>Monte Calo Ray Tracing&lt;/code>，比传统的 &lt;code>Whitted Style Ray Tracing&lt;/code> 性能更加好，效果也更棒。&lt;/p>
 &lt;/blockquote>
-&lt;h2 id="光栅化程序开发流程">光栅化程序开发流程&lt;/h2>
-&lt;ol>
+&lt;h2 id="光栅化程序开发流程">
+&lt;a href="#%e5%85%89%e6%a0%85%e5%8c%96%e7%a8%8b%e5%ba%8f%e5%bc%80%e5%8f%91%e6%b5%81%e7%a8%8b">#&lt;/a>
+光栅化程序开发流程
+&lt;/h2>&lt;ol>
 &lt;li>创建一个窗口，并绘制直线，三角形，带有顶点数据的物体。&lt;/li>
 &lt;/ol>
 &lt;p>施工中&amp;hellip;&lt;/p>
-&lt;h2 id="reference">Reference&lt;/h2>
-&lt;p>Fundamentals of Computer Graphics&lt;/p></description></item></channel></rss>
+&lt;h2 id="reference">
+&lt;a href="#reference">#&lt;/a>
+Reference
+&lt;/h2>&lt;p>Fundamentals of Computer Graphics&lt;/p></description></item></channel></rss>
