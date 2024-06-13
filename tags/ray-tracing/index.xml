@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ray Tracing on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/ray-tracing/</link><description>Recent content in Ray Tracing on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 02 Dec 2023 14:15:23 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/ray-tracing/index.xml" rel="self" type="application/rss+xml"/><item><title>编写光栅化渲染器（一）概述</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/</link><pubDate>Sat, 02 Dec 2023 14:15:23 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/</guid><description>&lt;h2 id="光栅化-vs-光线追踪">
-&lt;a href="#%e5%85%89%e6%a0%85%e5%8c%96-vs-%e5%85%89%e7%ba%bf%e8%bf%bd%e8%b8%aa">#&lt;/a>
-光栅化 VS 光线追踪
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ray Tracing on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/ray-tracing/</link><description>Recent content in Ray Tracing on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 02 Dec 2023 14:15:23 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/ray-tracing/index.xml" rel="self" type="application/rss+xml"/><item><title>编写光栅化渲染器（一）概述</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/</link><pubDate>Sat, 02 Dec 2023 14:15:23 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/</guid><description>&lt;h2 id="光栅化-vs-光线追踪">光栅化 VS 光线追踪
 &lt;/h2>&lt;p>图形学研究如何使用计算机模拟现实，当我们在谈渲染的时候，大致可以分为两个方向：&lt;/p>
 &lt;ul>
 &lt;li>&lt;code>Ray Tracing&lt;/code>，即光线追踪，一般用于离线渲染，效果好，但是计算量大，耗时长。&lt;/li>
@@ -18,9 +16,7 @@
 &lt;p>如果你使用了屏幕空间划分技术（例如 BVH），会让结果好很多：&lt;code>Pixel * Sampling * (Reflection + Refraction) * log(Object + Light)&lt;/code>。&lt;/p>
 &lt;p>还有一种优化思路，就是让采样结果更加稳定，一旦采样结果稳定了，就可以大幅减少采样数量，在传统的 &lt;code>Whitted Style Ray Tracing&lt;/code> 中，具体的措施有比如通过蒙特卡洛方法求各种表面和光源的概率分布，比如对光源进行重要性采样。&lt;/p>
 &lt;p>一个简单的光栅化流程：把场景中所有物体的点经过矩阵计算映射到 2D 屏幕空间，三个顶点构成一个三角形，对每一个像素，取最近的三角形，计算三角形在这个像素的颜色（通过三个顶点颜色插值）。&lt;/p>
-&lt;h2 id="像素">
-&lt;a href="#%e5%83%8f%e7%b4%a0">#&lt;/a>
-像素
+&lt;h2 id="像素">像素
 &lt;/h2>&lt;p>无论是哪一种，都需要靠屏幕来展示它们，屏幕由一个一个像素构成，那么什么是像素呢？&lt;/p>
 &lt;p>通常来说，大部分普通人眼里的像素是这样的：&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B8%80%E6%A6%82%E8%BF%B0/rasterization.jpg"
@@ -45,14 +41,10 @@ data-flex-basis="313px"
 &lt;blockquote>
 &lt;p>截至文章编写日期，已经有游戏比如 &lt;code>赛博朋克2077 2.0&lt;/code> 运用了 &lt;code>Path Tracing&lt;/code> 技术，也叫 &lt;code>Monte Calo Ray Tracing&lt;/code>，比传统的 &lt;code>Whitted Style Ray Tracing&lt;/code> 性能更加好，效果也更棒。&lt;/p>
 &lt;/blockquote>
-&lt;h2 id="光栅化程序开发流程">
-&lt;a href="#%e5%85%89%e6%a0%85%e5%8c%96%e7%a8%8b%e5%ba%8f%e5%bc%80%e5%8f%91%e6%b5%81%e7%a8%8b">#&lt;/a>
-光栅化程序开发流程
+&lt;h2 id="光栅化程序开发流程">光栅化程序开发流程
 &lt;/h2>&lt;ol>
 &lt;li>创建一个窗口，并绘制直线，三角形，带有顶点数据的物体。&lt;/li>
 &lt;/ol>
 &lt;p>施工中&amp;hellip;&lt;/p>
-&lt;h2 id="reference">
-&lt;a href="#reference">#&lt;/a>
-Reference
+&lt;h2 id="reference">Reference
 &lt;/h2>&lt;p>Fundamentals of Computer Graphics&lt;/p></description></item></channel></rss>

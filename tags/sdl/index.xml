@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SDL on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/sdl/</link><description>Recent content in SDL on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 05 Dec 2023 12:08:06 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/sdl/index.xml" rel="self" type="application/rss+xml"/><item><title>编写光栅化渲染器（二）SDL库简介</title><link>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%BA%8Csdl%E5%BA%93%E7%AE%80%E4%BB%8B/</link><pubDate>Tue, 05 Dec 2023 12:08:06 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E4%BA%8Csdl%E5%BA%93%E7%AE%80%E4%BB%8B/</guid><description>&lt;p>我们的第一个目标就是创建一个窗口，创建窗口有很多库都能做，如果你不想要用任何第三方库也不需要跨平台，用 Win32 API 就可以做，不过微软的匈牙利命名法实在是抽象，要有心里准备。&lt;/p>
-&lt;h2 id="sdl-库简介">
-&lt;a href="#sdl-%e5%ba%93%e7%ae%80%e4%bb%8b">#&lt;/a>
-SDL 库简介
+&lt;h2 id="sdl-库简介">SDL 库简介
 &lt;/h2>&lt;p>SDL (Simple DirectMedia Layer) 是一个开源、跨平台、轻量级的多媒体层，作者目前在 &lt;code>Valve&lt;/code> 任职，也就是大家最喜欢的 &lt;code>Steam&lt;/code>，我们基本上只需要用到 &lt;code>SDL_Window&lt;/code> 和 &lt;code>SDL_Surface&lt;/code> 就可以。&lt;/p>
 &lt;p>这里默认大家拥有 C++ 和 CMake 基础，不介绍怎么安装这个库了，直接开始。&lt;/p>
-&lt;h3 id="创建-window">
-&lt;a href="#%e5%88%9b%e5%bb%ba-window">#&lt;/a>
-创建 Window
+&lt;h3 id="创建-window">创建 Window
 &lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -98,9 +94,7 @@ SDL 库简介
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>这是一个最简单的 SDL 创建窗口的程序。&lt;/p>
-&lt;h3 id="sdl-cpu-渲染获取和更改-surface">
-&lt;a href="#sdl-cpu-%e6%b8%b2%e6%9f%93%e8%8e%b7%e5%8f%96%e5%92%8c%e6%9b%b4%e6%94%b9-surface">#&lt;/a>
-SDL CPU 渲染：获取和更改 Surface
+&lt;h3 id="sdl-cpu-渲染获取和更改-surface">SDL CPU 渲染：获取和更改 Surface
 &lt;/h3>&lt;p>从 Window 可以获取一个 Surface，它和 Window 的大小相同高，并且它里面有一个 &lt;code>pixels&lt;/code> 指针，可以访问每一个像素的数据。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -193,9 +187,7 @@ SDL CPU 渲染：获取和更改 Surface
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="sdl-gpu-渲染renderer-和-texture">
-&lt;a href="#sdl-gpu-%e6%b8%b2%e6%9f%93renderer-%e5%92%8c-texture">#&lt;/a>
-SDL GPU 渲染：Renderer 和 Texture
+&lt;/div>&lt;h3 id="sdl-gpu-渲染renderer-和-texture">SDL GPU 渲染：Renderer 和 Texture
 &lt;/h3>&lt;blockquote>
 &lt;p>这一小节为补充内容，如果目标是做 CPU 的软渲染器，不需要了解。&lt;/p>
 &lt;/blockquote>
@@ -296,13 +288,9 @@ SDL GPU 渲染：Renderer 和 Texture
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h2 id="改写-c-风格的代码">
-&lt;a href="#%e6%94%b9%e5%86%99-c-%e9%a3%8e%e6%a0%bc%e7%9a%84%e4%bb%a3%e7%a0%81">#&lt;/a>
-改写 C 风格的代码
+&lt;/div>&lt;h2 id="改写-c-风格的代码">改写 C 风格的代码
 &lt;/h2>&lt;p>SDL 是一个 C 的库，而不是 C++，这样风格的代码在 C++ 中是不安全和不便利的。所以我们需要做一些改造。&lt;/p>
-&lt;h3 id="使用智能指针">
-&lt;a href="#%e4%bd%bf%e7%94%a8%e6%99%ba%e8%83%bd%e6%8c%87%e9%92%88">#&lt;/a>
-使用智能指针
+&lt;h3 id="使用智能指针">使用智能指针
 &lt;/h3>&lt;p>SDL 中有很多成对的比如 &lt;code>SDL_CreateWindow&lt;/code> 和 &lt;code>SDL_DestroyWindow&lt;/code> 函数。如果我们能自动释放就好了，可以用智能指针来解决这个问题。&lt;/p>
 &lt;p>尝试重写智能指针的 &lt;code>Deleter&lt;/code>：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -335,9 +323,7 @@ SDL GPU 渲染：Renderer 和 Texture
 &lt;/div>&lt;blockquote>
 &lt;p>尝试自己实现 &lt;code>SDL_Surface&lt;/code> 的 &lt;code>Deleter&lt;/code>&lt;/p>
 &lt;/blockquote>
-&lt;h3 id="使用-class-封装">
-&lt;a href="#%e4%bd%bf%e7%94%a8-class-%e5%b0%81%e8%a3%85">#&lt;/a>
-使用 Class 封装
+&lt;h3 id="使用-class-封装">使用 Class 封装
 &lt;/h3>&lt;p>之前的 SDL 代码大致可以分为两个部分，一个是在 &lt;code>while&lt;/code> 循环之前的初始化阶段，还有一个是在 &lt;code>while&lt;/code> 循环内部的每帧执行阶段。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">

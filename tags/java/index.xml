@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Java on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/java/</link><description>Recent content in Java on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 28 Jun 2020 00:32:28 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/java/index.xml" rel="self" type="application/rss+xml"/><item><title>JDBC 数据库编程</title><link>https://nonlinearthink.github.io/p/jdbc-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A8%8B/</link><pubDate>Sun, 28 Jun 2020 00:32:28 +0800</pubDate><guid>https://nonlinearthink.github.io/p/jdbc-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A8%8B/</guid><description>&lt;p>JDBC (Java Database Connectivity) ，属于 Java 应用编程中比较基础的一块，虽然你可以直接使用 &lt;code>MyBatis&lt;/code>，但是了解一下 JDBC 可以帮你更好地理解 Java 的数据库编程。&lt;/p>
-&lt;h2 id="连接数据库">
-&lt;a href="#%e8%bf%9e%e6%8e%a5%e6%95%b0%e6%8d%ae%e5%ba%93">#&lt;/a>
-连接数据库
-&lt;/h2>&lt;h3 id="驱动初始化">
-&lt;a href="#%e9%a9%b1%e5%8a%a8%e5%88%9d%e5%a7%8b%e5%8c%96">#&lt;/a>
-驱动初始化
-&lt;/h3>&lt;h4 id="基于-classforname-的初始化">
-&lt;a href="#%e5%9f%ba%e4%ba%8e-classforname-%e7%9a%84%e5%88%9d%e5%a7%8b%e5%8c%96">#&lt;/a>
-基于 Class.forName 的初始化
+&lt;h2 id="连接数据库">连接数据库
+&lt;/h2>&lt;h3 id="驱动初始化">驱动初始化
+&lt;/h3>&lt;h4 id="基于-classforname-的初始化">基于 Class.forName 的初始化
 &lt;/h4>&lt;p>想要开始 JDBC 编程，第一步是需要把 &lt;code>数据库驱动程序&lt;/code> 的代码加载进来。&lt;/p>
 &lt;p>可以利用 &lt;code>Class.forName&lt;/code> 函数，它原本的功能是返回一个 类或者接口的 Class 对象 ，也就是相当于初始化了一个类，一般用它&lt;strong>执行这个类的静态代码段&lt;/strong>。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -28,9 +22,7 @@
 &lt;/div>
 &lt;/div>&lt;p>这样，&lt;code>com.mysql.jdbc.Driver&lt;/code> 类中的静态代码段就会被执行，进行初始化。&lt;/p>
 &lt;p>不过，驱动初始化还有另外一种写法。&lt;/p>
-&lt;h4 id="基于-registerdriver-的初始化">
-&lt;a href="#%e5%9f%ba%e4%ba%8e-registerdriver-%e7%9a%84%e5%88%9d%e5%a7%8b%e5%8c%96">#&lt;/a>
-基于 registerDriver 的初始化
+&lt;h4 id="基于-registerdriver-的初始化">基于 registerDriver 的初始化
 &lt;/h4>&lt;p>我们知道 &lt;code>Class.forName&lt;/code> 是执行类的静态代码段，那我们把 &lt;code>com.mysql.jdbc.Driver&lt;/code> 里面的静态代码段照着样子抄一遍不也可以实现初始化吗?&lt;/p>
 &lt;p>这是 &lt;code>com.mysql.jdbc.Driver&lt;/code> 静态代码段的源代码:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -62,9 +54,7 @@
 &lt;p>接口变动&lt;/p>
 &lt;p>mysql5 和 mysql6 的驱动程序接口有区别，从 &lt;code>com.mysql.jdbc.Driver&lt;/code> 换成了 &lt;code>com.mysql.cj.jdbc.Driver&lt;/code>，再往上的版本同 mysql6 。&lt;/p>
 &lt;/blockquote>
-&lt;h3 id="建立连接">
-&lt;a href="#%e5%bb%ba%e7%ab%8b%e8%bf%9e%e6%8e%a5">#&lt;/a>
-建立连接
+&lt;h3 id="建立连接">建立连接
 &lt;/h3>&lt;p>数据库打开后会在本地开一个端口，运行进程，我们可以通过这个端口的 URL 来访问数据库。&lt;/p>
 &lt;p>当然，还需要数据库的用户名和密码。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -104,12 +94,8 @@ mysql、sqlserver&lt;/li>
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;hr>
-&lt;h2 id="jdbc-基础">
-&lt;a href="#jdbc-%e5%9f%ba%e7%a1%80">#&lt;/a>
-JDBC 基础
-&lt;/h2>&lt;h3 id="statement">
-&lt;a href="#statement">#&lt;/a>
-Statement
+&lt;h2 id="jdbc-基础">JDBC 基础
+&lt;/h2>&lt;h3 id="statement">Statement
 &lt;/h3>&lt;p>Statement 可以根据给出的一条 SQL 字符串，然后调用运行。&lt;/p>
 &lt;p>借用上一节连接得到的 &lt;code>conn&lt;/code> 对象，它有一个 &lt;code>createStatement&lt;/code> 函数，可以创建一个 Statement。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -132,13 +118,9 @@ Statement
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="executeexecutequeryexecuteupdate">
-&lt;a href="#executeexecutequeryexecuteupdate">#&lt;/a>
-execute、executeQuery、executeUpdate
+&lt;/div>&lt;h3 id="executeexecutequeryexecuteupdate">execute、executeQuery、executeUpdate
 &lt;/h3>&lt;p>创建完 Statement，就要把 SQL 语句交给 Statement 对象去执行了。&lt;/p>
-&lt;h4 id="executequery">
-&lt;a href="#executequery">#&lt;/a>
-executeQuery
+&lt;h4 id="executequery">executeQuery
 &lt;/h4>&lt;p>一般如果是运行 查询(select) 语句，推荐使用 第一节中获得的&lt;code>conn&lt;/code> 对象的 &lt;code>executeQuery&lt;/code> 函数，&lt;code>executeQuery&lt;/code>只能返回单个结果集，但是应对大部分的查询已经足够。&lt;/p>
 &lt;p>添加下面的代码到上面的 try 代码块中。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -151,9 +133,7 @@ executeQuery
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="n">st&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">executeQuery&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sql&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h4 id="executeupdate">
-&lt;a href="#executeupdate">#&lt;/a>
-executeUpdate
+&lt;/div>&lt;h4 id="executeupdate">executeUpdate
 &lt;/h4>&lt;p>如果你需要运行 &lt;code>insert&lt;/code>、&lt;code>update&lt;/code>、&lt;code>delete&lt;/code> 等等语句，则可以使用 &lt;code>executeUpdate&lt;/code> 函数，它不会返回结果集，但是会返回一个整数，代表受到影响的行数，如果是 0，代表了你没有改变任何数据库的内容，即调用失败了。&lt;/p>
 &lt;p>使用 &lt;code>executeUpdate&lt;/code> :&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -166,9 +146,7 @@ executeUpdate
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="n">st&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">executeUpdate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sql&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h4 id="execute">
-&lt;a href="#execute">#&lt;/a>
-execute
+&lt;/div>&lt;h4 id="execute">execute
 &lt;/h4>&lt;p>&lt;code>execute&lt;/code> 是更加通用和强大的函数，但是它也比较复杂。它的返回值类型有很多。&lt;/p>
 &lt;p>&lt;code>execute&lt;/code> 不仅可以做到 &lt;code>executeQuery&lt;/code> 能做的事，也能做到 &lt;code>executeUpdate&lt;/code> 能做到的事情。而且，它还能返回多个结果集。&lt;/p>
 &lt;p>正因为如此，它一般被用在一些&lt;strong>执行未知 SQL 字符串&lt;/strong>的情况下，如果 SQL 语句能够确定，请尽可能不用 &lt;code>execute&lt;/code>。&lt;/p>
@@ -198,9 +176,7 @@ execute
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="n">st&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getUpdateCount&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="resultset">
-&lt;a href="#resultset">#&lt;/a>
-ResultSet
+&lt;/div>&lt;h3 id="resultset">ResultSet
 &lt;/h3>&lt;p>前面一直没提 ResultSet，ResultSet 就是 &lt;code>executeQuery&lt;/code> 的返回值。&lt;/p>
 &lt;p>举个例子，使用 ResultSet 遍历 SQL 的结果:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -229,9 +205,7 @@ getString、getBoolean、getByte、getShort、getInt、getLong、getFloat、getD
 &lt;li>日期相关
 getDate、getTime、getTimestamp&lt;/li>
 &lt;/ul>
-&lt;h3 id="preparedstatement">
-&lt;a href="#preparedstatement">#&lt;/a>
-PreparedStatement
+&lt;h3 id="preparedstatement">PreparedStatement
 &lt;/h3>&lt;p>通过 &lt;code>conn.prepareStatement&lt;/code> 可以来创建一个 PrepareStatement 对象 (conn 是一个 &lt;code>java.sql.Connection&lt;/code>)。&lt;/p>
 &lt;p>但是这个函数必须要给出一个 SQL 语句作为参数。&lt;/p>
 &lt;p>这里也可以看出 PrepareStatement 与 Statement 的一个比较大的区别。Statement 可以一直被复用，但是 PrepareStatement 每执行一次 SQL，都要创建新的 PrepareStatement。&lt;/p>
@@ -272,9 +246,7 @@ PreparedStatement
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>PreparedStatement 和 Statement 一样是用来执行 SQL 语句的，但是 Statement 有很多问题。&lt;/p>
-&lt;h4 id="字符串拼接问题">
-&lt;a href="#%e5%ad%97%e7%ac%a6%e4%b8%b2%e6%8b%bc%e6%8e%a5%e9%97%ae%e9%a2%98">#&lt;/a>
-字符串拼接问题
+&lt;h4 id="字符串拼接问题">字符串拼接问题
 &lt;/h4>&lt;p>假如我们希望可以动态地设置 SQL 语句，比如，动态改变 &lt;code>where&lt;/code> 从句的条件，在 Statement 中，我们需要这样写:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -309,18 +281,14 @@ PreparedStatement
 &lt;blockquote>
 &lt;p>还需要提一下的是 &lt;code>setInt&lt;/code> 等等的 &lt;code>set&lt;/code> 相关的函数，前面已经提过 &lt;code>get&lt;/code> 函数了，基本上把 &lt;code>get&lt;/code> 改成 &lt;code>set&lt;/code> 就行了。&lt;/p>
 &lt;/blockquote>
-&lt;h4 id="性能问题">
-&lt;a href="#%e6%80%a7%e8%83%bd%e9%97%ae%e9%a2%98">#&lt;/a>
-性能问题
+&lt;h4 id="性能问题">性能问题
 &lt;/h4>&lt;p>Statement 的想法是对象只需要创建一次，后续只要传入不同的 SQL 就行了。但是在面对重复都比较高的工作的时候，这可能并不是很好。&lt;/p>
 &lt;p>比如，我执行了一次 &lt;code>insert into Beanbook(barcode, bookname, pubid, price, state) values(1, 'Java', 3, 56, '在库')&lt;/code>，&lt;/p>
 &lt;p>现在我稍微变一下，要插入 &lt;code>insert into Beanbook(barcode, bookname, pubid, price, state) values(2, 'C++', 2, 34, '在库')&lt;/code>。&lt;/p>
 &lt;p>这两条命令几乎一样，但是我却要编译两次!!!&lt;/p>
 &lt;p>我们来看看 PrepareStaement，我们完全可以使用 &lt;code>?&lt;/code> 语法，创建一次模版，因为存在预编译机制，当我们第二次插入的时候节省了一次编译的开销。&lt;/p>
 &lt;p>也就是说，在可以使用 &lt;code>?&lt;/code> 语法替换的一系列 SQL 操作中，使用 PrepareStatement 将会节省一大笔开销。&lt;/p>
-&lt;h4 id="sql-注入式攻击">
-&lt;a href="#sql-%e6%b3%a8%e5%85%a5%e5%bc%8f%e6%94%bb%e5%87%bb">#&lt;/a>
-SQL 注入式攻击
+&lt;h4 id="sql-注入式攻击">SQL 注入式攻击
 &lt;/h4>&lt;p>SQL 注入式攻击其实很简单，这是完全可以避免的，但是使用 Statement 的时候你要格外小心。&lt;/p>
 &lt;p>假设不怀好意的用户对你的数据库请求删除一些合法的东西，比如删除 &lt;code>bookname&lt;/code> 等于 &lt;code>'Java'&lt;/code> 的书，但是他传给你的字符串做了一些手脚:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -341,9 +309,7 @@ SQL 注入式攻击
 &lt;/div>
 &lt;/div>&lt;p>好了，你完了，因为字符串拼接的时候，后面的 &lt;code>OR price&amp;gt;0&lt;/code> 没有被当作是 &lt;code>bookname&lt;/code> 的一部分，而是被当成是 SQL 命令的一部分!!! 在这里，你的数据库已经被清空了。&lt;/p>
 &lt;p>但是使用 &lt;code>?&lt;/code> 语法你完全不用担心，因为 PrepareStatement 是&lt;strong>预编译&lt;/strong>的，后面只会插入数据，插入的内容不会被当作是 SQL 命令。&lt;/p>
-&lt;h3 id="close">
-&lt;a href="#close">#&lt;/a>
-close
+&lt;h3 id="close">close
 &lt;/h3>&lt;p>在数据库的最后不能忘记，关闭连接。&lt;/p>
 &lt;p>在原先代码的基础上，在最后的 finally 语句块中加入 &lt;code>close()&lt;/code> 函数。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -391,9 +357,7 @@ close
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;hr>
-&lt;h2 id="jdbc时间类型的处理">
-&lt;a href="#jdbc%e6%97%b6%e9%97%b4%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%a4%84%e7%90%86">#&lt;/a>
-JDBC时间类型的处理
+&lt;h2 id="jdbc时间类型的处理">JDBC时间类型的处理
 &lt;/h2>&lt;p>从之前的 &lt;code>get&lt;/code> 函数中，我们看到了日期相关的 API。&lt;/p>
 &lt;p>JDBC 中一共有三种时间类型:&lt;/p>
 &lt;ul>
@@ -401,16 +365,12 @@ JDBC时间类型的处理
 &lt;li>Time&lt;/li>
 &lt;li>Timestamp&lt;/li>
 &lt;/ul>
-&lt;h3 id="systemcurrenttimemillis">
-&lt;a href="#systemcurrenttimemillis">#&lt;/a>
-System.currentTimeMillis()
+&lt;h3 id="systemcurrenttimemillis">System.currentTimeMillis()
 &lt;/h3>&lt;p>这个函数可以获得 系统当前的一个时间戳。&lt;/p>
 &lt;blockquote>
 &lt;p>时间戳是 1970年1月1日0点0分 到现在的毫秒数。&lt;/p>
 &lt;/blockquote>
-&lt;h3 id="设置timestamp">
-&lt;a href="#%e8%ae%be%e7%bd%aetimestamp">#&lt;/a>
-设置Timestamp
+&lt;h3 id="设置timestamp">设置Timestamp
 &lt;/h3>&lt;p>数据库里面存的都是 Timestamp，一般建议存取都用 Timestamp。&lt;/p>
 &lt;p>设置当前的时间为 Timestamp:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -441,9 +401,7 @@ System.currentTimeMillis()
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="n">pst&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">setString&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">5&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;2020-06-27 00:00:00&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="取出timestamp">
-&lt;a href="#%e5%8f%96%e5%87%batimestamp">#&lt;/a>
-取出Timestamp
+&lt;/div>&lt;h3 id="取出timestamp">取出Timestamp
 &lt;/h3>&lt;p>因为从数据库直接取出的是 Timestamp，需要使用 SimpleDateFormat 来格式化，才能打印出我们可以识别的时间字符串。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -458,23 +416,15 @@ System.currentTimeMillis()
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;hr>
-&lt;h2 id="事务控制">
-&lt;a href="#%e4%ba%8b%e5%8a%a1%e6%8e%a7%e5%88%b6">#&lt;/a>
-事务控制
-&lt;/h2>&lt;h3 id="为什么需要事务">
-&lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e4%ba%8b%e5%8a%a1">#&lt;/a>
-为什么需要事务
+&lt;h2 id="事务控制">事务控制
+&lt;/h2>&lt;h3 id="为什么需要事务">为什么需要事务
 &lt;/h3>&lt;p>一个事务是一系列用户定义的数据库操作序列(CRUD)。它的目的是把数据库的多个操作合并抽象成一个操作。&lt;/p>
 &lt;p>事务的设计哲学: &lt;code>要么都成功，要么都失败&lt;/code>。这就是事务的&lt;strong>原子性&lt;/strong>。&lt;/p>
 &lt;p>事务是隔离的，并发执行的事务之间不互相干扰。&lt;/p>
-&lt;h3 id="如何实现">
-&lt;a href="#%e5%a6%82%e4%bd%95%e5%ae%9e%e7%8e%b0">#&lt;/a>
-如何实现
+&lt;h3 id="如何实现">如何实现
 &lt;/h3>&lt;p>事务的实现靠的是回滚机制。&lt;/p>
 &lt;p>当你做完一个操作的时候，都有日志文件记录下你修改的数据。如果你接下来的操作出现了问题，那么数据库就能根据日志文件，运行逆操作，回到原来的状态。&lt;/p>
-&lt;h3 id="jdbc中的事务编程">
-&lt;a href="#jdbc%e4%b8%ad%e7%9a%84%e4%ba%8b%e5%8a%a1%e7%bc%96%e7%a8%8b">#&lt;/a>
-JDBC中的事务编程
+&lt;h3 id="jdbc中的事务编程">JDBC中的事务编程
 &lt;/h3>&lt;p>可以在最开始使用 &lt;code>setAutoCommit(false)&lt;/code> 来关闭自动提交。&lt;/p>
 &lt;p>所谓的自动提交就是，mysql 的 JDBC实现 默认是一旦运行了 &lt;code>execute&lt;/code> 相关的那三个函数，就会自动运行 &lt;code>commit()&lt;/code> 函数，以更新数据库。&lt;/p>
 &lt;p>然后在 try 语句的最后使用 &lt;code>commit()&lt;/code> 提交。&lt;/p>
@@ -568,19 +518,13 @@ JDBC中的事务编程
 &lt;p>mysql 中的存储引擎有: &lt;code>InnoDB&lt;/code>、&lt;code>MyISAM&lt;/code>等等，但是事务控制只有 InnoDB 支持。&lt;/p>
 &lt;/blockquote>
 &lt;hr>
-&lt;h2 id="连接池">
-&lt;a href="#%e8%bf%9e%e6%8e%a5%e6%b1%a0">#&lt;/a>
-连接池
-&lt;/h2>&lt;h3 id="连接池的概念">
-&lt;a href="#%e8%bf%9e%e6%8e%a5%e6%b1%a0%e7%9a%84%e6%a6%82%e5%bf%b5">#&lt;/a>
-连接池的概念
+&lt;h2 id="连接池">连接池
+&lt;/h2>&lt;h3 id="连接池的概念">连接池的概念
 &lt;/h3>&lt;p>之前每次我们使用数据库 CRUD 的时候，我们每次都需要新建一个连接 Connection。&lt;/p>
 &lt;p>创建连接和关闭连接的过程也是比较消耗时间的，当线程数量很大的时候，系统就会变得卡顿。&lt;/p>
 &lt;p>连接池就是为了解决这个问题。连接池的设计哲学是: &lt;code>总是借，而不创建&lt;/code>。&lt;/p>
 &lt;p>我们在一开始先创建一定数量的连接 Connection，然后每次有请求连接的时候，就找空闲的连接分配过去。如果没有空闲，则需要等待。&lt;/p>
-&lt;h3 id="实现连接池">
-&lt;a href="#%e5%ae%9e%e7%8e%b0%e8%bf%9e%e6%8e%a5%e6%b1%a0">#&lt;/a>
-实现连接池
+&lt;h3 id="实现连接池">实现连接池
 &lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -693,9 +637,7 @@ JDBC中的事务编程
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="使用开源连接池以-c3p0-为例">
-&lt;a href="#%e4%bd%bf%e7%94%a8%e5%bc%80%e6%ba%90%e8%bf%9e%e6%8e%a5%e6%b1%a0%e4%bb%a5-c3p0-%e4%b8%ba%e4%be%8b">#&lt;/a>
-使用开源连接池(以 C3P0 为例)
+&lt;/div>&lt;h3 id="使用开源连接池以-c3p0-为例">使用开源连接池(以 C3P0 为例)
 &lt;/h3>&lt;p>一些著名的开源连接池&lt;/p>
 &lt;ul>
 &lt;li>DBCP&lt;/li>
@@ -776,12 +718,8 @@ JDBC中的事务编程
 &lt;p>c3p0 v0.9.2版本 之后，从中分离了一个 &lt;code>mchange-commons-java&lt;/code> 包，作为使用 c3p0 的辅助包。我们这里调用的就是辅助包。&lt;/p>
 &lt;/blockquote>
 &lt;hr>
-&lt;h2 id="or映射">
-&lt;a href="#or%e6%98%a0%e5%b0%84">#&lt;/a>
-OR映射
-&lt;/h2>&lt;h3 id="javabean">
-&lt;a href="#javabean">#&lt;/a>
-JavaBean
+&lt;h2 id="or映射">OR映射
+&lt;/h2>&lt;h3 id="javabean">JavaBean
 &lt;/h3>&lt;p>一个 JavaBean 对象需要满足的条件:&lt;/p>
 &lt;ul>
 &lt;li>提供一个默认的无参构造函数。&lt;/li>
@@ -791,9 +729,7 @@ JavaBean
 &lt;/ul>
 &lt;p>所有对 JavaBean 属性的访问都应当使用 getter 和 setter 方法。&lt;/p>
 &lt;p>JavaBean 是一个可复用的组件，把应用的业务逻辑和显示逻辑分离开，降低了开发的复杂程度和维护成本。&lt;/p>
-&lt;h3 id="pojo-plain-ordinary-java-object">
-&lt;a href="#pojo-plain-ordinary-java-object">#&lt;/a>
-POJO (Plain Ordinary Java Object)
+&lt;h3 id="pojo-plain-ordinary-java-object">POJO (Plain Ordinary Java Object)
 &lt;/h3>&lt;p>POJO 是纯粹的 JavaBean。&lt;/p>
 &lt;p>JavaBean除了满足上面的条件，没有规定你不能定义其他东西，就算你把一些业务的代码加入进来也没关系。&lt;/p>
 &lt;p>POJO 不允许有业务方法，也不能携带 Connection 之类的方法。&lt;/p>
@@ -852,9 +788,7 @@ POJO (Plain Ordinary Java Object)
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="entitybean-与-or映射">
-&lt;a href="#entitybean-%e4%b8%8e-or%e6%98%a0%e5%b0%84">#&lt;/a>
-EntityBean 与 OR映射
+&lt;/div>&lt;h3 id="entitybean-与-or映射">EntityBean 与 OR映射
 &lt;/h3>&lt;p>OR映射 是把数据库对象和编程语言中的对象映射在一起，他们拥有一样的属性。&lt;/p>
 &lt;p>&lt;code>EntityBean&lt;/code> 一般用于ORM对象关系映射，一个实体映射成一张表。&lt;/p>
 &lt;p>它能执行很多自动化操作:&lt;/p>

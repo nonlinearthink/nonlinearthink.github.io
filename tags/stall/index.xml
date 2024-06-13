@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Stall on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/stall/</link><description>Recent content in Stall on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 06 Mar 2024 12:23:24 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/stall/index.xml" rel="self" type="application/rss+xml"/><item><title>PARALLEL COMPUTING 课程笔记（一）</title><link>https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/</link><pubDate>Wed, 06 Mar 2024 12:23:24 +0800</pubDate><guid>https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/</guid><description>&lt;p>课程的链接：&lt;a class="link" href="https://gfxcourses.stanford.edu/cs149/fall23" target="_blank" rel="noopener"
 >PARALLEL COMPUTING(Standford CS149)&lt;/a>&lt;/p>
 &lt;p>本文是我个人的学习笔记，适合没那么多时间想要快速过一遍或者英文不好的同学阅读。&lt;/p>
-&lt;h2 id="why-parallelism-why-efficiency">
-&lt;a href="#why-parallelism-why-efficiency">#&lt;/a>
-Why Parallelism? Why Efficiency?
-&lt;/h2>&lt;h3 id="为什么需要并行">
-&lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%b9%b6%e8%a1%8c">#&lt;/a>
-为什么需要并行？
+&lt;h2 id="why-parallelism-why-efficiency">Why Parallelism? Why Efficiency?
+&lt;/h2>&lt;h3 id="为什么需要并行">为什么需要并行？
 &lt;/h3>&lt;p>在过去很长一段时间，处理器性能的提升得益于两方面：&lt;/p>
 &lt;ol>
 &lt;li>
@@ -65,14 +61,10 @@ data-flex-grow="146"
 data-flex-basis="352px"
 >&lt;/p>
 &lt;p>与此同时，多核处理器如今已经成为了主流，程序员必须要编写并行的程序才能利用多核处理器的优势。No more free lunch for software developers!&lt;/p>
-&lt;h3 id="为什么需要高效">
-&lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e9%ab%98%e6%95%88">#&lt;/a>
-为什么需要高效？
+&lt;h3 id="为什么需要高效">为什么需要高效？
 &lt;/h3>&lt;p>仅仅编写并行的程序是不行的，程序也必须是高效的。高效也是讨论并行编程的关键主题。&lt;/p>
 &lt;p>而高效的并行编程往往来自于高效的数据访问。&lt;/p>
-&lt;h4 id="延迟和停顿">
-&lt;a href="#%e5%bb%b6%e8%bf%9f%e5%92%8c%e5%81%9c%e9%a1%bf">#&lt;/a>
-延迟和停顿
+&lt;h4 id="延迟和停顿">延迟和停顿
 &lt;/h4>&lt;p>使用 &lt;code>R0 &amp;lt;- mem[R2]&lt;/code> 指令访问数据，它发起一个请求，把内存中地址 R2 位置的数据传送给 R0 寄存器。在这个过程中，因为需要等待数据传输完毕，会造成一个&lt;code>延迟（Memory Access Latency）&lt;/code>:&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Memory-Access-Latency.png"
 width="891"
@@ -85,9 +77,7 @@ data-flex-grow="410"
 data-flex-basis="985px"
 >&lt;/p>
 &lt;p>处理器无法运行下一条指令，因为需要等待上一条指令完成。这种现象叫做 &lt;code>停顿(Stall)&lt;/code>。&lt;/p>
-&lt;h4 id="带宽">
-&lt;a href="#%e5%b8%a6%e5%ae%bd">#&lt;/a>
-带宽
+&lt;h4 id="带宽">带宽
 &lt;/h4>&lt;p>时钟（Clock） 是指处理器执行一次运算需要的时间。如图所示：&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Instruction-Per-Clock.png"
 width="605"
@@ -106,9 +96,7 @@ data-flex-basis="453px"
 &lt;p>如果一些 Math instruction 需要依赖于 Load instruction 的结果，就只能等待，于是就造成一次停顿。&lt;/p>
 &lt;p>大部分时候，处理器都在等待数据被加载，内存带宽几乎决定了处理器的运行速度。相比于从内存中加载数据，&lt;strong>The math is &amp;ldquo;free&amp;rdquo;&lt;/strong>.&lt;/p>
 &lt;p>所以，高性能的并行程序会尽可能减少从内存中请求数据的次数，并且更倾向于重新计算而不是存储/加载值，这一点可以从 GPU 的 Shader 编程中看出来。&lt;/p>
-&lt;h4 id="缓存">
-&lt;a href="#%e7%bc%93%e5%ad%98">#&lt;/a>
-缓存
+&lt;h4 id="缓存">缓存
 &lt;/h4>&lt;p>使用缓存(Cache)可以减少停顿的长度。什么是缓存？&lt;/p>
 &lt;ol>
 &lt;li>
@@ -148,9 +136,7 @@ data-flex-basis="812px"
 >&lt;/p>
 &lt;p>为了尽可能使用速度快的缓存，需要缓存调度策略。比如：Least Recently Used(LRU)。&lt;/p>
 &lt;p>在一些现代处理器中，存在预测在未来可能会被访问的数据，并提前放入 Cache 中的逻辑。&lt;/p>
-&lt;h3 id="早期的多核处理器">
-&lt;a href="#%e6%97%a9%e6%9c%9f%e7%9a%84%e5%a4%9a%e6%a0%b8%e5%a4%84%e7%90%86%e5%99%a8">#&lt;/a>
-早期的多核处理器
+&lt;h3 id="早期的多核处理器">早期的多核处理器
 &lt;/h3>&lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Multi-Core-Processor.png"
 width="622"
 height="340"
@@ -161,15 +147,9 @@ class="gallery-image"
 data-flex-grow="182"
 data-flex-basis="439px"
 >&lt;/p>
-&lt;h2 id="a-modern-multi-core-processor">
-&lt;a href="#a-modern-multi-core-processor">#&lt;/a>
-A Modern Multi-Core Processor
-&lt;/h2>&lt;h3 id="simd">
-&lt;a href="#simd">#&lt;/a>
-SIMD
-&lt;/h3>&lt;h4 id="什么是-simd">
-&lt;a href="#%e4%bb%80%e4%b9%88%e6%98%af-simd">#&lt;/a>
-什么是 SIMD
+&lt;h2 id="a-modern-multi-core-processor">A Modern Multi-Core Processor
+&lt;/h2>&lt;h3 id="simd">SIMD
+&lt;/h3>&lt;h4 id="什么是-simd">什么是 SIMD
 &lt;/h4>&lt;p>SIMD(Single Instruction, Multiple Data) 的核心理念是在多个 ALU 中分摊管理指令流的成本/复杂性，把相同的指令广播给所有的 ALU 并行运行。即一条指令处理多个数据，常用于向量或者矩阵的计算。一个支持 SIMD 的处理器的例子：&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Processor.png"
 width="173"
@@ -196,9 +176,7 @@ data-flex-basis="157px"
 &lt;blockquote>
 &lt;p>SIMD 和 ILP 并不同，SIMD 是使用一条指令计算多个数据，而 ILP 则是基于指令的依赖关系去让一些指令可以并行执行。它们可以同时存在。&lt;/p>
 &lt;/blockquote>
-&lt;h4 id="simd-的执行分歧">
-&lt;a href="#simd-%e7%9a%84%e6%89%a7%e8%a1%8c%e5%88%86%e6%ad%a7">#&lt;/a>
-SIMD 的执行分歧
+&lt;h4 id="simd-的执行分歧">SIMD 的执行分歧
 &lt;/h4>&lt;p>如果遇到需要条件执行的程序，使用 SIMD 会导致执行分歧：&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/SIMD-Conditional-Execution.png"
 width="436"
@@ -211,16 +189,12 @@ data-flex-grow="150"
 data-flex-basis="362px"
 >&lt;/p>
 &lt;p>这意味着在一段时间内部分 ALU 是不工作的，导致了性能的浪费。在极端的情况下，可能会导致 CPU 仅使用 $\frac{1}{N}$ 的性能（仅有一个 ALU 工作）。&lt;/p>
-&lt;h4 id="如何使用-simd">
-&lt;a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8-simd">#&lt;/a>
-如何使用 SIMD
+&lt;h4 id="如何使用-simd">如何使用 SIMD
 &lt;/h4>&lt;ul>
 &lt;li>Explicit SIMD，程序员使用显式调用封装了 SIMD 的库&lt;/li>
 &lt;li>Implicit SIMD，程序员仅编写高级语言的代码，由特殊的编译器自动生成 SIMD 的汇编指令&lt;/li>
 &lt;/ul>
-&lt;h3 id="线程">
-&lt;a href="#%e7%ba%bf%e7%a8%8b">#&lt;/a>
-线程
+&lt;h3 id="线程">线程
 &lt;/h3>&lt;p>线程（Thread），是指在一个处理器核心（Core）中，有多个执行上下文，线程并不能真正并行运行，它只是从一个执行上下文切换到另外一个执行上下文，轮流执行。在其他线程执行的时候，执行完的线程也不会结束，会有很长的停顿。&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/parallel-computing-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E4%B8%80/Threads.png"
 width="523"
@@ -233,9 +207,7 @@ data-flex-grow="176"
 data-flex-basis="424px"
 >&lt;/p>
 &lt;p>使用线程还需要付出代价：因为存储执行上下文的物理单元也是有限的，更多的线程意味着程序的可用执行上下文会更小。&lt;/p>
-&lt;h2 id="总结">
-&lt;a href="#%e6%80%bb%e7%bb%93">#&lt;/a>
-总结
+&lt;h2 id="总结">总结
 &lt;/h2>&lt;p>在现代处理器中，实现并行的方法有：&lt;/p>
 &lt;ul>
 &lt;li>Muti-Core&lt;/li>

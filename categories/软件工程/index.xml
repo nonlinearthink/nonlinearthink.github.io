@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>软件工程 on nonlinearthink</title><link>https://nonlinearthink.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/</link><description>Recent content in 软件工程 on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 27 Feb 2024 21:56:50 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>面向对象 SOLID 设计原则</title><link>https://nonlinearthink.github.io/p/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-solid-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</link><pubDate>Tue, 27 Feb 2024 21:56:50 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-solid-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</guid><description>&lt;p>软件由需求驱动，而需求会不断变化，随着时间的变化，系统的熵必然会不断增加，软件开发就是控制系统熵减的一个过程。那么，&lt;strong>如何编写一个可维护、可理解和可扩展的软件？&lt;/strong>&lt;/p>
 &lt;p>本文旨在介绍一个有着 20 年历史的面向对象 SOLID 设计原则，可能会对你有所帮助。&lt;/p>
-&lt;h2 id="solid-简介">
-&lt;a href="#solid-%e7%ae%80%e4%bb%8b">#&lt;/a>
-SOLID 简介
+&lt;h2 id="solid-简介">SOLID 简介
 &lt;/h2>&lt;p>SOLID 是面向对象编程领域的五个设计原则，由它们的首字母缩写而来：&lt;/p>
 &lt;ul>
 &lt;li>&lt;strong>S&lt;/strong>ingle Responsibility Principle（单一功能原则）&lt;/li>
@@ -13,12 +11,8 @@ SOLID 简介
 &lt;/ul>
 &lt;p>你大概率已经听过这些名词，假如它们出现在一本介绍编程的书里面，你大概率会忽略它们，因为它们看起来和你要做的编程工作没有关系。&lt;/p>
 &lt;p>假如你是一个有了一定经验的程序员，看到这些名词，并理解它们，你可能会非常兴奋。因为这正是你在寻找的东西。&lt;/p>
-&lt;h2 id="通过例子学习-solid">
-&lt;a href="#%e9%80%9a%e8%bf%87%e4%be%8b%e5%ad%90%e5%ad%a6%e4%b9%a0-solid">#&lt;/a>
-通过例子学习 SOLID
-&lt;/h2>&lt;h3 id="single-responsibility-principle">
-&lt;a href="#single-responsibility-principle">#&lt;/a>
-Single Responsibility Principle
+&lt;h2 id="通过例子学习-solid">通过例子学习 SOLID
+&lt;/h2>&lt;h3 id="single-responsibility-principle">Single Responsibility Principle
 &lt;/h3>&lt;p>即&lt;strong>单一功能原则&lt;/strong>，从字面意思上来讲，就是一个类只能有一个功能。但是假如真的这么做，无疑是过度设计了，所以我更愿意这样子理解：&lt;strong>假如你有一个类，经常修改它并且总是出于不同的原因，那么你应该尝试把它拆分成不同的类。&lt;/strong>&lt;/p>
 &lt;p>这样做的好处是可以设计充分的单元测试，错误也更容易定位。&lt;/p>
 &lt;p>例如，有一个 Text 类：&lt;/p>
@@ -112,9 +106,7 @@ Single Responsibility Principle
 &lt;/div>&lt;p>任何开发过软件的人都明白，这不是一条容易遵守的规则，因为比较极端的情况下，似乎我们得要为每一个功能都设计一个类，这是不现实的。&lt;/p>
 &lt;p>知道哪些类可以拆分很重要，这需要你动用领域驱动设计（DDD）的思想，充分了解具体的业务模型，以此来决定类的粒度。如果实在是觉得纠结，这里还有一些数学方法来衡量类的内聚性：&lt;a class="link" href="https://www.aivosto.com/project/help/pm-oo-cohesion.html" target="_blank" rel="noopener"
 >Cohesion metrics&lt;/a>，不再展开。&lt;/p>
-&lt;h3 id="openclosed-principle">
-&lt;a href="#openclosed-principle">#&lt;/a>
-Open/Closed Principle
+&lt;h3 id="openclosed-principle">Open/Closed Principle
 &lt;/h3>&lt;p>即&lt;strong>开闭原则&lt;/strong>，开闭原则的全称是 Open for Extension, Closed for Modification。它的主要指导思想是一个类被设计完之后，就不应该再被修改了，而是基于抽象去做扩展。这听起来简直匪夷所思，天方夜谭，白日做梦。让我们看一个 Calculator 类的例子：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -235,9 +227,7 @@ Open/Closed Principle
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>我们巧妙地把所有操作抽象成一个接口，然后让 Calculator 类依赖这个接口，这样就避免了修改 Calculator 类。&lt;/p>
-&lt;h3 id="liskov-substitution-principle">
-&lt;a href="#liskov-substitution-principle">#&lt;/a>
-Liskov Substitution Principle
+&lt;h3 id="liskov-substitution-principle">Liskov Substitution Principle
 &lt;/h3>&lt;p>即&lt;strong>里氏替换原则&lt;/strong>，它的规则很简单：子类型应该能替换父类型出现的位置且无需改动任何代码。&lt;/p>
 &lt;p>虽然看起来很简单，但是实际做起来非常有讲究，我们可以参考 &lt;a class="link" href="https://www.oreilly.com/library/view/program-development-in/9780768685299/" target="_blank" rel="noopener"
 >Program Development in Java: Abstraction, Specification, and Object-Oriented Design&lt;/a>，里面提出了一些建设性的建议。&lt;/p>
@@ -290,9 +280,7 @@ Liskov Substitution Principle
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>Square 的宽和高是一样的，它比 Rectangle 多一个约束条件，所以 Square 继承 Rectangle 是可行的，但是反过来就不对。&lt;/p>
-&lt;h3 id="interface-segregation-principle">
-&lt;a href="#interface-segregation-principle">#&lt;/a>
-Interface Segregation Principle
+&lt;h3 id="interface-segregation-principle">Interface Segregation Principle
 &lt;/h3>&lt;p>即&lt;strong>接口隔离原则&lt;/strong>，这个比较容易理解，即尽可能把接口设计得足够小。&lt;/p>
 &lt;p>假如我们有一个 Human 类：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -349,9 +337,7 @@ Interface Segregation Principle
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="dependency-inversion-principle">
-&lt;a href="#dependency-inversion-principle">#&lt;/a>
-Dependency Inversion Principle
+&lt;/div>&lt;h3 id="dependency-inversion-principle">Dependency Inversion Principle
 &lt;/h3>&lt;p>即&lt;strong>依赖反转原则&lt;/strong>，在我们设计软件的时候，很容易基于想到，上层模块应该依赖底层模块，但是依赖反转原则想要告诉你，上层模块不应该依赖于底层模块，而是依赖于抽象。这种情况在后端编程的时候非常常见：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -414,9 +400,7 @@ Dependency Inversion Principle
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>在这里，FileController 类依赖了 ILoginService 接口，而不是直接使用 UserService 类，这样就避免了后续添加 AdminService 类后，FileController 类需要兼容 AdminService 类的逻辑。&lt;/p>
-&lt;h2 id="总结">
-&lt;a href="#%e6%80%bb%e7%bb%93">#&lt;/a>
-总结
+&lt;h2 id="总结">总结
 &lt;/h2>&lt;p>SOLID 是面向对象程序设计领域的五个原则的缩写，分别是：&lt;/p>
 &lt;ol>
 &lt;li>单一功能原则，一个类只应该负责一个单一的功能&lt;/li>
@@ -426,9 +410,7 @@ Dependency Inversion Principle
 &lt;li>依赖反转原则，高层模块不应该依赖于底层模块，而是依赖于抽象接口&lt;/li>
 &lt;/ol>
 &lt;p>尝试在日常的代码编写中思考和应用这些原则。&lt;/p>
-&lt;h2 id="参考资料">
-&lt;a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99">#&lt;/a>
-参考资料
+&lt;h2 id="参考资料">参考资料
 &lt;/h2>&lt;ul>
 &lt;li>&lt;a class="link" href="https://www.baeldung.com/solid-principles" target="_blank" rel="noopener"
 >A Solid Guide to SOLID Principles&lt;/a>&lt;/li>
