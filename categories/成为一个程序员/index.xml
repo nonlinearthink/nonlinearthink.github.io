@@ -375,7 +375,219 @@
 &lt;/ul>
 &lt;h2 id="获取完整的代码">获取完整的代码
 &lt;/h2>&lt;p>&lt;a class="link" href="https://github.com/nonlinearthink/python-ddns-demo" target="_blank" rel="noopener"
->Github 项目地址&lt;/a>&lt;/p></description></item><item><title>CSS 像素和单位计算</title><link>https://nonlinearthink.github.io/p/css-%E5%83%8F%E7%B4%A0%E5%92%8C%E5%8D%95%E4%BD%8D%E8%AE%A1%E7%AE%97/</link><pubDate>Wed, 08 Jul 2020 14:49:49 +0800</pubDate><guid>https://nonlinearthink.github.io/p/css-%E5%83%8F%E7%B4%A0%E5%92%8C%E5%8D%95%E4%BD%8D%E8%AE%A1%E7%AE%97/</guid><description>&lt;h2 id="像素思维">像素思维
+>Github 项目地址&lt;/a>&lt;/p></description></item><item><title>使用 Cordova 打包 Vue 的移动端应用</title><link>https://nonlinearthink.github.io/p/%E4%BD%BF%E7%94%A8-cordova-%E6%89%93%E5%8C%85-vue-%E7%9A%84%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BA%94%E7%94%A8/</link><pubDate>Sun, 04 Oct 2020 22:08:07 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E4%BD%BF%E7%94%A8-cordova-%E6%89%93%E5%8C%85-vue-%E7%9A%84%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BA%94%E7%94%A8/</guid><description>&lt;blockquote>
+&lt;p>这是一个区别于 &lt;code>uni-app&lt;/code> 的纯 H5 的打包方案，不支持小程序，当时还在读大二的时候被我用于一个课程大作业，现在开新项目的话用 &lt;code>taro&lt;/code> 更合适。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="cordova-安装">Cordova 安装
+&lt;/h2>&lt;p>使用 &lt;code>npm&lt;/code> 安装 &lt;code>cordova&lt;/code> 命令行:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">npm install -g cordova
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>创建 &lt;code>Vue&lt;/code> 项目:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vue create cordova-test
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>找了一圈 &lt;code>Vue&lt;/code> 的 &lt;code>Cordova&lt;/code> 插件，个人觉得最好用的是这个: &lt;a class="link" href="https://github.com/Menardi/vue-cli-plugin-cordova-simple" target="_blank" rel="noopener"
+>vue-cli-plugin-cordova-simple&lt;/a>。这位老哥写得这么好，都没人帮他宣传。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vue add vue-cli-plugin-cordova-simple
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>新建 &lt;code>vue.config.js&lt;/code> 文件:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="nx">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">exports&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">publicPath&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;./&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>另外，&lt;code>router&lt;/code> 不要使用 &lt;code>history&lt;/code> 模式，使用 &lt;code>hash&lt;/code> 模式。&lt;/p>
+&lt;h2 id="ios-环境配置">iOS 环境配置
+&lt;/h2>&lt;p>iOS 环境只能在 Mac 中配置。&lt;/p>
+&lt;p>先用 &lt;code>cordova&lt;/code> 命令行为项目添加 &lt;code>iOS 打包工具&lt;/code>。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">cordova add ios
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol>
+&lt;li>
+&lt;p>在 App Store 安装 Xcode&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>安装 ios-deploy&lt;/p>
+&lt;p>使用 &lt;code>npm&lt;/code> 安装:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">npm install -g ios-deploy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>安装 CocoaPods&lt;/p>
+&lt;p>&lt;code>gem&lt;/code> 是 &lt;code>Ruby&lt;/code> 的包管理器，&lt;code>Mac&lt;/code> 自带 &lt;code>Ruby&lt;/code>，直接用就行了。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo gem install cocoapods
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>检验环境&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">cordova requirements
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果没有任何报错，就没问题了。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>运行&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">npm run build
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cordova run ios
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>报错: xcode-select: error: tool &amp;lsquo;xcodebuild&amp;rsquo; requires Xcode, but active developer directory &amp;lsquo;/Library/Developer/CommandLineTools&amp;rsquo; is a command line tools instance&lt;/p>
+&lt;p>由于我一开始在我的 &lt;code>Mac&lt;/code> 上安装环境的时候，单独安装了 &lt;code>Xcode&lt;/code> 的 &lt;code>CommandlineTools&lt;/code>，后面又安装 &lt;code>Xcode&lt;/code>，我的机子上有两个 &lt;code>CommandlineTools&lt;/code>。 而当前使用的那个 &lt;code>CommandlineTools&lt;/code> 是不在 &lt;code>Xcode&lt;/code> 下面的那个。&lt;/p>
+&lt;p>我们需要更改一下 &lt;code>CommandlineTools&lt;/code> 的目录：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">xcode-select -switch /Applications/Xcode.app/Contents/Developer/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/blockquote>
+&lt;h2 id="android-环境配置">Android 环境配置
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>安装 JDK&lt;/p>
+&lt;p>一般来说，推荐使用 &lt;code>JDK 1.8&lt;/code>。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>安装 Android Studio&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>安装 Android SDK&lt;/p>
+&lt;p>打开 &lt;code>Android Studio&lt;/code> 的 &lt;code>SDK Manager&lt;/code>。&lt;/p>
+&lt;p>目前最新版的 &lt;code>cordova-android&lt;/code> 是 &lt;code>9.0.0&lt;/code>，刚刚支持了 &lt;code>Andorid 10( API 29 )&lt;/code>，所以我们就安装 &lt;code>Android 10&lt;/code> 就好了。&lt;/p>
+&lt;p>早期版本的 &lt;code>cordova-android&lt;/code> 和 &lt;code>android api&lt;/code> 版本的关系可以去&lt;a class="link" href="https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html" target="_blank" rel="noopener"
+>官网&lt;/a>。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>创建虚拟设备&lt;/p>
+&lt;p>打开 &lt;code>AVD Manager&lt;/code>，选一下机型和系统镜像就好了，注意前面的安卓版本兼容。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>安装 Gradle&lt;/p>
+&lt;p>首先，你需要一个 &lt;code>Gradle&lt;/code> 命令行，直接用 &lt;code>brew&lt;/code> 吧。( 安装半天 )&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">brew install gradle
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后，现在你应该已经能通过 &lt;code>cordova requirements&lt;/code> 的测试了，但是还没完。&lt;/p>
+&lt;p>因为 &lt;code>Android&lt;/code> 打包默认使用 &lt;code>gradle wrapper&lt;/code>，所以它应该会下载一个版本的 gradle 到你的本地，路径在 &lt;code>~/.gralde/wrapper/dists/gradle-xx-all/xxxxx/&lt;/code>，建议立刻停止进程，然后自己另外下一个相同版本的替换它。&lt;/p>
+&lt;blockquote>
+&lt;p>把下载链接复制到迅雷，可以快速下载 &lt;code>gradle&lt;/code> 包。&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>运行&lt;/p>
+&lt;p>先打开虚拟设备，然后运行:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">npm run build
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cordova run android
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;h2 id="题外话">题外话
+&lt;/h2>&lt;h3 id="history-和-hash-模式">history 和 hash 模式
+&lt;/h3>&lt;p>两者使用上的区别是 &lt;code>history模式&lt;/code> 需要一个服务器，而 &lt;code>hash模式&lt;/code> 不需要。&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>hash模式&lt;/code> 通过 &lt;code>URL锚点&lt;/code> 模拟页面跳转。&lt;/li>
+&lt;li>&lt;code>history模式&lt;/code> 通过 &lt;code>HTML5 history interface&lt;/code> 模拟页面跳转，因为单页面应用只打包出了一个单一的入口，所以需要一个服务器把所有请求重定向到 &lt;code>index.html&lt;/code> 上。&lt;/li>
+&lt;/ul>
+&lt;p>如果是网页端开发的话，用 &lt;code>history模式&lt;/code> 无疑是最好的，如果是移动端或者桌面端的程序，用 &lt;code>hash模式&lt;/code> 更方便。&lt;/p>
+&lt;h3 id="配置资源文件">配置资源文件
+&lt;/h3>&lt;p>找不到资源文件。因为 &lt;code>Vue&lt;/code> 在引用资源文件的时候按绝对路径去寻找，可以把他们作为。这个有解决方案。&lt;/p>
+&lt;p>新建 &lt;code>vue.config.js&lt;/code> 文件:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="nx">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">exports&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">publicPath&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;./&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="如何寻找vue插件">如何寻找Vue插件
+&lt;/h3>&lt;p>开启 Vue 项目管理工具:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vue ui
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>里面分为依赖和插件两部分。&lt;/p>
+&lt;p>依赖一般是官方发布的，能保持最新，且 BUG 较少，就是配置起来麻烦。&lt;/p>
+&lt;p>插件就是整合依赖的工具，质量参差不齐，但是插件可以做到开箱即用，很方便。只是有些插件的作者不是很上心，占着显眼的名字，质量却不如一些冷门的好。&lt;/p>
+&lt;p>祝大家运行成功！&lt;/p></description></item><item><title>CSS 像素和单位计算</title><link>https://nonlinearthink.github.io/p/css-%E5%83%8F%E7%B4%A0%E5%92%8C%E5%8D%95%E4%BD%8D%E8%AE%A1%E7%AE%97/</link><pubDate>Wed, 08 Jul 2020 14:49:49 +0800</pubDate><guid>https://nonlinearthink.github.io/p/css-%E5%83%8F%E7%B4%A0%E5%92%8C%E5%8D%95%E4%BD%8D%E8%AE%A1%E7%AE%97/</guid><description>&lt;h2 id="像素思维">像素思维
 &lt;/h2>&lt;p>这一小节，我们将介绍 &lt;code>px(Pixel)&lt;/code>。&lt;/p>
 &lt;h3 id="逻辑像素而不是物理像素">逻辑像素而不是物理像素
 &lt;/h3>&lt;p>px 从字面上来看是像素的意思，很多新手一上来可能会认为它的&lt;strong>物理像素&lt;/strong>。&lt;/p>
