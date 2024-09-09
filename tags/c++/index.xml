@@ -466,28 +466,25 @@ data-flex-grow="128"
 data-flex-basis="307px"
 >&lt;/p>
 &lt;p>假设平面上存在三角形的三个点 $a, b, c$，则平面上任意的点 $p$ 都可使用三角形的三个顶点表示：&lt;/p>
-&lt;p>$$
+$$
 \begin{aligned}
-p &amp;amp;= a+\beta(b-a)+\gamma(c-a)\cr
-p &amp;amp;= (1-\beta-\gamma)a+\beta b+\gamma c
+p &amp;= a+\beta(b-a)+\gamma(c-a)\cr
+p &amp;= (1-\beta-\gamma)a+\beta b+\gamma c
 \end{aligned}
-$$&lt;/p>
-&lt;p>令：&lt;/p>
-&lt;p>$$
+$$&lt;p>令：&lt;/p>
+$$
 \begin{aligned}
-\alpha &amp;amp;= 1-\beta-\gamma
+\alpha &amp;= 1-\beta-\gamma
 \end{aligned}
-$$&lt;/p>
-&lt;ul>
+$$&lt;ul>
 &lt;li>当 $\alpha$、$\beta$、$\gamma$ 均大于 0 小于 1 时，$p$ 位于三角形内部&lt;/li>
 &lt;li>当 $\alpha$、$\beta$、$\gamma$ 中有一个分量等于 0 时，$p$ 在三角形边上&lt;/li>
 &lt;li>当 $\alpha$、$\beta$、$\gamma$ 中有两个变量等于 0 时，$p$ 在某个顶点上&lt;/li>
 &lt;/ul>
 &lt;p>以坐标形式表示：&lt;/p>
-&lt;p>$$
+$$
 p = (\alpha, \beta, \gamma)
-$$&lt;/p>
-&lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/barycentric-coordinate-points.png"
+$$&lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/barycentric-coordinate-points.png"
 width="425"
 height="318"
 srcset="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/barycentric-coordinate-points_hu16243744942790394360.png 480w, https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/barycentric-coordinate-points_hu8241336905434934858.png 1024w"
@@ -509,18 +506,16 @@ class="gallery-image"
 data-flex-grow="104"
 data-flex-basis="251px"
 >&lt;/p>
-&lt;p>$$
+$$
 \begin{aligned}
 \alpha = \frac{A_a}{A_a+A_b+A_c} \cr
 \beta = \frac{A_b}{A_a+A_b+A_c} \cr
 \gamma = \frac{A_c}{A_a+A_b+A_c}
 \end{aligned}
-$$&lt;/p>
-&lt;p>求面积可以使用叉乘：&lt;/p>
-&lt;p>$$
+$$&lt;p>求面积可以使用叉乘：&lt;/p>
+$$
 \alpha = \frac{A_a}{A} = \frac{\vert (c-b) \times (c-p)\vert}{\vert (a-b) \times (a-c)\vert}
-$$&lt;/p>
-&lt;p>但是求出来的 $\alpha$ 失去了方向性。我们可以通过点乘一个法线来解决这个问题：&lt;/p>
+$$&lt;p>但是求出来的 $\alpha$ 失去了方向性。我们可以通过点乘一个法线来解决这个问题：&lt;/p>
 &lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E7%BC%96%E5%86%99%E5%85%89%E6%A0%85%E5%8C%96%E6%B8%B2%E6%9F%93%E5%99%A8%E5%9B%9B%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2/triangle-normal.png"
 width="144"
 height="127"
@@ -531,83 +526,78 @@ class="gallery-image"
 data-flex-grow="113"
 data-flex-basis="272px"
 >&lt;/p>
-&lt;p>$$
+$$
 \alpha = \frac{((c-b) \times (p-b))\cdot n}{((b-a) \times (c-a))\cdot n}
-$$&lt;/p>
-&lt;blockquote>
+$$&lt;blockquote>
 &lt;p>这个等式之所以成立的关键是两个向量 $a$、$b$ 的点乘表达式为：
-$$a\cdot b = \vert a\vert\vert b\vert\cos\theta$$
+&lt;/p>
+$$a\cdot b = \vert a\vert\vert b\vert\cos\theta$$&lt;p>
 当它们相互垂直的时候，$\cos\theta = 1$，那么上面的表示式实际上可以被表达为：
+&lt;/p>
 $$
-\alpha = \frac{\vert(c-b) \times (p-b)\vert \vert n\vert}{\vert(b-a) \times (c-a)\vert \vert n\vert} = \frac{\vert(c-b) \times (p-b)\vert}{\vert(b-a) \times (c-a)\vert}
-$$
+>\alpha = \frac{\vert(c-b) \times (p-b)\vert \vert n\vert}{\vert(b-a) \times (c-a)\vert \vert n\vert} = \frac{\vert(c-b) \times (p-b)\vert}{\vert(b-a) \times (c-a)\vert}
+>$$&lt;p>
 这个结果和之前的推导一样。&lt;/p>
 &lt;/blockquote>
 &lt;p>同时我们从叉乘的定义中得到 $n = ab \times ac$。&lt;/p>
 &lt;p>最终，我们得到了最终结果：&lt;/p>
-&lt;p>$$
+$$
 \begin{aligned}
-\alpha &amp;amp;= \frac{n_a \cdot n}{n\cdot n}\cr
-\beta &amp;amp;= \frac{n_b \cdot n}{n\cdot n}\cr
-\gamma &amp;amp;= \frac{n_c \cdot n}{n\cdot n}
+\alpha &amp;= \frac{n_a \cdot n}{n\cdot n}\cr
+\beta &amp;= \frac{n_b \cdot n}{n\cdot n}\cr
+\gamma &amp;= \frac{n_c \cdot n}{n\cdot n}
 \end{aligned}
-$$&lt;/p>
-&lt;p>其中：&lt;/p>
-&lt;p>$$
+$$&lt;p>其中：&lt;/p>
+$$
 \begin{aligned}
-n_a &amp;amp;= (c-b) \times (p-b)\cr
-n_b &amp;amp;= (a-c) \times (p-c)\cr
-n_c &amp;amp;= (b-a) \times (p-a)
+n_a &amp;= (c-b) \times (p-b)\cr
+n_b &amp;= (a-c) \times (p-c)\cr
+n_c &amp;= (b-a) \times (p-a)
 \end{aligned}
-$$&lt;/p>
-&lt;h3 id="代数法">代数法
+$$&lt;h3 id="代数法">代数法
 &lt;/h3>&lt;p>把上一小节的公式，写成这样的形式：&lt;/p>
-&lt;p>$$
+$$
 \beta(b-a)+\gamma(c-a)+(a-p)= 0
-$$&lt;/p>
-&lt;p>分别带入 x 和 y，得到两个方程，求两个未知数：&lt;/p>
-&lt;p>$$
+$$&lt;p>分别带入 x 和 y，得到两个方程，求两个未知数：&lt;/p>
+$$
 \begin{aligned}
-(x_b - x_a)\beta+(x_c - x_a)\gamma+(x_a - x_p) &amp;amp;= 0\cr
-(y_b - y_a)\beta+(y_c - y_a)\gamma+(y_a - y_p) &amp;amp;= 0
+(x_b - x_a)\beta+(x_c - x_a)\gamma+(x_a - x_p) &amp;= 0\cr
+(y_b - y_a)\beta+(y_c - y_a)\gamma+(y_a - y_p) &amp;= 0
 \end{aligned}
-$$&lt;/p>
-&lt;p>最终的结果:&lt;/p>
-&lt;p>$$
+$$&lt;p>最终的结果:&lt;/p>
+$$
 \begin{aligned}
-\gamma &amp;amp;= \frac{(y_a-y_b)x_p+(x_b-x_a)y_p+x_a y_b-x_b x_a}{(y_a-y_b)x_c+(x_a-x_b)y_c+x_a y_b-x_b x_a}\cr
-\beta &amp;amp;= \frac{(y_a-y_c)x_p+(x_c-x_a)y_p+x_a y_c-x_c x_a}{(y_a-y_c)x_b+(x_c-x_a)y_b+x_a y_c-x_c x_a}\cr
-\alpha &amp;amp;= 1-\gamma-\beta
+\gamma &amp;= \frac{(y_a-y_b)x_p+(x_b-x_a)y_p+x_a y_b-x_b x_a}{(y_a-y_b)x_c+(x_a-x_b)y_c+x_a y_b-x_b x_a}\cr
+\beta &amp;= \frac{(y_a-y_c)x_p+(x_c-x_a)y_p+x_a y_c-x_c x_a}{(y_a-y_c)x_b+(x_c-x_a)y_b+x_a y_c-x_c x_a}\cr
+\alpha &amp;= 1-\gamma-\beta
 \end{aligned}
-$$&lt;/p>
-&lt;hr>
+$$&lt;hr>
 &lt;p>上面是标准的求法，还有一种捷径。&lt;/p>
 &lt;p>把上面两个方程变成矩阵形式：&lt;/p>
-&lt;p>$$
+$$
 \begin{aligned}
 \begin{bmatrix}
-x_b - x_a &amp;amp; x_c - x_a &amp;amp; x_a - x_p \cr
+x_b - x_a &amp; x_c - x_a &amp; x_a - x_p \cr
 \end{bmatrix}
 \begin{bmatrix}
 \beta \cr
 \gamma \cr
 1
-\end{bmatrix} &amp;amp;=
+\end{bmatrix} &amp;=
 0\cr
 \begin{bmatrix}
-y_b - y_a &amp;amp; y_c - y_a &amp;amp; y_a - y_p\cr
+y_b - y_a &amp; y_c - y_a &amp; y_a - y_p\cr
 \end{bmatrix}
 \begin{bmatrix}
 \beta \cr
 \gamma \cr
 1
-\end{bmatrix} &amp;amp;=
+\end{bmatrix} &amp;=
 0
 \end{aligned}
-$$&lt;/p>
-&lt;p>说明向量 $\begin{bmatrix}x_b - x_a &amp;amp; x_c - x_a &amp;amp; x_a - x_p \end{bmatrix}$ 垂直于向量 $\begin{bmatrix}\beta &amp;amp;\gamma &amp;amp; 1\end{bmatrix}$，向量 $\begin{bmatrix}y_b - y_a &amp;amp; y_c - y_a &amp;amp; y_a - y_p \end{bmatrix}$ 垂直于向量 $\begin{bmatrix}\beta &amp;amp;\gamma &amp;amp; 1\end{bmatrix}$。&lt;/p>
+$$&lt;p>说明向量 $\begin{bmatrix}x_b - x_a &amp;amp; x_c - x_a &amp;amp; x_a - x_p \end{bmatrix}$ 垂直于向量 $\begin{bmatrix}\beta &amp;amp;\gamma &amp;amp; 1\end{bmatrix}$，向量 $\begin{bmatrix}y_b - y_a &amp;amp; y_c - y_a &amp;amp; y_a - y_p \end{bmatrix}$ 垂直于向量 $\begin{bmatrix}\beta &amp;amp;\gamma &amp;amp; 1\end{bmatrix}$。&lt;/p>
 &lt;p>得到：&lt;/p>
-&lt;p>$$
+$$
 \begin{bmatrix}
 x_b - x_a \cr x_c - x_a \cr x_a - x_p
 \end{bmatrix}\times
@@ -619,8 +609,7 @@ k\beta \cr
 k\gamma \cr
 k
 \end{bmatrix}
-$$&lt;/p>
-&lt;p>这是最快的重心计算法，它只使用了一个叉乘就解决了问题。&lt;/p>
+$$&lt;p>这是最快的重心计算法，它只使用了一个叉乘就解决了问题。&lt;/p>
 &lt;h2 id="重心坐标代码实现">重心坐标代码实现
 &lt;/h2>&lt;p>根据上面推导的公式，最终，代码实现：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -778,26 +767,22 @@ data-flex-basis="320px"
 >&lt;/p>
 &lt;p>在 $(x_k, y_k)$ 的位置时候，可能走向 $(x_k+1, y_k)$ 也可能走向 $(x_k+1, y_k+1)$，显然，斜线的交点更加靠近谁，就往哪个方向走。&lt;/p>
 &lt;p>斜率:&lt;/p>
-&lt;p>$$
+$$
 k = \frac{\Delta y}{\Delta x}
-$$&lt;/p>
-&lt;p>对于每一次循环，执行：&lt;/p>
-&lt;p>$$
-x_{i+1} = x_i + 1\
-e_{i+1} = e_i + k\
-$$&lt;/p>
-&lt;p>同时，始终保证 $0 &amp;lt; e &amp;lt; 1$：&lt;/p>
-&lt;p>$$
-e_{i+1} = e_{i+1} - 1, e_{i+1} &amp;gt; 1
-$$&lt;/p>
-&lt;p>最后，得出这个点的 &lt;code>y&lt;/code>：&lt;/p>
-&lt;p>$$
+$$&lt;p>对于每一次循环，执行：&lt;/p>
+$$
+x_{i+1} = x_i + 1\\
+e_{i+1} = e_i + k\\
+$$&lt;p>同时，始终保证 $0 &amp;lt; e &amp;lt; 1$：&lt;/p>
+$$
+e_{i+1} = e_{i+1} - 1, e_{i+1} > 1
+$$&lt;p>最后，得出这个点的 &lt;code>y&lt;/code>：&lt;/p>
+$$
 y_{i+1} = \begin{cases}
-y_i+1 &amp;amp;\text{if } e_{i+1} \gt 0.5\cr
-y_i &amp;amp;\text{if } e_{i+1} \le 0.5\cr
+y_i+1 &amp;\text{if } e_{i+1} \gt 0.5\cr
+y_i &amp;\text{if } e_{i+1} \le 0.5\cr
 \end{cases}
-$$&lt;/p>
-&lt;hr>
+$$&lt;hr>
 &lt;p>上面的算法是 &lt;code>Bresenham's Line&lt;/code> 的基本思想，还需要进一步优化，减少浮点数运算。&lt;/p>
 &lt;p>可能产生浮点数的地方是 $k = \frac{\Delta y}{\Delta x}$ 和 $e_{i+1} \gt 0.5$，所以我们最后再把上面所有的过程乘以 $2\Delta x$。&lt;/p>
 &lt;p>最终，我们的代码如下，其中 $\Delta x = x_2 - x_1, \Delta y = y_2 - y_1$：&lt;/p>

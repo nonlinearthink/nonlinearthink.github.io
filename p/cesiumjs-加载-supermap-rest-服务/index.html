@@ -255,15 +255,15 @@
 </span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>tileImageResource</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>  <span class=p>}</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></td></tr></table></div></div><p>其中，<code>origin</code> 需要根据不同的投影坐标系或者地理坐标系进行修改，<code>x</code>, <code>y</code>, <code>scale</code> 这三个参数交给 Cesium 去填写。</p><p><code>x</code> 和 <code>y</code> 很好理解，就是水平和垂直方向上的瓦片坐标，但是 <code>scale</code> 是什么。</p><h3 id=计算-scale>计算 scale</h3><p>在 Supermap 的文档中，可以找到相关的描述：<a class=link href=https://enonline.supermap.com/iExpress9D/Appendix/scale.htm target=_blank rel=noopener>scale</a></p><p>$$
+</span></span></code></pre></td></tr></table></div></div><p>其中，<code>origin</code> 需要根据不同的投影坐标系或者地理坐标系进行修改，<code>x</code>, <code>y</code>, <code>scale</code> 这三个参数交给 Cesium 去填写。</p><p><code>x</code> 和 <code>y</code> 很好理解，就是水平和垂直方向上的瓦片坐标，但是 <code>scale</code> 是什么。</p><h3 id=计算-scale>计算 scale</h3><p>在 Supermap 的文档中，可以找到相关的描述：<a class=link href=https://enonline.supermap.com/iExpress9D/Appendix/scale.htm target=_blank rel=noopener>scale</a></p>$$
 scale = \frac{1}{Resolution \frac{PPI}{0.0254}}
-$$</p><ul><li>Resolution 代表每一个像素有多少实际距离</li><li>PPI 代表了每一英尺有多少个像素，这个数值一般为 <code>96</code></li><li>0.0254 是英尺和米的转换比例</li></ul><p>以 WebMercator 为例，它的第 0 级瓦片整张地图实际大小为 <code>40075016.68×40075016.68</code> 米左右，假如向 Supermap 发起一个 <code>256×256</code> 像素大小的图片请求，那么：</p><p>$$
+$$<ul><li>Resolution 代表每一个像素有多少实际距离</li><li>PPI 代表了每一英尺有多少个像素，这个数值一般为 <code>96</code></li><li>0.0254 是英尺和米的转换比例</li></ul><p>以 WebMercator 为例，它的第 0 级瓦片整张地图实际大小为 <code>40075016.68×40075016.68</code> 米左右，假如向 Supermap 发起一个 <code>256×256</code> 像素大小的图片请求，那么：</p>$$
 \begin{aligned}
 \cr
 Resolution &= \frac{40075016.68}{256} = 156543.03\cr
 scale &= \frac{1}{156543.03 \frac{96}{0.0254}} = 1.6901635718379278e-9
 \end{aligned}
-$$</p><p>以此类推，我们可以计算出 WGS84 和 WebMercator 各个级别下的 scale 值，并用一个数组来表示：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+$$<p>以此类推，我们可以计算出 WGS84 和 WebMercator 各个级别下的 scale 值，并用一个数组来表示：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4

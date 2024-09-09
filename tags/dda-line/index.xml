@@ -104,26 +104,22 @@ data-flex-basis="320px"
 >&lt;/p>
 &lt;p>在 $(x_k, y_k)$ 的位置时候，可能走向 $(x_k+1, y_k)$ 也可能走向 $(x_k+1, y_k+1)$，显然，斜线的交点更加靠近谁，就往哪个方向走。&lt;/p>
 &lt;p>斜率:&lt;/p>
-&lt;p>$$
+$$
 k = \frac{\Delta y}{\Delta x}
-$$&lt;/p>
-&lt;p>对于每一次循环，执行：&lt;/p>
-&lt;p>$$
-x_{i+1} = x_i + 1\
-e_{i+1} = e_i + k\
-$$&lt;/p>
-&lt;p>同时，始终保证 $0 &amp;lt; e &amp;lt; 1$：&lt;/p>
-&lt;p>$$
-e_{i+1} = e_{i+1} - 1, e_{i+1} &amp;gt; 1
-$$&lt;/p>
-&lt;p>最后，得出这个点的 &lt;code>y&lt;/code>：&lt;/p>
-&lt;p>$$
+$$&lt;p>对于每一次循环，执行：&lt;/p>
+$$
+x_{i+1} = x_i + 1\\
+e_{i+1} = e_i + k\\
+$$&lt;p>同时，始终保证 $0 &amp;lt; e &amp;lt; 1$：&lt;/p>
+$$
+e_{i+1} = e_{i+1} - 1, e_{i+1} > 1
+$$&lt;p>最后，得出这个点的 &lt;code>y&lt;/code>：&lt;/p>
+$$
 y_{i+1} = \begin{cases}
-y_i+1 &amp;amp;\text{if } e_{i+1} \gt 0.5\cr
-y_i &amp;amp;\text{if } e_{i+1} \le 0.5\cr
+y_i+1 &amp;\text{if } e_{i+1} \gt 0.5\cr
+y_i &amp;\text{if } e_{i+1} \le 0.5\cr
 \end{cases}
-$$&lt;/p>
-&lt;hr>
+$$&lt;hr>
 &lt;p>上面的算法是 &lt;code>Bresenham's Line&lt;/code> 的基本思想，还需要进一步优化，减少浮点数运算。&lt;/p>
 &lt;p>可能产生浮点数的地方是 $k = \frac{\Delta y}{\Delta x}$ 和 $e_{i+1} \gt 0.5$，所以我们最后再把上面所有的过程乘以 $2\Delta x$。&lt;/p>
 &lt;p>最终，我们的代码如下，其中 $\Delta x = x_2 - x_1, \Delta y = y_2 - y_1$：&lt;/p>

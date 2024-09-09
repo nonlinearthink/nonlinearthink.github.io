@@ -322,23 +322,21 @@ data-flex-basis="573px"
 &lt;h3 id="计算-scale">计算 scale
 &lt;/h3>&lt;p>在 Supermap 的文档中，可以找到相关的描述：&lt;a class="link" href="https://enonline.supermap.com/iExpress9D/Appendix/scale.htm" target="_blank" rel="noopener"
 >scale&lt;/a>&lt;/p>
-&lt;p>$$
+$$
 scale = \frac{1}{Resolution \frac{PPI}{0.0254}}
-$$&lt;/p>
-&lt;ul>
+$$&lt;ul>
 &lt;li>Resolution 代表每一个像素有多少实际距离&lt;/li>
 &lt;li>PPI 代表了每一英尺有多少个像素，这个数值一般为 &lt;code>96&lt;/code>&lt;/li>
 &lt;li>0.0254 是英尺和米的转换比例&lt;/li>
 &lt;/ul>
 &lt;p>以 WebMercator 为例，它的第 0 级瓦片整张地图实际大小为 &lt;code>40075016.68×40075016.68&lt;/code> 米左右，假如向 Supermap 发起一个 &lt;code>256×256&lt;/code> 像素大小的图片请求，那么：&lt;/p>
-&lt;p>$$
+$$
 \begin{aligned}
 \cr
-Resolution &amp;amp;= \frac{40075016.68}{256} = 156543.03\cr
-scale &amp;amp;= \frac{1}{156543.03 \frac{96}{0.0254}} = 1.6901635718379278e-9
+Resolution &amp;= \frac{40075016.68}{256} = 156543.03\cr
+scale &amp;= \frac{1}{156543.03 \frac{96}{0.0254}} = 1.6901635718379278e-9
 \end{aligned}
-$$&lt;/p>
-&lt;p>以此类推，我们可以计算出 WGS84 和 WebMercator 各个级别下的 scale 值，并用一个数组来表示：&lt;/p>
+$$&lt;p>以此类推，我们可以计算出 WGS84 和 WebMercator 各个级别下的 scale 值，并用一个数组来表示：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
