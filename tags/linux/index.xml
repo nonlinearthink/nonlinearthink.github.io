@@ -187,26 +187,26 @@ data-flex-basis="484px"
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th>变量名&lt;/th>
-&lt;th>说明&lt;/th>
+&lt;th style="text-align: left">变量名&lt;/th>
+&lt;th style="text-align: left">说明&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td>PATH&lt;/td>
-&lt;td>shell将会去这里搜寻命令和程序&lt;/td>
+&lt;td style="text-align: left">PATH&lt;/td>
+&lt;td style="text-align: left">shell将会去这里搜寻命令和程序&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>SHELL&lt;/td>
-&lt;td>当前使用的shell类型&lt;/td>
+&lt;td style="text-align: left">SHELL&lt;/td>
+&lt;td style="text-align: left">当前使用的shell类型&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>HOME&lt;/td>
-&lt;td>当前用户的根目录&lt;/td>
+&lt;td style="text-align: left">HOME&lt;/td>
+&lt;td style="text-align: left">当前用户的根目录&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>LOGNAME&lt;/td>
-&lt;td>当前用户的登录名&lt;/td>
+&lt;td style="text-align: left">LOGNAME&lt;/td>
+&lt;td style="text-align: left">当前用户的登录名&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>

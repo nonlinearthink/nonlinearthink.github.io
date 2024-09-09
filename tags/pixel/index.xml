@@ -223,31 +223,31 @@ data-flex-basis="418px"
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th>单位&lt;/th>
-&lt;th>作用&lt;/th>
-&lt;th>备注&lt;/th>
+&lt;th style="text-align: left">单位&lt;/th>
+&lt;th style="text-align: left">作用&lt;/th>
+&lt;th style="text-align: left">备注&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td>vh&lt;/td>
-&lt;td>视图窗口高度的$\frac{1}{100}$&lt;/td>
-&lt;td>&lt;/td>
+&lt;td style="text-align: left">vh&lt;/td>
+&lt;td style="text-align: left">视图窗口高度的$\frac{1}{100}$&lt;/td>
+&lt;td style="text-align: left">&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>vw&lt;/td>
-&lt;td>视图窗口宽度的$\frac{1}{100}$&lt;/td>
-&lt;td>&lt;/td>
+&lt;td style="text-align: left">vw&lt;/td>
+&lt;td style="text-align: left">视图窗口宽度的$\frac{1}{100}$&lt;/td>
+&lt;td style="text-align: left">&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>vmin&lt;/td>
-&lt;td>视图窗口高度、宽度中较小一方的$\frac{1}{100}$&lt;/td>
-&lt;td>部分浏览器不支持&lt;/td>
+&lt;td style="text-align: left">vmin&lt;/td>
+&lt;td style="text-align: left">视图窗口高度、宽度中较小一方的$\frac{1}{100}$&lt;/td>
+&lt;td style="text-align: left">部分浏览器不支持&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>vmax&lt;/td>
-&lt;td>视图窗口高度、宽度中较大一方的$\frac{1}{100}$&lt;/td>
-&lt;td>部分浏览器不支持&lt;/td>
+&lt;td style="text-align: left">vmax&lt;/td>
+&lt;td style="text-align: left">视图窗口高度、宽度中较大一方的$\frac{1}{100}$&lt;/td>
+&lt;td style="text-align: left">部分浏览器不支持&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
