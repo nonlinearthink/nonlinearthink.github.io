@@ -1,5 +1,205 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>nonlinearthink</title><link>https://nonlinearthink.github.io/</link><description>Recent content on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 08 Sep 2024 14:09:05 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>管理时间和注意力是最重要的事情</title><link>https://nonlinearthink.github.io/p/%E7%AE%A1%E7%90%86%E6%97%B6%E9%97%B4%E5%92%8C%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%98%AF%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E4%BA%8B%E6%83%85/</link><pubDate>Sun, 08 Sep 2024 14:09:05 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%AE%A1%E7%90%86%E6%97%B6%E9%97%B4%E5%92%8C%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%98%AF%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E4%BA%8B%E6%83%85/</guid><description>&lt;p>可能很多人都有过这样的体验：感觉好像每天都很忙，各方面的事情似乎都在推进，但是一切又不如预期，所有的一切都太慢了。&lt;/p>
-&lt;p>我很快意识到了问题所在：人一天的时间是极其有限的，在有限的时间里，大量的事务会极度分散你的注意力。对于任何想要有所成就的人来说，学会合理分配自己的时间和注意力。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>nonlinearthink</title><link>https://nonlinearthink.github.io/</link><description>Recent content on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 14 Sep 2024 13:09:30 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 OpenAPI Generator 生成客户端代码</title><link>https://nonlinearthink.github.io/p/%E4%BD%BF%E7%94%A8-openapi-generator-%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A3%E7%A0%81/</link><pubDate>Sat, 14 Sep 2024 13:09:30 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E4%BD%BF%E7%94%A8-openapi-generator-%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A3%E7%A0%81/</guid><description>&lt;h2 id="介绍">介绍
+&lt;/h2>&lt;p>OpenAPI Generator 是一个开源的代码生成工具，用于从 OpenAPI 规范（如 Swagger）生成客户端代码、服务器代码、文档和配置。&lt;/p>
+&lt;p>官方文档：&lt;a class="link" href="https://openapi-generator.tech/docs" target="_blank" rel="noopener"
+>OpenAPI Generator&lt;/a>&lt;/p>
+&lt;p>在此之前，我在服务端根据代码输出了 OpenAPI 和 Swagger 文档，&lt;a class="link" href="https://goframe.org/display/gf" target="_blank" rel="noopener"
+>Goframe&lt;/a> 提供了开箱即用的集成：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># manifest/config/config.yaml&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">server&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">address&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;:8080&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">openapiPath&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;/api.json&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">swaggerPath&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;/swagger&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>接着，我的目标是通过 OpenAPI Generator 生成客户端的前端代码。&lt;/p>
+&lt;p>最终生成的结果大致如下：&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/%E4%BD%BF%E7%94%A8-openapi-generator-%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A3%E7%A0%81/files.png"
+width="458"
+height="532"
+srcset="https://nonlinearthink.github.io/p/%E4%BD%BF%E7%94%A8-openapi-generator-%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A3%E7%A0%81/files_hu16979701394975704899.png 480w, https://nonlinearthink.github.io/p/%E4%BD%BF%E7%94%A8-openapi-generator-%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A3%E7%A0%81/files_hu11805109053159521010.png 1024w"
+loading="lazy"
+alt="Files"
+class="gallery-image"
+data-flex-grow="86"
+data-flex-basis="206px"
+>&lt;/p>
+&lt;p>调用的代码如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-typescript" data-lang="typescript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">Configuration&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">EmailApi&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="kr">from&lt;/span> &lt;span class="s2">&amp;#34;@/api&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">emailApi&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">EmailApi&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">Configuration&lt;/span>&lt;span class="p">({&lt;/span> &lt;span class="nx">basePath&lt;/span>: &lt;span class="kt">import.meta.env.VITE_API_BASE_URL&lt;/span> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">sendVerifCode&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">async&lt;/span> &lt;span class="p">()&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">res&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">await&lt;/span> &lt;span class="nx">emailApi&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">apiLoginEmailVerifCodePost&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">email&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;xxx@outlook.com&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">debug&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">res&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="安装">安装
+&lt;/h2>&lt;p>OpenAPI Generator 提供了许多的安装方式，从中任意选择一种即可：&lt;/p>
+&lt;p>&lt;a class="link" href="https://openapi-generator.tech/docs/installation" target="_blank" rel="noopener"
+>OpenAPI Generator 安装文档&lt;/a>&lt;/p>
+&lt;h2 id="生成客户端代码">生成客户端代码
+&lt;/h2>&lt;p>客户端的编程语言使用 typescript，使用 axios 库来发送请求，可以选择 OpenAPI Generator 提供的一个官方模版 &lt;a class="link" href="https://openapi-generator.tech/docs/generators/typescript-axios" target="_blank" rel="noopener"
+>typescript-axios&lt;/a>，其他的可选模版见：&lt;a class="link" href="https://openapi-generator.tech/docs/generators" target="_blank" rel="noopener"
+>Generators&lt;/a>。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">openapi-generator generate &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-i http://127.0.0.1:8080/api.json &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-g typescript-axios &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-o src/api
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;hr>
+&lt;p>如果你看了 &lt;a class="link" href="https://openapi-generator.tech/docs/generators/typescript-axios" target="_blank" rel="noopener"
+>typescript-axios&lt;/a> 的文档，里面还列出了一些可以配置的选项，可以在运行命令的时候添加 &lt;code>--additional-properties&lt;/code> 修改：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">openapi-generator generate &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-i http://127.0.0.1:8080/api.json &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-g typescript-axios &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-o src/api
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--additional-properties &lt;span class="nv">npmName&lt;/span>&lt;span class="o">=&lt;/span>api,npmVersion&lt;span class="o">=&lt;/span>0.1.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;hr>
+&lt;p>如果需要修改的数量比较多，还可使用配置文件，新建一个 &lt;code>openapi-generator-config.yaml&lt;/code> 文件：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">npmName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">api&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">npmVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">0.1.0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后运行命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">openapi-generator generate &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-i http://127.0.0.1:8080/api.json &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-g typescript-axios &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-o src/api
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-c ./openapi-generator-config.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="配置-axios-的-baseurl">配置 axios 的 baseURL
+&lt;/h2>&lt;p>这个生成的代码里面没有配置 axios 的 &lt;code>baseURL&lt;/code>，导致我一直请求不懂，在文件 &lt;code>base.ts&lt;/code> 里面：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-typescript" data-lang="typescript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">export&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">BASE_PATH&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;http://localhost&amp;#34;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sr">/\/+$/&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>我尝试了一下，这个地方的运行结果似乎没办法修改，换一个思路，在使用的时候修改吧，好在它提供了一个 &lt;code>Configuration&lt;/code> 接口：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-typescript" data-lang="typescript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">Configuration&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">EmailApi&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="kr">from&lt;/span> &lt;span class="s2">&amp;#34;@/api&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">emailApi&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">EmailApi&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">Configuration&lt;/span>&lt;span class="p">({&lt;/span> &lt;span class="nx">basePath&lt;/span>: &lt;span class="kt">import.meta.env.VITE_API_BASE_URL&lt;/span> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>这里使用的是 VITE 的环境变量来提供 API 的地址，可根据自己的情况修改。&lt;/p>
+&lt;/blockquote>
+&lt;p>尝试一下调用：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-typescript" data-lang="typescript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">sendVerifCode&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">async&lt;/span> &lt;span class="p">()&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">res&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">await&lt;/span> &lt;span class="nx">emailApi&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">apiLoginEmailVerifCodePost&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">email&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;xxx@outlook.com&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">debug&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">res&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>大功告成。&lt;/p></description></item><item><title>管理时间和注意力是最重要的事情</title><link>https://nonlinearthink.github.io/p/%E7%AE%A1%E7%90%86%E6%97%B6%E9%97%B4%E5%92%8C%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%98%AF%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E4%BA%8B%E6%83%85/</link><pubDate>Sun, 08 Sep 2024 14:09:05 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%AE%A1%E7%90%86%E6%97%B6%E9%97%B4%E5%92%8C%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%98%AF%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E4%BA%8B%E6%83%85/</guid><description>&lt;p>可能很多人都有过这样的体验：感觉好像每天都很忙，各方面的事情似乎都在推进，但是一切又不如预期，所有的一切都太慢了。&lt;/p>
+&lt;p>我很快意识到了问题所在：人一天的时间是极其有限的，在有限的时间里，大量的事务会极度分散你的注意力。对于任何想要有所成就的人来说，必须要学会合理分配自己的时间和注意力。&lt;/p>
 &lt;h2 id="时间是一种不可逆转的稀缺资源">时间是一种不可逆转的稀缺资源
 &lt;/h2>&lt;p>每个人的时间都是不可逆转的稀缺资源。我们的生命程序从我们出生开始就已经设定好我们可以使用的时间。&lt;/p>
 &lt;p>参加工作了一段时间后，我尝试分配更多的时间给自己去发展和成长，却遭到了巨大的阻力，我突然意识到了我的时间原来早就不属于我自己，而是属于公司。我领取一份固定的报酬，但是从来没有思考过代价是什么。&lt;/p>
@@ -41,10 +241,10 @@
 &lt;p>学生时代的我们，实际上并没有太多的利益相关的东西，故此仍然保持着一种比较纯粹和自然的交朋友方式。&lt;/p>
 &lt;p>但当你步入社会，并期待完成某些事情，达成某些目的，获取某些“成功”之后，你交朋友的目的就不再是情绪驱动了。你交的朋友，是一个交易的对象，你们交换各自想要的东西，然后又各自前进，你们是利益驱动的关系。&lt;/p>
 &lt;p>你可能会感觉不适应，感觉迷茫，感觉痛苦。但是，对于追求成功的人来说，孤独是一种常态，在你成功之前，没有人能理解你也是常态。&lt;/p></description></item><item><title>真正赚钱的事情和赚钱无关</title><link>https://nonlinearthink.github.io/p/%E7%9C%9F%E6%AD%A3%E8%B5%9A%E9%92%B1%E7%9A%84%E4%BA%8B%E6%83%85%E5%92%8C%E8%B5%9A%E9%92%B1%E6%97%A0%E5%85%B3/</link><pubDate>Fri, 26 Jul 2024 21:34:48 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E7%9C%9F%E6%AD%A3%E8%B5%9A%E9%92%B1%E7%9A%84%E4%BA%8B%E6%83%85%E5%92%8C%E8%B5%9A%E9%92%B1%E6%97%A0%E5%85%B3/</guid><description>&lt;h2 id="为什么要创业">为什么要创业？
-&lt;/h2>&lt;p>人类从奴隶制转向雇佣制，但是没有改变的是，大部分人依旧没有掌握生产资料。生产资料如此重要，因为掌握了它的人可以在不劳动的情况下，依旧产生收入。这就是真正的自由。&lt;/p>
-&lt;p>当你在打工的时候，你默许了自己的劳动成果，被转交给老板，以换取一份微薄和稳定的收入，同时失去了一个可以为你持续赚钱的资产。&lt;/p>
-&lt;p>故此，当你出现“35岁危机”的时候，其实这样的处境正是你自己的短视造成的，却丝毫不自知。&lt;/p>
-&lt;p>即便你不创业，也应该获取一些高速成长的公司的股份，以实现个人资产的增值。&lt;/p>
+&lt;/h2>&lt;p>大部分人恐惧的是创业背后的巨大风险，但是打工的风险同样很大。结婚、贷款、失业、生病，遇到任何一项，都会让普通人脆弱的财务系统彻底崩溃，不幸的是，遇到这些事情的概率是 100%。要解决这些问题，靠打工积累的财富远远不够。&lt;/p>
+&lt;p>在你精力最旺盛的年纪贱卖自己的时间是一件值得高兴的事情吗？&lt;/p>
+&lt;p>个人的努力和奋斗创造的财富是有限的，但是驱使别人，靠别人的努力和奋斗获取的财富是无限的。&lt;/p>
+&lt;p>即便你不创业，也应该注意在工作之余获取一些高速成长的公司的股份，它会让你尝到资产性收入的甜头，你就会明白，原来不劳动也可以赚钱。&lt;/p>
 &lt;h2 id="赚钱的本质是为别人解决问题">赚钱的本质是为别人解决问题
 &lt;/h2>&lt;p>你解决了 10 块的问题，就只能获得 10 块的奖励；解决了 1 万的问题，就能获得 1 万的奖励。客单价反映了你解决的这个问题对别人来说的价值。&lt;/p>
 &lt;blockquote>
@@ -5179,8 +5379,8 @@ data-flex-basis="322px"
 &lt;ul>
 &lt;li>Javascript/Typescript&lt;/li>
 &lt;li>Go&lt;/li>
-&lt;li>Python&lt;/li>
 &lt;li>Rust&lt;/li>
+&lt;li>Python&lt;/li>
 &lt;li>C/C++&lt;/li>
 &lt;li>Java&lt;/li>
 &lt;/ul></description></item><item><title>搜索</title><link>https://nonlinearthink.github.io/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://nonlinearthink.github.io/search/</guid><description/></item></channel></rss>
