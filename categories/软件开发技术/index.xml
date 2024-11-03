@@ -198,4 +198,40 @@ data-flex-basis="206px"
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>大功告成。&lt;/p></description></item></channel></rss>
+&lt;/div>&lt;p>大功告成。&lt;/p></description></item><item><title>如何在 Powershell 中实现自动补全</title><link>https://nonlinearthink.github.io/p/%E5%A6%82%E4%BD%95%E5%9C%A8-powershell-%E4%B8%AD%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8/</link><pubDate>Wed, 20 Sep 2023 17:01:16 +0800</pubDate><guid>https://nonlinearthink.github.io/p/%E5%A6%82%E4%BD%95%E5%9C%A8-powershell-%E4%B8%AD%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8/</guid><description>&lt;p>微软官方已经提供了一个 PowerShell 模块，用于实现自动补全。不需要安装其他的第三方工具。&lt;/p>
+&lt;h2 id="安装-psreadline">安装 PSReadLine
+&lt;/h2>&lt;p>使用管理员权限打开 PowerShell，执行以下命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Install-Module&lt;/span> &lt;span class="n">-Name&lt;/span> &lt;span class="n">PSReadLine&lt;/span> &lt;span class="n">-AllowClobber&lt;/span> &lt;span class="n">-Force&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="修改配置项">修改配置项
+&lt;/h2>&lt;p>修改 &lt;code>$PROFILE&lt;/code> 文件，添加以下内容：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Import-Module PSReadLine
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Set-PSReadLineOption -PredictionSource History
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果不知道&lt;code>$PROFILE&lt;/code>文件在哪，可以执行以下命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$PROFILE&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="参考">参考
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="https://docs.microsoft.com/zh-cn/powershell/module/psreadline/about/about_psreadline" target="_blank" rel="noopener"
+>https://docs.microsoft.com/zh-cn/powershell/module/psreadline/about/about_psreadline&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ffmpeg-Sys-Next on nonlinearthink</title><link>https://nonlinearthink.github.io/tags/ffmpeg-sys-next/</link><description>Recent content in Ffmpeg-Sys-Next on nonlinearthink</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 03 Nov 2024 18:20:53 +0800</lastBuildDate><atom:link href="https://nonlinearthink.github.io/tags/ffmpeg-sys-next/index.xml" rel="self" type="application/rss+xml"/><item><title>Windows 环境使用 ffmpeg-next 包的问题</title><link>https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/</link><pubDate>Sun, 03 Nov 2024 18:20:53 +0800</pubDate><guid>https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/</guid><description>&lt;h2 id="issue">Issue
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">ERROR : failed to run custom build command for ffmpeg-sys-next v7.1.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="solution">Solution
+&lt;/h2>&lt;p>参考 &lt;a class="link" href="https://github.com/zmwangx/rust-ffmpeg/blob/master/.github/workflows/build.yml" target="_blank" rel="noopener"
+>Github Workflow&lt;/a>，里面有 Windows 环境的具体编译脚本。&lt;/p>
+&lt;p>完整流程：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>安装 LLVM 编译器&lt;/p>
+&lt;p>使用 Visual Studio 安装 LLVM 编译器。&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730629203640.png"
+width="2239"
+height="1259"
+srcset="https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730629203640_hu1045328881882962824.png 480w, https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730629203640_hu4648970093686700432.png 1024w"
+loading="lazy"
+alt="Visual Studio"
+class="gallery-image"
+data-flex-grow="177"
+data-flex-basis="426px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>配置环境变量 &lt;code>LIBCLANG_PATH&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730629844122.png"
+width="1216"
+height="307"
+srcset="https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730629844122_hu3314309469441842281.png 480w, https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730629844122_hu5294751495838372058.png 1024w"
+loading="lazy"
+alt="LIBCLANG_PATH"
+class="gallery-image"
+data-flex-grow="396"
+data-flex-basis="950px"
+>&lt;/p>
+&lt;p>按照 &lt;a class="link" href="https://github.com/zmwangx/rust-ffmpeg/wiki/Notes-on-building#building-on-windows" target="_blank" rel="noopener"
+>Wiki&lt;/a> 似乎可以直接加到 &lt;code>Path&lt;/code> 变量里，但是我好像没有成功。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>下载 FFmpeg&lt;/p>
+&lt;p>&lt;a class="link" href="https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full-shared.7z" target="_blank" rel="noopener"
+>https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full-shared.7z&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>配置环境变量 &lt;code>FFMPEG_DIR&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730630190240.png"
+width="1214"
+height="306"
+srcset="https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730630190240_hu8039362233727063509.png 480w, https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730630190240_hu13348496822331069371.png 1024w"
+loading="lazy"
+alt="FFMPEG_DIR"
+class="gallery-image"
+data-flex-grow="396"
+data-flex-basis="952px"
+>&lt;/p>
+&lt;p>填写你的 ffmpeg 解压后的路径就可以了&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>添加 &lt;code>path-to-ffmpeg\bin&lt;/code> 到 &lt;code>Path&lt;/code> 变量里&lt;/p>
+&lt;p>&lt;img src="https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730630609302.png"
+width="1139"
+height="1006"
+srcset="https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730630609302_hu13788350753712213027.png 480w, https://nonlinearthink.github.io/p/windows-%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8-ffmpeg-next-%E5%8C%85%E7%9A%84%E9%97%AE%E9%A2%98/1730630609302_hu7490852330031410984.png 1024w"
+loading="lazy"
+alt="bin"
+class="gallery-image"
+data-flex-grow="113"
+data-flex-basis="271px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>编译&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">cargo&lt;/span> &lt;span class="n">build&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ol></description></item></channel></rss>
